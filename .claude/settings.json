@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open /Users/miglemicheloni/ProcesSolution/index.html)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

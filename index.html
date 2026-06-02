@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProcesSolution — Custom AI Automations for Small Firms</title>
+  <meta name="description" content="We build custom AI agents and workflow automations for accountants, lawyers, consultants, and small firms. Version 1 delivered in 5 business days." />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f6ff;
+      --surface2: #eeeeff;
+      --border: rgba(0,0,0,0.09);
+      --accent: #7c6ff5;
+      --accent-bright: #9b8ff8;
+      --accent-glow: rgba(124, 111, 245, 0.22);
+      --cyan: #06b6d4;
+      --text: #1a1a2e;
+      --muted: #4b4b6a;
+      --muted2: #8888aa;
+      --white: #ffffff;
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(80,70,228,0.08);
+      border: 1px solid rgba(80,70,228,0.2);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: clamp(30px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 560px;
+      margin-top: 14px;
+      line-height: 1.7;
+    }
+    section { padding: 96px 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-primary { background: var(--text); color: #fff; }
+    .btn-primary:hover { background: var(--accent); box-shadow: 0 4px 24px var(--accent-glow); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(0,0,0,0.3); }
+    .btn-lg { padding: 17px 36px; font-size: 16px; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 16px;
+    }
+    .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo img { height: 64px; display: block; }
+    .nav-logo span { font-family: 'Exo 2', sans-serif; font-size: 26px; font-weight: 300; color: var(--text); letter-spacing: 0.04em; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+    /* ─── LANG SWITCHER ─── */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+    .lang-btn {
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted2);
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s;
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active { background: var(--text); color: #fff; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--muted); border-radius: 2px; transition: all 0.3s; }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 120px 0 80px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 60% 50%, rgba(124,111,245,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(6,182,212,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 85% 20%, rgba(239,68,68,0.07) 0%, transparent 55%),
+        var(--bg);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 0%, transparent 80%);
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.18;
+      z-index: 1;
+    }
+    .hero-layout { display: flex; align-items: center; justify-content: center; text-align: center; }
+    .hero-content { position: relative; z-index: 2; max-width: 820px; }
+    .hero-content .hero-eyebrow { justify-content: center; }
+    .hero-content .hero-sub { margin-left: auto; margin-right: auto; }
+    .hero-content .hero-actions { justify-content: center; }
+    .hero-content .hero-stats { justify-content: center; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .hero-eyebrow .dot {
+      width: 8px; height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--cyan);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .hero-eyebrow span { font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
+    .hero-title {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: clamp(44px, 8vw, 84px);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .hero-title .accent { color: var(--accent); }
+    .hero-sub { font-size: clamp(16px, 2.5vw, 19px); color: var(--muted); line-height: 1.7; max-width: 620px; margin-bottom: 40px; }
+    .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .hero-note { font-size: 13px; color: var(--muted2); margin-top: 20px; }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--text); letter-spacing: -0.03em; }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* ─── PROBLEM ─── */
+    #problem { background: var(--surface); }
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 56px; }
+    .pain-list { list-style: none; margin-top: 24px; }
+    .pain-list li { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 15px; color: var(--muted); line-height: 1.6; }
+    .pain-list li:last-child { border-bottom: none; }
+    .pain-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; color: #ef4444; }
+    .after-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .after-box h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+    .after-list { list-style: none; }
+    .after-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; font-size: 15px; color: var(--muted); }
+    .check-icon { color: #22c55e; flex-shrink: 0; margin-top: 2px; }
+
+    /* ─── PROCESS ─── */
+    .process-header { text-align: center; margin-bottom: 64px; }
+    .process-header .section-sub { margin: 14px auto 0; }
+    .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+    .step { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .step:hover { border-color: rgba(80,70,228,0.3); transform: translateY(-4px); box-shadow: 0 8px 28px rgba(80,70,228,0.1); }
+    .step-num { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 16px; }
+    .step-icon { font-size: 28px; margin-bottom: 14px; }
+    .step h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── RESULTS ─── */
+    #results { background: var(--surface); }
+    .results-header { margin-bottom: 56px; }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .project-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+    .project-card:hover { border-color: rgba(80,70,228,0.3); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(80,70,228,0.1); }
+    .project-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); margin-bottom: 16px; }
+    .project-card h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+    .project-card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .project-result { margin-top: 24px; padding: 16px 20px; background: rgba(80,70,228,0.06); border: 1px solid rgba(80,70,228,0.15); border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--accent); }
+    .project-result span { display: block; font-size: 22px; font-weight: 800; color: var(--text); margin-top: 4px; }
+
+    /* ─── WHY US ─── */
+    .why-header { text-align: center; margin-bottom: 64px; }
+    .why-header .section-sub { margin: 14px auto 0; }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .why-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .why-card:hover { border-color: rgba(80,70,228,0.25); box-shadow: 0 6px 24px rgba(80,70,228,0.1); transform: translateY(-3px); }
+    .why-card-icon { width: 44px; height: 44px; background: rgba(80,70,228,0.09); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+    .why-card h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .why-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ─── CREDENTIALS ─── */
+    #credentials { background: var(--surface); }
+    .cred-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .cred-list { margin-top: 32px; list-style: none; }
+    .cred-list li { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 15px; color: var(--muted); }
+    .cred-list li:last-child { border-bottom: none; }
+    .cred-list .icon { font-size: 20px; flex-shrink: 0; }
+    .cred-right { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+    .cred-right h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+    .cred-right p { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+    .founders { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+    .founder-chip { background: rgba(80,70,228,0.08); border: 1px solid rgba(80,70,228,0.18); border-radius: 100px; padding: 8px 18px; font-size: 13px; font-weight: 600; color: var(--accent); }
+
+    /* ─── FAQ ─── */
+    .faq-header { text-align: center; margin-bottom: 56px; }
+    .faq-header .section-sub { margin: 14px auto 0; }
+    .faq-list { max-width: 780px; margin: 0 auto; }
+    .faq-item { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; background: var(--white); transition: border-color 0.2s; box-shadow: 0 1px 8px rgba(0,0,0,0.04); }
+    .faq-item.open { border-color: rgba(80,70,228,0.3); }
+    .faq-question { width: 100%; background: none; border: none; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; text-align: left; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); transition: color 0.2s; }
+    .faq-question:hover { color: var(--accent); }
+    .faq-chevron { flex-shrink: 0; width: 20px; height: 20px; color: var(--muted2); transition: transform 0.25s; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 24px; font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .faq-item.open .faq-answer { max-height: 300px; padding: 0 24px 22px; }
+
+    /* ─── PROCESS BG IMAGE ─── */
+    #process {
+      position: relative;
+      overflow: hidden;
+    }
+    #process::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('maxime-valcarce-mAj8xn5zXsk-unsplash.jpg') center/cover no-repeat;
+      opacity: 0.22;
+      z-index: 0;
+    }
+    #process .container { position: relative; z-index: 1; }
+
+    /* ─── CTA ─── */
+    #cta {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    #cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('maxime-valcarce-mAj8xn5zXsk-unsplash.jpg') center/cover no-repeat;
+      opacity: 0.12;
+      z-index: 0;
+    }
+    #cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(240,238,255,0.92) 0%, rgba(232,244,255,0.92) 100%);
+      z-index: 0;
+    }
+    #cta .container { position: relative; z-index: 1; }
+    .cta-inner { max-width: 680px; margin: 0 auto; }
+    #cta .section-title { margin-bottom: 18px; }
+    #cta .section-sub { margin: 0 auto 36px; }
+    .cta-meta { font-size: 13px; color: var(--muted2); margin-top: 18px; }
+    .cta-meta a { color: var(--muted); text-decoration: underline; }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--text); border-top: 1px solid rgba(255,255,255,0.07); padding: 48px 0 32px; }
+    .footer-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 40px; }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.45); max-width: 280px; line-height: 1.6; margin-top: 12px; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-links h4 { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.35); }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: #fff; }
+    .social-links { display: flex; gap: 16px; }
+    .social-link { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .social-link:hover { color: #fff; }
+
+    /* ─── PRIVACY MODAL ─── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); max-width: 760px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 48px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .modal h2 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .modal .modal-date { font-size: 13px; color: var(--muted2); margin-bottom: 32px; }
+    .modal h3 { font-size: 16px; font-weight: 700; color: var(--text); margin: 24px 0 8px; }
+    .modal p { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 12px; }
+    .modal ul { padding-left: 20px; margin-bottom: 12px; }
+    .modal li { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 4px; }
+    .modal-close { display: block; margin-top: 32px; width: 100%; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .modal-close:hover { color: var(--text); border-color: rgba(0,0,0,0.3); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      .hero-img { display: none; }
+      .hero-layout { justify-content: center; }
+      .hero-content { max-width: 100%; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--border); padding: 20px 24px; gap: 16px; z-index: 99; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .cred-inner { grid-template-columns: 1fr; gap: 40px; }
+      section { padding: 72px 0; }
+    }
+    @media (max-width: 600px) {
+      .steps { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .footer-inner { flex-direction: column; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .modal { padding: 28px 20px; }
+      .lang-btn { padding: 5px 7px; }
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="logo.png" alt="ProcesSolution" onerror="this.style.display='none'" />
+      <span>Proces<span style="color:var(--accent);">Solution</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#problem" data-i18n="nav_problem">The Problem</a></li>
+      <li><a href="#process" data-i18n="nav_process">How It Works</a></li>
+      <li><a href="#results" data-i18n="nav_results">Results</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-switcher">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('it')">IT</button>
+        <button class="lang-btn" onclick="setLang('lt')">LT</button>
+      </div>
+      <a href="#cta" class="btn btn-primary" style="padding:10px 20px; font-size:14px;" data-i18n="nav_cta">Book a Free Call</a>
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <img class="hero-img" src="google-deepmind-LIlsk-UFVxk-unsplash.jpg" alt="" aria-hidden="true" />
+  <div class="container hero-layout">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="dot"></div>
+        <span data-i18n="hero_eyebrow">Custom AI Automation · Delivered in 5 Business Days</span>
+      </div>
+      <h1 class="hero-title">
+        <span data-i18n-html="hero_title">Your best people<br/>shouldn't be doing<br/><span class="accent">repetitive work.</span></span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">We build custom AI agents and workflow automations for accountants, lawyers, consultants, and small firms — so the tedious, necessary work runs in the background while your team focuses on what actually matters.</p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn btn-primary btn-lg" data-i18n="hero_cta_primary">Book a Free 30-Min Call</a>
+        <a href="#process" class="btn btn-ghost btn-lg" data-i18n="hero_cta_secondary">See How It Works</a>
+      </div>
+      <p class="hero-note" data-i18n="hero_note">No pitch. No obligation. You leave with a concrete recommendation — free.</p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">5</div>
+          <div class="stat-label" data-i18n="stat1">Business days to Version 1</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">34%</div>
+          <div class="stat-label" data-i18n="stat2">Outreach response rate lift</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label" data-i18n="stat3">Client owns all code &amp; logins</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3</div>
+          <div class="stat-label" data-i18n="stat4">Languages: EN · IT · LT</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ PROBLEM ═══════════════ -->
+<section id="problem">
+  <div class="container">
+    <div class="reveal">
+      <span class="tag" data-i18n="prob_tag">Sound familiar?</span>
+      <h2 class="section-title" data-i18n-html="prob_title">Your day is disappearing<br/>into tasks that don't move<br/>the needle.</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="reveal">
+        <p class="section-sub" data-i18n="prob_sub">Accountants, lawyers, consultants, and small business owners all face the same problem: a significant chunk of every working day goes to work that's necessary but adds no real value.</p>
+        <ul class="pain-list">
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain1">Manual data entry and copy-pasting between tools</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain2">Repetitive follow-ups and chasing information</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain3">Compiling reports by hand every week</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain4">Knowing something could be automated — but no IT team to build it</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain5">Off-the-shelf tools that don't fit how you actually work</span></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="after-box">
+          <h3 data-i18n="after_title">After working with ProcesSolution:</h3>
+          <ul class="after-list">
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after1">The repetitive work runs in the background — automatically</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after2">Hours reclaimed every week, redirected to high-value work</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after3">A custom automation built exactly around your workflow</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after4">Full ownership — all code and logins transferred to you</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after5">Team training so you stay independent</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after6">Ongoing support whenever something needs to change</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ PROCESS ═══════════════ -->
+<section id="process">
+  <div class="container">
+    <div class="process-header reveal">
+      <span class="tag" data-i18n="proc_tag">The Process</span>
+      <h2 class="section-title" data-i18n-html="proc_title">From first conversation<br/>to working automation.</h2>
+      <p class="section-sub" data-i18n="proc_sub">Clear steps, no surprises. Version 1 in 5 business days. Full delivery within 3–4 weeks.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">STEP 01</div>
+        <div class="step-icon">☎️</div>
+        <h3 data-i18n="step1_title">Free Strategy Call</h3>
+        <p data-i18n="step1_body">We map your current workflow, find where time is being lost, and tell you exactly what's possible with AI. No pitch — just a concrete recommendation.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">STEP 02</div>
+        <div class="step-icon">📋</div>
+        <h3 data-i18n="step2_title">Scoping & Onboarding</h3>
+        <p data-i18n="step2_body">A clear checklist: what access we need, which tools are in play, who we'll coordinate with. Infrastructure set up immediately.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">STEP 03</div>
+        <div class="step-icon">⚡</div>
+        <h3 data-i18n="step3_title">Version 1 in 5 Days</h3>
+        <p data-i18n="step3_body">A working automation, live — presented to your team. We collect feedback and refine until it fits exactly how you work.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">STEP 04</div>
+        <div class="step-icon">🎯</div>
+        <h3 data-i18n="step4_title">Final Handover</h3>
+        <p data-i18n="step4_body">Polished delivery within 3–4 weeks. All code and logins transferred to you. Walkthrough video included — team training available.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">STEP 05</div>
+        <div class="step-icon">🔄</div>
+        <h3 data-i18n="step5_title">Optional Retainer</h3>
+        <p data-i18n="step5_body">Keep automating. Monthly retainer for ongoing improvements, new workflows, adaptation to new AI tools, and priority support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ RESULTS ═══════════════ -->
+<section id="results">
+  <div class="container">
+    <div class="results-header reveal">
+      <span class="tag" data-i18n="res_tag">Real Results</span>
+      <h2 class="section-title" data-i18n-html="res_title">Working automations,<br/>not strategy decks.</h2>
+      <p class="section-sub" data-i18n="res_sub">Every project starts from a real business problem and ends with a running system — not a slide deck or a recommendation report.</p>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-label" data-i18n="p1_label">Project 01 — Small Team Coordination</div>
+        <h3 data-i18n="p1_title">Task Coordinator</h3>
+        <p data-i18n="p1_body">A lightweight task coordination app built for small teams — task assignment via form or voice dictation, automatic status tracking, and full email-based communication. No complex setup. An exportable task log included so nothing falls through the cracks.</p>
+        <div class="project-result">
+          <span data-i18n="p1_result_label">Built for teams with no dedicated project manager</span>
+          <span data-i18n="p1_result_val">Zero manual follow-up overhead</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-label" data-i18n="p2_label">Project 02 — Outreach Automation</div>
+        <h3 data-i18n="p2_title">Personalised Outreach Engine</h3>
+        <p data-i18n="p2_body">Outreach to passive clients was generic and low-converting. We built a system that researches each person's LinkedIn profile, recent activity, and role — then drafts a personalised message for the team to review and send with one click.</p>
+        <div class="project-result">
+          <span data-i18n="p2_result_label">Response rate on passive outreach</span>
+          <span data-i18n="p2_result_val">11% → 34% (+23 percentage points)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ WHY US ═══════════════ -->
+<section id="why">
+  <div class="container">
+    <div class="why-header reveal">
+      <span class="tag" data-i18n="why_tag">Why ProcesSolution</span>
+      <h2 class="section-title" data-i18n-html="why_title">Built for small firms.<br/>Not scaled down from enterprise.</h2>
+      <p class="section-sub" data-i18n="why_sub">We don't work with large corporations. We specialize in businesses like yours — and that focus makes all the difference.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-card-icon">🎯</div>
+        <h3 data-i18n="why1_title">Built Around Your Workflow</h3>
+        <p data-i18n="why1_body">No generic templates. Every automation is built from scratch to fit exactly how your firm operates — not the other way around.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-card-icon">⚡</div>
+        <h3 data-i18n="why2_title">Fast, Practical Delivery</h3>
+        <p data-i18n="why2_body">Working Version 1 in 5 business days. Not a consultancy project that takes months. You see a live, running automation before the second week is over.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-card-icon">💬</div>
+        <h3 data-i18n="why3_title">Direct Communication</h3>
+        <p data-i18n="why3_body">No account managers, no overhead. You speak directly with the founders who built your solution — faster decisions, faster changes, more accessible pricing.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-card-icon">🔒</div>
+        <h3 data-i18n="why4_title">You Own Everything</h3>
+        <p data-i18n="why4_body">Full handover of all code and logins at delivery. You're never locked in. We train your team to manage it independently.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-card-icon">🇪🇺</div>
+        <h3 data-i18n="why5_title">GDPR-Compliant by Default</h3>
+        <p data-i18n="why5_body">All solutions can be built on EU-hosted infrastructure. We advise on compliant LLM providers and handle data requirements from the start.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-card-icon">🧠</div>
+        <h3 data-i18n="why6_title">Deep Domain Experience</h3>
+        <p data-i18n="why6_body">20+ years working across the process industry, recruiting, and accounting. We understand how small professional firms operate — and where automation makes the biggest difference.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ CREDENTIALS ═══════════════ -->
+<section id="credentials">
+  <div class="container">
+    <div class="cred-inner">
+      <div class="reveal">
+        <span class="tag" data-i18n="cred_tag">Expertise</span>
+        <h2 class="section-title" data-i18n-html="cred_title">Built by people who've worked<br/>inside your industry.</h2>
+        <ul class="cred-list">
+          <li><span class="icon">🤖</span><span data-i18n="cred1">Deep expertise in LLMs, Python, n8n, and industrial automation technology</span></li>
+          <li><span class="icon">🏭</span><span data-i18n="cred2">20+ years working in the process industry, recruiting, and accounting before founding ProcesSolution</span></li>
+          <li><span class="icon">🇪🇺</span><span data-i18n="cred3">All solutions GDPR-compliant and buildable on EU-hosted infrastructure</span></li>
+          <li><span class="icon">🌍</span><span data-i18n="cred4">Working internationally — Italy, Lithuania, and English-speaking markets</span></li>
+          <li><span class="icon">🗣️</span><span data-i18n="cred5">Available in English, Italian, and Lithuanian</span></li>
+        </ul>
+      </div>
+      <div class="cred-right reveal">
+        <h3 data-i18n="founders_title">Meet the Founders</h3>
+        <p data-i18n="founders_p1">ProcesSolution was founded by Migle Micheloni and Kristina Stone — two practitioners who spent decades inside the industries they now automate.</p>
+        <p data-i18n="founders_p2">Every client works directly with the founders — no juniors, no handoffs. The people who scoped your project are the people who build it.</p>
+        <div class="founders">
+          <span class="founder-chip">Migle Micheloni · Co-Founder</span>
+          <span class="founder-chip">Kristina Stone · Co-Founder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="faq-header reveal">
+      <span class="tag" data-i18n="faq_tag">FAQ</span>
+      <h2 class="section-title" data-i18n-html="faq_title">Questions we get asked<br/>before the first call.</h2>
+      <p class="section-sub" data-i18n="faq_sub">If your question isn't here, bring it to the strategy call — we'll answer it in the first five minutes.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq1_q">Do I need to be technical to work with you?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq1_a">Not at all. You describe the business problem — where time is being lost, what's frustrating. We handle everything else: architecture, build, testing, and training. Our job is to make the technical side invisible to you.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq2_q">Will this work with the tools we already use?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq2_a">Yes — we build around your existing stack. In the strategy call, we assess which tools you use and design an automation that integrates with them. We don't ask you to change your software to accommodate our solution.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq3_q">How quickly will we see results?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq3_a">Version 1 — a fully working automation — is presented live within 5 business days of kickoff. The final, refined version is delivered within 3–4 weeks. You're not waiting months to see something run.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq4_q">Who owns the automation after the project?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq4_a">You do. 100%. At final handover, every line of code and every login is transferred to you. No lock-in, no ongoing licence, no subscription required. We also record a full walkthrough video so your team knows exactly how it works.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq5_q">What if our process changes after handover?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq5_a">Since you own all the code, your team can adapt it independently — or we can. Our optional monthly retainer covers ongoing improvements, new processes, and adaptation to new AI tools.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq6_q">Is this GDPR-compliant?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq6_a">Yes. We build on EU-hosted infrastructure where required and advise on compliant LLM providers as part of every project. GDPR compliance is factored in from the start, especially for client data, document handling, and communications automation.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq7_q">We've tried Zapier before and it didn't work. Why is this different?</span>
+          <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-answer" data-i18n="faq7_a">Off-the-shelf tools like Zapier are designed for the average use case. When your workflow is specific — exceptions frequent, logic complex — generic tools break down. We build custom systems designed around your exact process, edge cases included.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="tag" data-i18n="cta_tag">Get Started</span>
+      <h2 class="section-title" data-i18n-html="cta_title">Book your free<br/>30-minute strategy call.</h2>
+      <p class="section-sub" data-i18n="cta_sub">We'll map your workflow, identify where automation makes the biggest difference, and give you a concrete recommendation — no strings attached.</p>
+      <a href="#" class="btn btn-primary btn-lg" id="bookBtn" data-i18n="cta_btn">Book a Free Strategy Call →</a>
+      <p class="cta-meta">
+        <span data-i18n="cta_email_label">Prefer email?</span> <a href="mailto:info@processolution.pro">info@processolution.pro</a>
+        &nbsp;·&nbsp; <span data-i18n="cta_langs">We work in English, Italian &amp; Lithuanian.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:0;">
+          <img src="logo.png" alt="ProcesSolution" onerror="this.style.display='none'" style="height:56px;" />
+          <span style="font-family:'Exo 2',sans-serif; font-size:22px; font-weight:300; color:#fff; letter-spacing:0.04em;">Proces<span style="color:var(--accent-bright);">Solution</span></span>
+        </a>
+        <p data-i18n="footer_desc">Custom AI agents and workflow automations for small firms and independent professionals.</p>
+      </div>
+      <div>
+        <ul class="footer-links">
+          <li><h4 data-i18n="footer_nav_label">Navigation</h4></li>
+          <li><a href="#problem" data-i18n="nav_problem">The Problem</a></li>
+          <li><a href="#process" data-i18n="nav_process">How It Works</a></li>
+          <li><a href="#results" data-i18n="nav_results">Results</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#cta" data-i18n="nav_cta">Book a Free Call</a></li>
+        </ul>
+      </div>
+      <div>
+        <ul class="footer-links">
+          <li><h4 data-i18n="footer_contact_label">Contact</h4></li>
+          <li><a href="mailto:info@processolution.pro">info@processolution.pro</a></li>
+          <li><a href="https://www.linkedin.com/company/processolution" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li style="margin-top:16px;"><a href="#" onclick="openPrivacy(); return false;" data-i18n="footer_privacy">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ProcesSolution. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/processolution" target="_blank" rel="noopener" class="social-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:info@processolution.pro" class="social-link">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ PRIVACY MODAL ═══════════════ -->
+<div class="modal-overlay" id="privacyModal" onclick="closePrivacyOutside(event)">
+  <div class="modal">
+    <h2 data-i18n="priv_title">Privacy Policy</h2>
+    <p class="modal-date" data-i18n="priv_date">Last updated: June 2025</p>
+    <h3 data-i18n="priv_h1">1. Who We Are</h3>
+    <p data-i18n="priv_p1">ProcesSolution provides custom AI automation and workflow services. Contact: <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.</p>
+    <h3 data-i18n="priv_h2">2. What Data We Collect</h3>
+    <p data-i18n="priv_p2">When you contact us or book a call we may collect: name, email, company name; information shared during calls or onboarding; basic analytics data (pages visited, device type).</p>
+    <h3 data-i18n="priv_h3">3. How We Use Your Data</h3>
+    <p data-i18n="priv_p3">We use your data solely to respond to enquiries, deliver agreed services, and improve our offering. We do not sell, rent, or trade your personal data to any third party.</p>
+    <h3 data-i18n="priv_h4">4. Legal Basis (GDPR)</h3>
+    <p data-i18n="priv_p4">Our legal basis for processing is: (a) your consent where given; (b) performance of a contract; and (c) our legitimate interest in responding to business enquiries.</p>
+    <h3 data-i18n="priv_h5">5. Data Storage & Security</h3>
+    <p data-i18n="priv_p5">Project data is handled on EU-based infrastructure where required. We implement appropriate technical measures to protect your data.</p>
+    <h3 data-i18n="priv_h6">6. Your Rights</h3>
+    <p data-i18n="priv_p6">You have the right to access, correct, delete, and port your data. To exercise any right, contact us at <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.</p>
+    <h3 data-i18n="priv_h7">7. Cookies</h3>
+    <p data-i18n="priv_p7">This site uses only technically necessary cookies. No tracking or advertising cookies are used.</p>
+    <button class="modal-close" onclick="closePrivacy()" data-i18n="priv_close">Close</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script>
+/* ── TRANSLATIONS ── */
+const T = {
+  en: {
+    nav_problem: "The Problem",
+    nav_process: "How It Works",
+    nav_results: "Results",
+    nav_cta: "Book a Free Call",
+    hero_eyebrow: "Custom AI Automation · Delivered in 5 Business Days",
+    hero_title: 'Your best people<br/>shouldn\'t be doing<br/><span class="accent">repetitive work.</span>',
+    hero_sub: "We build custom AI agents and workflow automations for accountants, lawyers, consultants, and small firms — so the tedious, necessary work runs in the background while your team focuses on what actually matters.",
+    hero_cta_primary: "Book a Free 30-Min Call",
+    hero_cta_secondary: "See How It Works",
+    hero_note: "No pitch. No obligation. You leave with a concrete recommendation — free.",
+    stat1: "Business days to Version 1",
+    stat2: "Outreach response rate lift",
+    stat3: "Client owns all code & logins",
+    stat4: "Languages: EN · IT · LT",
+    prob_tag: "Sound familiar?",
+    prob_title: "Your day is disappearing<br/>into tasks that don't move<br/>the needle.",
+    prob_sub: "Accountants, lawyers, consultants, and small business owners all face the same problem: a significant chunk of every working day goes to work that's necessary but adds no real value.",
+    pain1: "Manual data entry and copy-pasting between tools",
+    pain2: "Repetitive follow-ups and chasing information",
+    pain3: "Compiling reports by hand every week",
+    pain4: "Knowing something could be automated — but no IT team to build it",
+    pain5: "Off-the-shelf tools that don't fit how you actually work",
+    after_title: "After working with ProcesSolution:",
+    after1: "The repetitive work runs in the background — automatically",
+    after2: "Hours reclaimed every week, redirected to high-value work",
+    after3: "A custom automation built exactly around your workflow",
+    after4: "Full ownership — all code and logins transferred to you",
+    after5: "Team training so you stay independent",
+    after6: "Ongoing support whenever something needs to change",
+    proc_tag: "The Process",
+    proc_title: "From first conversation<br/>to working automation.",
+    proc_sub: "Clear steps, no surprises. Version 1 in 5 business days. Full delivery within 3–4 weeks.",
+    step1_title: "Free Strategy Call",
+    step1_body: "We map your current workflow, find where time is being lost, and tell you exactly what's possible with AI. No pitch — just a concrete recommendation.",
+    step2_title: "Scoping & Onboarding",
+    step2_body: "A clear checklist: what access we need, which tools are in play, who we'll coordinate with. Infrastructure set up immediately.",
+    step3_title: "Version 1 in 5 Days",
+    step3_body: "A working automation, live — presented to your team. We collect feedback and refine until it fits exactly how you work.",
+    step4_title: "Final Handover",
+    step4_body: "Polished delivery within 3–4 weeks. All code and logins transferred to you. Walkthrough video included — team training available.",
+    step5_title: "Optional Retainer",
+    step5_body: "Keep automating. Monthly retainer for ongoing improvements, new workflows, adaptation to new AI tools, and priority support.",
+    res_tag: "Real Results",
+    res_title: "Working automations,<br/>not strategy decks.",
+    res_sub: "Every project starts from a real business problem and ends with a running system — not a slide deck or a recommendation report.",
+    p1_label: "Project 01 — Small Team Coordination",
+    p1_title: "Task Coordinator",
+    p1_body: "A lightweight task coordination app built for small teams — task assignment via form or voice dictation, automatic status tracking, and full email-based communication. No complex setup. An exportable task log so nothing falls through the cracks.",
+    p1_result_label: "Built for teams with no dedicated project manager",
+    p1_result_val: "Zero manual follow-up overhead",
+    p2_label: "Project 02 — Outreach Automation",
+    p2_title: "Personalised Outreach Engine",
+    p2_body: "Outreach to passive clients was generic and low-converting. We built a system that researches each person's LinkedIn profile, recent activity, and role — then drafts a personalised message for the team to review and send with one click.",
+    p2_result_label: "Response rate on passive outreach",
+    p2_result_val: "11% → 34% (+23 percentage points)",
+    why_tag: "Why ProcesSolution",
+    why_title: "Built for small firms.<br/>Not scaled down from enterprise.",
+    why_sub: "We don't work with large corporations. We specialize in businesses like yours — and that focus makes all the difference.",
+    why1_title: "Built Around Your Workflow",
+    why1_body: "No generic templates. Every automation is built from scratch to fit exactly how your firm operates — not the other way around.",
+    why2_title: "Fast, Practical Delivery",
+    why2_body: "Working Version 1 in 5 business days. Not a consultancy project that takes months. You see a live, running automation before the second week is over.",
+    why3_title: "Direct Communication",
+    why3_body: "No account managers, no overhead. You speak directly with the founders — faster decisions, faster changes, more accessible pricing.",
+    why4_title: "You Own Everything",
+    why4_body: "Full handover of all code and logins at delivery. You're never locked in. We train your team to manage it independently.",
+    why5_title: "GDPR-Compliant by Default",
+    why5_body: "All solutions can be built on EU-hosted infrastructure. We advise on compliant LLM providers and handle data requirements from the start.",
+    why6_title: "Deep Domain Experience",
+    why6_body: "20+ years working across the process industry, recruiting, and accounting. We understand how small professional firms operate — and where automation makes the biggest difference.",
+    cred_tag: "Expertise",
+    cred_title: "Built by people who've worked<br/>inside your industry.",
+    cred1: "Deep expertise in LLMs, Python, n8n, and industrial automation technology",
+    cred2: "20+ years working in the process industry, recruiting, and accounting before founding ProcesSolution",
+    cred3: "All solutions GDPR-compliant and buildable on EU-hosted infrastructure",
+    cred4: "Working internationally — Italy, Lithuania, and English-speaking markets",
+    cred5: "Available in English, Italian, and Lithuanian",
+    founders_title: "Meet the Founders",
+    founders_p1: "ProcesSolution was founded by Migle Micheloni and Kristina Stone — two practitioners who spent decades inside the industries they now automate.",
+    founders_p2: "Every client works directly with the founders — no juniors, no handoffs. The people who scoped your project are the people who build it.",
+    faq_tag: "FAQ",
+    faq_title: "Questions we get asked<br/>before the first call.",
+    faq_sub: "If your question isn't here, bring it to the strategy call — we'll answer it in the first five minutes.",
+    faq1_q: "Do I need to be technical to work with you?",
+    faq1_a: "Not at all. You describe the business problem — where time is being lost, what's frustrating. We handle everything else: architecture, build, testing, and training. Our job is to make the technical side invisible to you.",
+    faq2_q: "Will this work with the tools we already use?",
+    faq2_a: "Yes — we build around your existing stack. In the strategy call, we assess which tools you use and design an automation that integrates with them. We don't ask you to change your software to accommodate our solution.",
+    faq3_q: "How quickly will we see results?",
+    faq3_a: "Version 1 — a fully working automation — is presented live within 5 business days of kickoff. The final, refined version is delivered within 3–4 weeks. You're not waiting months to see something run.",
+    faq4_q: "Who owns the automation after the project?",
+    faq4_a: "You do. 100%. At final handover, every line of code and every login is transferred to you. No lock-in, no ongoing licence, no subscription required. We also record a full walkthrough video so your team knows exactly how it works.",
+    faq5_q: "What if our process changes after handover?",
+    faq5_a: "Since you own all the code, your team can adapt it independently — or we can. Our optional monthly retainer covers ongoing improvements, new processes, and adaptation to new AI tools.",
+    faq6_q: "Is this GDPR-compliant?",
+    faq6_a: "Yes. We build on EU-hosted infrastructure where required and advise on compliant LLM providers. GDPR compliance is factored in from the start, especially for client data, document handling, and communications automation.",
+    faq7_q: "We've tried Zapier before and it didn't work. Why is this different?",
+    faq7_a: "Off-the-shelf tools like Zapier are designed for the average use case. When your workflow is specific — exceptions frequent, logic complex — generic tools break down. We build custom systems designed around your exact process, edge cases included.",
+    cta_tag: "Get Started",
+    cta_title: "Book your free<br/>30-minute strategy call.",
+    cta_sub: "We'll map your workflow, identify where automation makes the biggest difference, and give you a concrete recommendation — no strings attached.",
+    cta_btn: "Book a Free Strategy Call →",
+    cta_email_label: "Prefer email?",
+    cta_langs: "We work in English, Italian & Lithuanian.",
+    footer_desc: "Custom AI agents and workflow automations for small firms and independent professionals.",
+    footer_nav_label: "Navigation",
+    footer_contact_label: "Contact",
+    footer_privacy: "Privacy Policy",
+    footer_rights: "All rights reserved.",
+    priv_title: "Privacy Policy",
+    priv_date: "Last updated: June 2025",
+    priv_h1: "1. Who We Are",
+    priv_p1: 'ProcesSolution provides custom AI automation and workflow services. Contact: <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.',
+    priv_h2: "2. What Data We Collect",
+    priv_p2: "When you contact us or book a call we may collect: name, email, company name; information shared during calls or onboarding; basic analytics data.",
+    priv_h3: "3. How We Use Your Data",
+    priv_p3: "We use your data solely to respond to enquiries, deliver agreed services, and improve our offering. We do not sell, rent, or trade your personal data to any third party.",
+    priv_h4: "4. Legal Basis (GDPR)",
+    priv_p4: "Our legal basis: (a) your consent where given; (b) performance of a contract; and (c) our legitimate interest in responding to business enquiries.",
+    priv_h5: "5. Data Storage & Security",
+    priv_p5: "Project data is handled on EU-based infrastructure where required. We implement appropriate technical measures to protect your data.",
+    priv_h6: "6. Your Rights",
+    priv_p6: 'You have the right to access, correct, delete, and port your data. Contact us at <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.',
+    priv_h7: "7. Cookies",
+    priv_p7: "This site uses only technically necessary cookies. No tracking or advertising cookies are used.",
+    priv_close: "Close",
+  },
+
+  it: {
+    nav_problem: "Il Problema",
+    nav_process: "Come Funziona",
+    nav_results: "Risultati",
+    nav_cta: "Prenota una Call Gratuita",
+    hero_eyebrow: "Automazioni AI su misura · Prima versione in 5 giorni lavorativi",
+    hero_title: 'I tuoi migliori professionisti<br/>non dovrebbero fare<br/><span class="accent">lavoro ripetitivo.</span>',
+    hero_sub: "Costruiamo agenti AI e automazioni su misura per commercialisti, avvocati, consulenti e piccole imprese — così il lavoro tedioso gira in background mentre il tuo team si concentra su ciò che crea davvero valore.",
+    hero_cta_primary: "Prenota una Call Gratuita di 30 min",
+    hero_cta_secondary: "Come Funziona",
+    hero_note: "Nessun pitch. Nessun obbligo. Ricevi una raccomandazione concreta — gratis.",
+    stat1: "Giorni lavorativi alla Versione 1",
+    stat2: "Aumento del tasso di risposta outreach",
+    stat3: "Il cliente possiede tutto il codice",
+    stat4: "Lingue: IT · EN · LT",
+    prob_tag: "Ti riconosci?",
+    prob_title: "La tua giornata scompare<br/>in attività che non fanno<br/>avanzare il business.",
+    prob_sub: "Commercialisti, avvocati, consulenti e piccoli imprenditori affrontano lo stesso problema: una parte significativa di ogni giornata va in attività necessarie ma prive di valore aggiunto.",
+    pain1: "Inserimento dati manuale e copia-incolla tra strumenti",
+    pain2: "Follow-up ripetitivi e rincorsa alle informazioni",
+    pain3: "Report compilati a mano ogni settimana",
+    pain4: "Sai che si potrebbe automatizzare — ma non hai un team IT interno",
+    pain5: "Software standard che non si adatta al tuo modo di lavorare",
+    after_title: "Dopo aver lavorato con ProcesSolution:",
+    after1: "Il lavoro ripetitivo gira in background — automaticamente",
+    after2: "Ore recuperate ogni settimana, dedicate a ciò che conta davvero",
+    after3: "Un'automazione costruita esattamente attorno al tuo flusso di lavoro",
+    after4: "Piena proprietà — tutto il codice e gli accessi trasferiti a te",
+    after5: "Formazione del team per restare autonomi",
+    after6: "Supporto continuativo se qualcosa deve cambiare",
+    proc_tag: "Il Processo",
+    proc_title: "Dal primo contatto<br/>all'automazione funzionante.",
+    proc_sub: "Passi chiari, nessuna sorpresa. Versione 1 in 5 giorni lavorativi. Consegna finale entro 3–4 settimane.",
+    step1_title: "Call Strategica Gratuita",
+    step1_body: "Analizziamo il tuo flusso di lavoro, identifichiamo dove si perde tempo e ti diciamo esattamente cosa è possibile con l'AI. Nessun pitch — solo una raccomandazione concreta.",
+    step2_title: "Scoping e Onboarding",
+    step2_body: "Una checklist chiara: quali accessi servono, quali strumenti sono in gioco, con chi ci coordiniamo. L'infrastruttura viene configurata subito.",
+    step3_title: "Versione 1 in 5 Giorni",
+    step3_body: "Un'automazione funzionante, presentata live al tuo team. Raccogliamo feedback e raffiniamo finché non si adatta perfettamente al tuo modo di lavorare.",
+    step4_title: "Consegna Finale",
+    step4_body: "Consegna perfezionata entro 3–4 settimane. Tutto il codice e gli accessi trasferiti a te. Video di walkthrough incluso — formazione del team disponibile.",
+    step5_title: "Retainer Opzionale",
+    step5_body: "Continua ad automatizzare. Retainer mensile per miglioramenti continui, nuovi flussi di lavoro, adattamento ai nuovi strumenti AI e supporto prioritario.",
+    res_tag: "Risultati Reali",
+    res_title: "Automazioni funzionanti,<br/>non presentazioni PowerPoint.",
+    res_sub: "Ogni progetto parte da un problema reale e si conclude con un sistema operativo — non con una slide o un report di raccomandazioni.",
+    p1_label: "Progetto 01 — Coordinamento Team",
+    p1_title: "Task Coordinator",
+    p1_body: "Un'app leggera per la gestione dei compiti in piccoli team — assegnazione via form o dettatura vocale, monitoraggio automatico dello stato e comunicazione via email. Nessuna configurazione complessa. Log delle attività esportabile.",
+    p1_result_label: "Creato per team senza project manager dedicato",
+    p1_result_val: "Zero overhead di follow-up manuale",
+    p2_label: "Progetto 02 — Automazione Outreach",
+    p2_title: "Motore di Outreach Personalizzato",
+    p2_body: "L'outreach verso clienti passivi era generico e poco efficace. Abbiamo costruito un sistema che analizza il profilo LinkedIn, l'attività recente e il ruolo di ogni persona — e genera un messaggio personalizzato che il team può rivedere e inviare con un click.",
+    p2_result_label: "Tasso di risposta sull'outreach passivo",
+    p2_result_val: "11% → 34% (+23 punti percentuali)",
+    why_tag: "Perché ProcesSolution",
+    why_title: "Costruito per le piccole imprese.<br/>Non ridimensionato dall'enterprise.",
+    why_sub: "Non lavoriamo con grandi aziende. Siamo specializzati in realtà come la tua — e questa focalizzazione fa tutta la differenza.",
+    why1_title: "Costruito attorno al tuo flusso",
+    why1_body: "Nessun template generico. Ogni automazione è costruita da zero per adattarsi esattamente a come lavora la tua azienda — non il contrario.",
+    why2_title: "Consegna rapida e concreta",
+    why2_body: "Versione 1 funzionante in 5 giorni lavorativi. Non un progetto consulenziale che dura mesi. Vedi un'automazione live prima della fine della seconda settimana.",
+    why3_title: "Comunicazione diretta",
+    why3_body: "Nessun account manager, nessun overhead. Parli direttamente con i fondatori che costruiscono la tua soluzione — decisioni più rapide, prezzi più accessibili.",
+    why4_title: "Sei il proprietario di tutto",
+    why4_body: "Consegna completa di tutto il codice e tutti gli accessi. Non sei mai vincolato. Formiamo il tuo team per gestire tutto in autonomia.",
+    why5_title: "GDPR-compliant by default",
+    why5_body: "Tutte le soluzioni possono essere costruite su infrastruttura EU. Consigliamo provider LLM conformi e gestiamo i requisiti data privacy fin dall'inizio.",
+    why6_title: "Esperienza di settore profonda",
+    why6_body: "20+ anni nell'industria di processo, nel recruiting e nella contabilità. Sappiamo come funzionano le piccole realtà professionali — e dove l'automazione fa la vera differenza.",
+    cred_tag: "Competenze",
+    cred_title: "Costruito da chi ha lavorato<br/>nel tuo settore.",
+    cred1: "Profonda expertise in LLM, Python, n8n e tecnologia industriale",
+    cred2: "20+ anni nell'industria di processo, recruiting e contabilità prima di fondare ProcesSolution",
+    cred3: "Tutte le soluzioni GDPR-compliant su infrastruttura EU",
+    cred4: "Operativi a livello internazionale — Italia, Lituania e mercati anglofoni",
+    cred5: "Disponibili in italiano, inglese e lituano",
+    founders_title: "I Fondatori",
+    founders_p1: "ProcesSolution è stata fondata da Migle Micheloni e Kristina Stone — due professioniste che hanno trascorso decenni nei settori che oggi automatizzano.",
+    founders_p2: "Ogni cliente lavora direttamente con i fondatori — nessun junior, nessun passaggio di consegne. Chi ha impostato il tuo progetto è chi lo costruisce.",
+    faq_tag: "Domande Frequenti",
+    faq_title: "Le domande che ci fanno<br/>prima della prima call.",
+    faq_sub: "Se la tua domanda non c'è, portala alla call strategica — risponderemo nei primi cinque minuti.",
+    faq1_q: "Devo essere tecnico per lavorare con voi?",
+    faq1_a: "Assolutamente no. Tu descrivi il problema di business — dove si perde tempo, cosa è frustrante. Noi gestiamo tutto il resto: architettura, sviluppo, test e formazione. Il nostro obiettivo è rendere il lato tecnico completamente invisibile per te.",
+    faq2_q: "Funzionerà con gli strumenti che usiamo già?",
+    faq2_a: "Sì — costruiamo attorno al tuo stack esistente. Nella call strategica valutiamo gli strumenti che usi e progettiamo un'automazione che si integra con essi. Non ti chiediamo di cambiare il tuo software.",
+    faq3_q: "Quanto velocemente vedremo i risultati?",
+    faq3_a: "La Versione 1 — un'automazione completamente funzionante — viene presentata live entro 5 giorni lavorativi dal kickoff. La versione finale e perfezionata viene consegnata entro 3–4 settimane. Non aspetti mesi per vedere qualcosa funzionare.",
+    faq4_q: "Chi è il proprietario dell'automazione dopo il progetto?",
+    faq4_a: "Tu. Al 100%. Alla consegna finale, ogni riga di codice e ogni accesso vengono trasferiti a te. Nessun lock-in, nessuna licenza ricorrente. Registriamo anche un video di walkthrough completo.",
+    faq5_q: "Cosa succede se il nostro processo cambia dopo la consegna?",
+    faq5_a: "Siccome sei il proprietario del codice, il tuo team può adattarlo in autonomia — o lo facciamo noi. Il nostro retainer mensile opzionale copre miglioramenti continui e adattamenti a nuovi strumenti AI.",
+    faq6_q: "È conforme al GDPR?",
+    faq6_a: "Sì. Costruiamo su infrastruttura EU dove richiesto e consigliamo provider LLM conformi. La conformità GDPR è integrata fin dall'inizio, in particolare per la gestione dei dati clienti e delle comunicazioni.",
+    faq7_q: "Abbiamo già provato Zapier e non ha funzionato. Qual è la differenza?",
+    faq7_a: "Strumenti come Zapier sono progettati per il caso medio. Quando il tuo flusso è specifico — con molte eccezioni o logica complessa — gli strumenti generici cedono. Noi costruiamo sistemi custom progettati attorno al tuo processo esatto, casi limite inclusi.",
+    cta_tag: "Inizia Ora",
+    cta_title: "Prenota la tua call<br/>strategica gratuita di 30 minuti.",
+    cta_sub: "Analizzeremo il tuo flusso di lavoro, identificheremo dove l'automazione fa la maggiore differenza e ti daremo una raccomandazione concreta — senza impegno.",
+    cta_btn: "Prenota la Call Gratuita →",
+    cta_email_label: "Preferisci l'email?",
+    cta_langs: "Lavoriamo in italiano, inglese e lituano.",
+    footer_desc: "Agenti AI e automazioni su misura per piccole imprese e professionisti indipendenti.",
+    footer_nav_label: "Navigazione",
+    footer_contact_label: "Contatti",
+    footer_privacy: "Privacy Policy",
+    footer_rights: "Tutti i diritti riservati.",
+    priv_title: "Privacy Policy",
+    priv_date: "Ultimo aggiornamento: giugno 2025",
+    priv_h1: "1. Chi siamo",
+    priv_p1: 'ProcesSolution fornisce servizi di automazione AI su misura. Contatto: <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.',
+    priv_h2: "2. Dati che raccogliamo",
+    priv_p2: "Quando ci contatti o prenoti una call potremmo raccogliere: nome, email, nome azienda; informazioni condivise durante le call o l'onboarding; dati analitici di base.",
+    priv_h3: "3. Come utilizziamo i tuoi dati",
+    priv_p3: "Utilizziamo i tuoi dati esclusivamente per rispondere alle richieste, erogare i servizi concordati e migliorare la nostra offerta. Non vendiamo né cediamo i tuoi dati personali a terzi.",
+    priv_h4: "4. Base giuridica (GDPR)",
+    priv_p4: "La base giuridica del trattamento è: (a) il tuo consenso; (b) l'esecuzione di un contratto; (c) il nostro legittimo interesse a rispondere alle richieste commerciali.",
+    priv_h5: "5. Conservazione e sicurezza",
+    priv_p5: "I dati di progetto sono gestiti su infrastruttura con sede in EU dove richiesto. Adottiamo misure tecniche adeguate per proteggere i tuoi dati.",
+    priv_h6: "6. I tuoi diritti",
+    priv_p6: 'Hai il diritto di accedere, correggere, cancellare e portare i tuoi dati. Contattaci a <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.',
+    priv_h7: "7. Cookie",
+    priv_p7: "Questo sito utilizza solo cookie tecnici necessari. Non vengono utilizzati cookie di tracciamento o pubblicitari.",
+    priv_close: "Chiudi",
+  },
+
+  lt: {
+    nav_problem: "Problema",
+    nav_process: "Kaip Tai Veikia",
+    nav_results: "Rezultatai",
+    nav_cta: "Rezervuoti Nemokamą Skambutį",
+    hero_eyebrow: "Individualūs AI sprendimai · 1-oji versija per 5 darbo dienas",
+    hero_title: 'Jūsų geriausi darbuotojai<br/>neturėtų atlikti<br/><span class="accent">pasikartojančio darbo.</span>',
+    hero_sub: "Kuriame individualius AI agentus ir darbo procesų automatizavimo sprendimus buhalteriams, teisininkams, konsultantams ir smulkioms įmonėms — kad rutininis darbas vyktų automatiškai, o jūsų komanda galėtų susikoncentruoti ties tuo, kas iš tikrųjų svarbu.",
+    hero_cta_primary: "Rezervuoti Nemokamą 30 min. Skambutį",
+    hero_cta_secondary: "Kaip Tai Veikia",
+    hero_note: "Jokio pardavimo. Jokių įsipareigojimų. Gausite konkrečią rekomendaciją — nemokamai.",
+    stat1: "Darbo dienos iki 1-osios versijos",
+    stat2: "Atsakymų rodiklio augimas",
+    stat3: "Klientas valdo visą kodą ir prisijungimus",
+    stat4: "Kalbos: LT · EN · IT",
+    prob_tag: "Ar tai jums pažįstama?",
+    prob_title: "Jūsų diena pranyksta<br/>atliekant užduotis, kurios<br/>neprideda vertės.",
+    prob_sub: "Buhalteriai, teisininkai, konsultantai ir smulkaus verslo savininkai susiduria su ta pačia problema: didelė darbo dienos dalis tenka darbui, kuris būtinas, bet nekuria realios vertės.",
+    pain1: "Rankinis duomenų įvedimas ir kopijavimas tarp įrankių",
+    pain2: "Pasikartojantys priminimai ir informacijos ieškojimas",
+    pain3: "Ataskaitų ruošimas rankiniu būdu kiekvieną savaitę",
+    pain4: "Žinote, kad galima automatizuoti — bet neturite IT komandos",
+    pain5: "Standartiniai įrankiai, kurie netinka jūsų darbo eigai",
+    after_title: "Po darbo su ProcesSolution:",
+    after1: "Pasikartojantis darbas vyksta fone — automatiškai",
+    after2: "Kas savaitę atgaunamos valandos, skirtos svarbiam darbui",
+    after3: "Individualus sprendimas, sukurtas pagal jūsų darbo eigą",
+    after4: "Pilna nuosavybė — visas kodas ir prisijungimai perduodami jums",
+    after5: "Komandos apmokymas, kad išliktumėte savarankiški",
+    after6: "Nuolatinė pagalba, kai kažkas keičiasi",
+    proc_tag: "Procesas",
+    proc_title: "Nuo pirmojo pokalbio<br/>iki veikiančio automatizavimo.",
+    proc_sub: "Aiškūs žingsniai, jokių staigmenų. 1-oji versija per 5 darbo dienas. Galutinis pristatymas per 3–4 savaites.",
+    step1_title: "Nemokamas strateginis skambutis",
+    step1_body: "Analizuojame jūsų dabartinę darbo eigą, randame kur prarandamas laikas ir tiksliai pasakome, kas įmanoma su AI. Jokio pardavimo — tik konkreti rekomendacija.",
+    step2_title: "Apimties nustatymas ir prisijungimas",
+    step2_body: "Aiški kontrolinis sąrašas: kokie prieigos lygiai reikalingi, kokie įrankiai naudojami, su kuo koordinuosimės. Infrastruktūra sukonfigūruojama iš karto.",
+    step3_title: "1-oji versija per 5 dienas",
+    step3_body: "Veikiantis automatizavimas, pristatomas gyvai jūsų komandai. Renkame atsiliepimus ir tobuliname, kol tiksliai atitiks jūsų darbo eigą.",
+    step4_title: "Galutinis perdavimas",
+    step4_body: "Baigtas sprendimas per 3–4 savaites. Visas kodas ir prisijungimai perduodami jums. Įtrauktas vaizdo įrašas su apžvalga — komandos mokymai galimi.",
+    step5_title: "Neprivalomas retaineris",
+    step5_body: "Tęskite automatizavimą. Mėnesinis retaineris nuolatiniams patobulinimams, naujiems darbo procesams, prisitaikymui prie naujų AI įrankių ir prioritetinei pagalbai.",
+    res_tag: "Tikri Rezultatai",
+    res_title: "Veikiantys automatizavimai,<br/>ne strateginės prezentacijos.",
+    res_sub: "Kiekvienas projektas prasideda nuo realios verslo problemos ir baigiasi veikiančia sistema — ne skaidrėmis ar rekomendacijų ataskaita.",
+    p1_label: "Projektas 01 — Mažos komandos koordinavimas",
+    p1_title: "Užduočių koordinatorius",
+    p1_body: "Lengva užduočių koordinavimo programa mažoms komandoms — užduočių priskyrimas per formą ar balso diktavimą, automatinis statuso sekimas ir visapusiškas bendravimas el. paštu. Jokios sudėtingos sąrankos. Eksportuojamas užduočių žurnalas.",
+    p1_result_label: "Sukurta komandoms be dedikuoto projekto vadovo",
+    p1_result_val: "Nulinės rankinio sekimo išlaidos",
+    p2_label: "Projektas 02 — Komunikacijos automatizavimas",
+    p2_title: "Personalizuotos komunikacijos variklis",
+    p2_body: "Komunikacija su pasyviais klientais buvo generinė ir mažai efektyvi. Sukūrėme sistemą, kuri analizuoja kiekvieno asmens LinkedIn profilį, paskutinę veiklą ir vaidmenį — ir sugeneruoja personalizuotą žinutę, kurią komanda peržiūri ir išsiunčia vienu paspaudimu.",
+    p2_result_label: "Atsakymų rodiklis su pasyviais klientais",
+    p2_result_val: "11% → 34% (+23 procentiniai punktai)",
+    why_tag: "Kodėl ProcesSolution",
+    why_title: "Sukurta smulkioms įmonėms.<br/>Ne sumažinta iš enterprise.",
+    why_sub: "Nedirbame su didelėmis korporacijomis. Specializuojamės įmonėse kaip jūsų — ir šis fokusas daro visą skirtumą.",
+    why1_title: "Sukurta pagal jūsų darbo eigą",
+    why1_body: "Jokių generinių šablonų. Kiekvienas automatizavimas kuriamas nuo nulio, kad tiksliai atitiktų jūsų įmonės veikimą — ne atvirkščiai.",
+    why2_title: "Greitas ir praktiškas pristatymas",
+    why2_body: "Veikianti 1-oji versija per 5 darbo dienas. Ne konsultacinis projektas, trunkantis mėnesius. Gyvo automatizavimo matysite dar antrą savaitę.",
+    why3_title: "Tiesioginis bendravimas",
+    why3_body: "Jokių tarpininkų, jokio perteklinio valdymo. Kalbate tiesiogiai su įkūrėjais — greitesni sprendimai, prieinamesnes kainos.",
+    why4_title: "Viskas priklauso jums",
+    why4_body: "Visas kodas ir prisijungimai perduodami jums pristatant. Jūs nesate pririšti. Apmokom jūsų komandą valdyti viską savarankiškai.",
+    why5_title: "GDPR atitiktis pagal nutylėjimą",
+    why5_body: "Visi sprendimai gali būti kuriami ES infrastruktūroje. Konsultuojame dėl atitinkančių GDPR LLM tiekėjų ir sprendžiame duomenų klausimus nuo pat pradžių.",
+    why6_title: "Gili patirtis srityje",
+    why6_body: "20+ metų pramoninėje, personalo atrankos ir buhalterijos srityje. Suprantame kaip dirba smulkios profesinės įmonės — ir kur automatizavimas daro didžiausią skirtumą.",
+    cred_tag: "Kompetencijos",
+    cred_title: "Sukurta žmonių, dirbusių<br/>jūsų pramonėje.",
+    cred1: "Gili patirtis su LLM, Python, n8n ir pramonine automatizavimo technologija",
+    cred2: "20+ metų pramoninėje, personalo atrankos ir buhalterijos srityje prieš įkuriant ProcesSolution",
+    cred3: "Visi sprendimai atitinka GDPR ir gali būti kuriami ES infrastruktūroje",
+    cred4: "Tarptautinė veikla — Italija, Lietuva ir angliškai kalbančios rinkos",
+    cred5: "Prieinami lietuvių, anglų ir italų kalbomis",
+    founders_title: "Susipažinkite su Įkūrėjomis",
+    founders_p1: "ProcesSolution įkūrė Miglė Micheloni ir Kristina Stone — dvi specialistės, dešimtmečius dirbusios pramonėse, kurias dabar automatizuoja.",
+    founders_p2: "Kiekvienas klientas dirba tiesiogiai su įkūrėjomis — jokių jaunesnių specialistų, jokių perdavimų. Kas nustatė jūsų projektą — tas jį ir stato.",
+    faq_tag: "DUK",
+    faq_title: "Klausimai, kuriuos gauname<br/>prieš pirmą skambutį.",
+    faq_sub: "Jei jūsų klausimo čia nėra — atneškite jį į strateginį skambutį. Atsakysime per pirmas penkias minutes.",
+    faq1_q: "Ar man reikia būti techniškai išprususiam?",
+    faq1_a: "Visai ne. Jūs aprašote verslo problemą — kur prarandamas laikas, kas erzina. Mes pasirūpiname visu kitu: architektūra, kūrimu, testavimu ir mokymais. Mūsų tikslas — padaryti techninę pusę jums visiškai nematoma.",
+    faq2_q: "Ar tai veiks su mūsų jau naudojamais įrankiais?",
+    faq2_a: "Taip — kuriame aplink jūsų esamą įrankių rinkinį. Strateginiame skambutyje įvertiname kokius įrankius naudojate ir projektuojame automatizavimą, kuris integruojasi su jais. Nereikalaujame keisti programinės įrangos.",
+    faq3_q: "Kaip greitai pamatysime rezultatus?",
+    faq3_a: "1-oji versija — visiškai veikiantis automatizavimas — pristatoma gyvai per 5 darbo dienas nuo pradžios. Galutinė, patobulinta versija pristatomą per 3–4 savaites. Nelauksite mėnesių.",
+    faq4_q: "Kam priklauso automatizavimas po projekto?",
+    faq4_a: "Jums. 100%. Galutiniame perdavime kiekviena kodo eilutė ir kiekvienas prisijungimas perduodamas jums. Jokio prikulsomumo, jokios nuolatinės licencijos. Taip pat įrašome išsamų vaizdo peržiūrą.",
+    faq5_q: "Kas atsitiks jei mūsų procesas pasikeistų po perdavimo?",
+    faq5_a: "Kadangi jums priklauso visas kodas, jūsų komanda gali jį pritaikyti savarankiškai — arba tai padarysime mes. Mūsų neprivalomas mėnesinis retaineris apima nuolatinius patobulinimus ir prisitaikymą prie naujų AI įrankių.",
+    faq6_q: "Ar tai atitinka GDPR?",
+    faq6_a: "Taip. Kuriame ES infrastruktūroje kur reikalinga ir konsultuojame dėl atitinkančių GDPR LLM tiekėjų. GDPR atitiktis įtraukiama nuo pat pradžių, ypač tvarkant klientų duomenis ir komunikacijos automatizavimą.",
+    faq7_q: "Jau bandėme Zapier ir neveikė. Kuo tai skiriasi?",
+    faq7_a: "Standartiniai įrankiai kaip Zapier sukurti vidutiniam atvejui. Kai jūsų darbo eiga yra specifinė — daug išimčių ar sudėtinga logika — generiniai įrankiai subyra. Mes kuriame individualias sistemas, pritaikytas tiksliai prie jūsų proceso, įskaitant ir kraštutinuosius atvejus.",
+    cta_tag: "Pradėkite",
+    cta_title: "Rezervuokite nemokamą<br/>30 minučių strateginį skambutį.",
+    cta_sub: "Analizuosime jūsų darbo eigą, identifikuosime kur automatizavimas daro didžiausią skirtumą ir pateiksime konkrečią rekomendaciją — be jokių įsipareigojimų.",
+    cta_btn: "Rezervuoti Nemokamą Skambutį →",
+    cta_email_label: "Pageidaujate el. paštu?",
+    cta_langs: "Dirbame lietuvių, anglų ir italų kalbomis.",
+    footer_desc: "Individualūs AI agentai ir darbo procesų automatizavimo sprendimai smulkioms įmonėms ir nepriklausomai dirbantiems specialistams.",
+    footer_nav_label: "Navigacija",
+    footer_contact_label: "Kontaktai",
+    footer_privacy: "Privatumo politika",
+    footer_rights: "Visos teisės saugomos.",
+    priv_title: "Privatumo politika",
+    priv_date: "Paskutinį kartą atnaujinta: 2025 m. birželis",
+    priv_h1: "1. Kas mes esame",
+    priv_p1: 'ProcesSolution teikia individualaus AI automatizavimo paslaugas. Kontaktas: <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.',
+    priv_h2: "2. Kokius duomenis renkame",
+    priv_p2: "Kai susisiekiate ar rezervuojate skambutį, galime rinkti: vardą, el. paštą, įmonės pavadinimą; informaciją, pateiktą skambučių ar įsitraukimo metu; pagrindinius analitikos duomenis.",
+    priv_h3: "3. Kaip naudojame jūsų duomenis",
+    priv_p3: "Jūsų duomenis naudojame tik užklausoms atsakyti, sutartoms paslaugoms teikti ir savo pasiūlai tobulinti. Jūsų asmeninių duomenų neparduodame ir neteikiame trečiosioms šalims.",
+    priv_h4: "4. Teisinis pagrindas (BDAR)",
+    priv_p4: "Duomenų tvarkymo teisinis pagrindas: (a) jūsų sutikimas; (b) sutarties vykdymas; (c) mūsų teisėtas interesas atsakyti į verslo užklausas.",
+    priv_h5: "5. Duomenų saugojimas ir apsauga",
+    priv_p5: "Projektų duomenys tvarkomi ES infrastruktūroje, kur reikalaujama. Taikome tinkamas technines priemones jūsų duomenims apsaugoti.",
+    priv_h6: "6. Jūsų teisės",
+    priv_p6: 'Turite teisę susipažinti, ištaisyti, ištrinti ir perkelti savo duomenis. Susisiekite: <a href="mailto:info@processolution.pro" style="color:var(--accent-bright);">info@processolution.pro</a>.',
+    priv_h7: "7. Slapukai",
+    priv_p7: "Šioje svetainėje naudojami tik techniškai būtini slapukai. Sekimo ar reklamos slapukai nenaudojami.",
+    priv_close: "Uždaryti",
+  }
+};
+
+/* ── APPLY LANGUAGE ── */
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const dict = T[lang];
+
+  // Update <html lang>
+  document.documentElement.lang = lang;
+
+  // Text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+
+  // HTML nodes (titles with <br/> and <span>)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+
+  // Active button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+}
+
+/* ── Mobile menu ── */
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+document.querySelectorAll('#navLinks a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+});
+
+/* ── FAQ accordion ── */
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── Privacy modal ── */
+function openPrivacy() {
+  document.getElementById('privacyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePrivacy() {
+  document.getElementById('privacyModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closePrivacyOutside(e) {
+  if (e.target === document.getElementById('privacyModal')) closePrivacy();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePrivacy(); });
+
+/* ── Booking CTA placeholder ── */
+document.getElementById('bookBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  // Replace with your Calendly link:
+  // window.open('https://calendly.com/YOUR_LINK', '_blank');
+  alert('Booking link coming soon! Reach us at info@processolution.pro');
+});
+
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
