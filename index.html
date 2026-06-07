@@ -403,6 +403,84 @@
     /* ─── SCROLL REVEAL ─── */
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── PRODUCT CARD ─── */
+    .product-card {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 48px;
+      max-width: 760px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .product-card:hover {
+      box-shadow: 0 8px 40px var(--accent-glow);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .product-card-icon {
+      font-size: 48px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .product-card-body { display: flex; flex-direction: column; gap: 12px; }
+    .product-card-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--accent);
+      padding: 3px 10px;
+      border-radius: 100px;
+      width: fit-content;
+    }
+    .product-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .product-card-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .product-card-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .product-card-bullets li {
+      font-size: 14px;
+      color: var(--muted);
+      padding-left: 20px;
+      position: relative;
+    }
+    .product-card-bullets li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .product-card-cta {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+    @media (max-width: 600px) {
+      .product-card { flex-direction: column; padding: 28px 24px; gap: 20px; }
+    }
   </style>
 </head>
 <body>
@@ -418,8 +496,8 @@
       <li><a href="#problem" data-i18n="nav_problem">The Problem</a></li>
       <li><a href="#process" data-i18n="nav_process">How It Works</a></li>
       <li><a href="#results" data-i18n="nav_results">Results</a></li>
+      <li><a href="#products">Products</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="task-coordinator.html" style="color:var(--accent); font-weight:600;">Task Coordinator →</a></li>
     </ul>
     <div class="nav-right">
       <div class="lang-switcher">
@@ -662,6 +740,35 @@
           <span class="founder-chip">Kristina Stone · Co-Founder</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════ PRODUCTS ═══════════════ -->
+<section id="products">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:48px;">
+      <span class="tag">Our Products</span>
+      <h2 class="section-title">Ready-to-use AI tools</h2>
+      <p class="section-sub" style="margin:14px auto 0;">Standalone apps built on the same automation principles we apply for clients — available now.</p>
+    </div>
+    <div class="reveal" style="display:flex; justify-content:center;">
+      <a href="task-coordinator.html" class="product-card">
+        <div class="product-card-icon">🎙️</div>
+        <div class="product-card-body">
+          <div class="product-card-label">New</div>
+          <h3 class="product-card-title">Task Coordinator</h3>
+          <p class="product-card-desc">Voice-powered task coordination for busy teams. Speak a task in your language — AI turns it into a structured assignment with deadline, assignee, and automatic email notification.</p>
+          <ul class="product-card-bullets">
+            <li>25 languages, AI parsing in seconds</li>
+            <li>Email notifications + calendar invite</li>
+            <li>Works on any device, installable PWA</li>
+          </ul>
+          <span class="product-card-cta">Discover Task Coordinator →</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
