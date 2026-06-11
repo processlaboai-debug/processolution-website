@@ -1,1123 +1,1555 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Task Coordinator — Voice-Powered Task Management</title>
-  <meta name="description" content="Speak a task in your own language. Task Coordinator turns it into a structured, trackable assignment with deadline, assignee, and automatic email — in 25 languages." />
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<!doctype html>
+<html lang="lt">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task Coordinator - balsu valdomas užduočių koordinavimas komandoms</title>
+    <meta
+      name="description"
+      content="Task Coordinator leidžia sukurti ir deleguoti užduotis balsu per kelias sekundes. AI supranta vykdytojus, terminus ir paruošia užduotį už jus."
+    >
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #090b18;
+        --bg-2: #111528;
+        --panel: rgba(255, 255, 255, 0.075);
+        --panel-strong: rgba(255, 255, 255, 0.12);
+        --line: rgba(255, 255, 255, 0.16);
+        --text: #f7f8ff;
+        --muted: #bac2d9;
+        --cyan: #20d8ff;
+        --pink: #ff4fb8;
+        --violet: #8a5cff;
+        --green: #6ef7bd;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+        --radius: 8px;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+      }
 
-    :root {
-      --bg: #080618;
-      --surface: #100d2a;
-      --surface2: #16123a;
-      --border: rgba(139,92,246,0.18);
-      --accent: #8b5cf6;
-      --accent-bright: #a78bfa;
-      --accent-neon: #7c3aed;
-      --accent-glow: rgba(139,92,246,0.35);
-      --teal: #14b8a6;
-      --teal-glow: rgba(20,184,166,0.3);
-      --text: #f1f0ff;
-      --muted: #a5a0c8;
-      --muted2: #6b6490;
-      --white: #ffffff;
-      --radius: 12px;
-      --radius-lg: 20px;
-    }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 96px 0; }
-    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 12%, rgba(32, 216, 255, 0.24), transparent 32rem),
+          radial-gradient(circle at 84% 8%, rgba(255, 79, 184, 0.2), transparent 30rem),
+          linear-gradient(180deg, #090b18 0%, #101328 48%, #080a14 100%);
+        color: var(--text);
+        min-width: 320px;
+      }
 
-    .tag {
-      display: inline-block;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent-bright); background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.35);
-      padding: 5px 14px; border-radius: 100px; margin-bottom: 20px;
-    }
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(30px, 5vw, 48px); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--text);
-    }
-    .section-sub { font-size: 17px; color: var(--muted); max-width: 560px; margin-top: 14px; line-height: 1.7; }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600;
-      cursor: pointer; text-decoration: none; transition: all 0.2s ease; border: none;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-neon) 100%);
-      color: #fff; box-shadow: 0 0 20px rgba(139,92,246,0.4);
-    }
-    .btn-primary:hover { background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent) 100%); box-shadow: 0 4px 32px var(--accent-glow); transform: translateY(-1px); }
-    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid rgba(139,92,246,0.3); }
-    .btn-ghost:hover { color: var(--accent-bright); border-color: var(--accent); }
-    .btn-lg { padding: 17px 36px; font-size: 16px; }
-    .btn-store {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 13px 22px; border-radius: 10px; font-size: 14px; font-weight: 600;
-      cursor: pointer; text-decoration: none; transition: all 0.2s ease; border: none;
-      background: #000; color: #fff; border: 1px solid rgba(255,255,255,0.15);
-    }
-    .btn-store:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-    .btn-store.play { background: #01875f; border-color: rgba(255,255,255,0.1); }
-    .btn-store.play:hover { background: #019b6e; }
-    .btn-store svg { flex-shrink: 0; }
-    .btn-store-text { display: flex; flex-direction: column; line-height: 1.2; }
-    .btn-store-text small { font-size: 10px; font-weight: 400; opacity: 0.8; }
-    .btn-store-text span { font-size: 15px; font-weight: 700; }
-    .store-row { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+      img {
+        display: block;
+        max-width: 100%;
+      }
 
-    /* ─── NAV ─── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(8,6,24,0.88); backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(139,92,246,0.2);
-    }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
-    .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .nav-logo img { height: 48px; display: block; }
-    .nav-logo-text { font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 300; color: var(--muted); letter-spacing: 0.04em; }
-    .nav-logo-text strong { color: var(--accent-bright); font-weight: 600; }
-    .nav-product { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
-    .nav-sep { color: var(--muted2); font-size: 18px; margin: 0 4px; }
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-    .nav-back { font-size: 13px; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
-    .nav-back:hover { color: var(--accent-bright); }
+      .page {
+        overflow: hidden;
+      }
 
-    /* ─── LANG SWITCHER ─── */
-    .lang-switcher {
-      display: flex; align-items: center; gap: 2px;
-      background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25);
-      border-radius: 8px; padding: 3px;
-    }
-    .lang-btn {
-      padding: 5px 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-      color: var(--muted2); background: transparent; border: none; border-radius: 6px;
-      cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s;
-    }
-    .lang-btn:hover { color: var(--text); }
-    .lang-btn.active { background: var(--accent); color: #fff; box-shadow: 0 0 12px rgba(139,92,246,0.4); }
+      .shell {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
 
-    /* ─── HERO ─── */
-    #hero {
-      position: relative; min-height: 100vh; display: flex; align-items: center;
-      overflow: hidden; padding: 120px 0 80px; text-align: center;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 70% 55% at 50% 35%, rgba(139,92,246,0.28) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(20,184,166,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 85% 20%, rgba(124,58,237,0.2) 0%, transparent 55%),
-        var(--bg);
-    }
-    .hero-grid-bg {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(139,92,246,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,92,246,0.06) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 0%, transparent 80%);
-    }
-    .hero-img-bg {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: center; opacity: 0.06; z-index: 1;
-    }
-    .hero-inner { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; }
-    .hero-app-icon {
-      width: 110px; height: 110px; border-radius: 26px; margin: 0 auto 36px;
-      box-shadow: 0 0 40px rgba(139,92,246,0.6), 0 0 80px rgba(139,92,246,0.2);
-      display: block;
-    }
-    .hero-eyebrow { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 28px; }
-    .hero-eyebrow .dot {
-      width: 8px; height: 8px; background: var(--teal); border-radius: 50%;
-      box-shadow: 0 0 12px var(--teal); animation: pulse 2s infinite; flex-shrink: 0;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .hero-eyebrow span { font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
-    .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(42px, 7vw, 76px); font-weight: 700; line-height: 1.05;
-      letter-spacing: -0.04em; color: var(--text); margin-bottom: 24px;
-    }
-    .hero-title .accent {
-      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--teal) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .hero-sub { font-size: clamp(16px, 2.5vw, 19px); color: var(--muted); line-height: 1.7; max-width: 640px; margin: 0 auto 40px; }
-    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
-    .hero-note { font-size: 13px; color: var(--muted2); margin-top: 18px; }
-    .hero-badges { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 48px; flex-wrap: wrap; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25);
-      border-radius: 100px; padding: 7px 16px; font-size: 13px; font-weight: 500; color: var(--muted);
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .badge:hover { background: rgba(139,92,246,0.18); border-color: rgba(139,92,246,0.45); }
-    .badge svg { flex-shrink: 0; color: var(--accent-bright); }
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(9, 11, 24, 0.78);
+        backdrop-filter: blur(18px);
+      }
 
-    /* ─── HOW IT WORKS ─── */
-    #how { background: var(--surface); }
-    .how-header { text-align: center; margin-bottom: 64px; }
-    .how-header .section-sub { margin: 14px auto 0; }
-    .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; position: relative; }
-    .steps-row::before {
-      content: ''; position: absolute; top: 44px; left: calc(16.6% + 16px); right: calc(16.6% + 16px);
-      height: 2px; background: linear-gradient(to right, var(--accent), var(--teal));
-      opacity: 0.35; z-index: 0;
-    }
-    .how-step { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 28px; text-align: center; position: relative; z-index: 1; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
-    .how-step:hover { border-color: rgba(139,92,246,0.5); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(139,92,246,0.2); }
-    .how-step-num {
-      width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-neon) 100%); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #fff;
-      margin: 0 auto 20px; box-shadow: 0 0 20px rgba(139,92,246,0.5);
-    }
-    .how-step h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
-    .how-step p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-    .how-step .step-emoji { font-size: 32px; margin-bottom: 16px; display: block; }
+      .nav-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
 
-    /* ─── FEATURES ─── */
-    .features-header { text-align: center; margin-bottom: 64px; }
-    .features-header .section-sub { margin: 14px auto 0; }
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .feature-card {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg);
-      padding: 32px; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.3);
-    }
-    .feature-card:hover { border-color: rgba(139,92,246,0.5); box-shadow: 0 6px 32px rgba(139,92,246,0.18); transform: translateY(-3px); }
-    .feature-icon { width: 48px; height: 48px; background: rgba(139,92,246,0.18); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 18px; border: 1px solid rgba(139,92,246,0.3); }
-    .feature-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
-    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-    .feature-card ul { list-style: none; margin-top: 10px; }
-    .feature-card ul li { font-size: 13px; color: var(--muted); padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
-    .feature-card ul li::before { content: '·'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        font-weight: 760;
+        letter-spacing: 0;
+      }
 
-    /* ─── FOR WHO ─── */
-    #for-who { background: var(--surface); }
-    .forwho-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-    .forwho-list { list-style: none; margin-top: 32px; }
-    .forwho-list li { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
-    .forwho-list li:last-child { border-bottom: none; }
-    .forwho-icon { font-size: 24px; flex-shrink: 0; }
-    .forwho-list li strong { display: block; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .forwho-list li span { font-size: 14px; color: var(--muted); line-height: 1.6; }
-    .forwho-right { background: var(--surface2); border: 1px solid rgba(139,92,246,0.3); border-radius: var(--radius-lg); padding: 40px; box-shadow: 0 4px 32px rgba(139,92,246,0.12); }
-    .forwho-right .quote { font-size: 18px; line-height: 1.7; color: var(--text); font-style: italic; margin-bottom: 24px; }
-    .forwho-right .quote .highlight { color: var(--teal); font-style: normal; font-weight: 700; }
+      .brand img {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        box-shadow: 0 0 28px rgba(32, 216, 255, 0.34);
+      }
 
-    /* ─── CTA ─── */
-    #cta {
-      position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #0d0b22 0%, #1e1048 50%, #0d1a2e 100%);
-      text-align: center;
-    }
-    #cta .section-title { color: #fff; margin-bottom: 18px; }
-    #cta .section-sub { color: rgba(255,255,255,0.65); margin: 0 auto 40px; }
-    .cta-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
-    #cta .btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--teal) 100%);
-      color: #fff; box-shadow: 0 0 30px rgba(139,92,246,0.5);
-    }
-    #cta .btn-primary:hover { box-shadow: 0 4px 40px rgba(139,92,246,0.7); transform: translateY(-2px); }
-    #cta .btn-ghost { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
-    #cta .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
-    .cta-glow {
-      position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
-      width: 700px; height: 500px;
-      background: radial-gradient(ellipse, rgba(139,92,246,0.4) 0%, rgba(20,184,166,0.15) 50%, transparent 70%);
-      z-index: 0;
-    }
-    .cta-teal-glow {
-      position: absolute; bottom: -20%; right: 10%;
-      width: 400px; height: 300px;
-      background: radial-gradient(ellipse, rgba(20,184,166,0.25) 0%, transparent 70%);
-      z-index: 0;
-    }
-    .cta-meta { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 20px; }
-    .cta-meta a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+      .brand span {
+        white-space: nowrap;
+      }
 
-    /* ─── FOOTER STRIP ─── */
-    .footer-strip {
-      background: #050412; border-top: 1px solid rgba(139,92,246,0.15); padding: 24px 0;
-    }
-    .footer-strip a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
-    .footer-strip a:hover { color: var(--accent-bright); }
-    .footer-strip span { color: rgba(139,92,246,0.2); margin: 0 12px; }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
 
-    /* ─── REVEAL ─── */
-    .reveal { opacity: 1; transform: none; transition: opacity 0.55s ease, transform 0.55s ease; }
+      .nav-links a:hover {
+        color: var(--text);
+      }
 
-    /* ─── MOBILE ─── */
-    @media (max-width: 900px) {
-      .steps-row { grid-template-columns: 1fr; }
-      .steps-row::before { display: none; }
-      .features-grid { grid-template-columns: 1fr 1fr; }
-      .forwho-inner { grid-template-columns: 1fr; gap: 40px; }
-      section { padding: 72px 0; }
-      .nav-back span { display: none; }
-    }
-    @media (max-width: 600px) {
-      .features-grid { grid-template-columns: 1fr; }
-      .hero-badges { gap: 8px; }
-      .lang-btn { padding: 5px 7px; }
-    }
-  </style>
-</head>
-<body>
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-<!-- ─── NAV ─── -->
-<nav>
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="ProcesSolution" onerror="this.style.display='none'" />
-      <span class="nav-logo-text">Proces<strong>Solution</strong> <span class="nav-sep">/</span> <span class="nav-product">Task Coordinator</span></span>
-    </a>
-    <div class="nav-right">
-      <div class="lang-switcher">
-        <button class="lang-btn active" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" onclick="setLang('it')">IT</button>
-        <button class="lang-btn" onclick="setLang('lt')">LT</button>
-      </div>
-      <a href="index.html" class="nav-back">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-        <span data-i18n="nav_back">Back to main site</span>
-      </a>
-      <a href="#APPSTORE_URL" class="btn-store" style="padding:9px 16px; font-size:13px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <span data-i18n="nav_cta">Download</span>
-      </a>
-    </div>
-  </div>
-</nav>
+      .language-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+      }
 
-<!-- ─── HERO ─── -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid-bg"></div>
-  <img class="hero-img-bg" src="google-deepmind-LIlsk-UFVxk-unsplash.jpg" alt="" aria-hidden="true" />
-  <div class="container">
-    <div class="hero-inner">
-      <img class="hero-app-icon" src="app-icon.png" alt="Task Coordinator" />
-      <div class="hero-eyebrow">
-        <div class="dot"></div>
-        <span data-i18n="hero_eyebrow">Voice-Powered Task Management · 25 Languages · Mobile-First</span>
-      </div>
-      <h1 class="hero-title" data-i18n-html="hero_title">
-        Speak a task.<br/><span class="accent">Done in 5 seconds.</span>
-      </h1>
-      <p class="hero-sub" data-i18n="hero_sub">Task Coordinator turns spoken words into structured, delegable assignments — with a deadline, an assignee, an automatic email, and a calendar invite. No typing required.</p>
-      <div class="hero-actions">
-        <div class="store-row">
-          <a href="#APPSTORE_URL" class="btn-store" data-i18n-href="appstore_url">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-            <div class="btn-store-text"><small data-i18n="store_download">Download on the</small><span>App Store</span></div>
+      .language-switch button {
+        min-width: 36px;
+        height: 34px;
+        padding: 0 8px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      .language-switch button:hover,
+      .language-switch button[aria-pressed="true"] {
+        background: linear-gradient(135deg, rgba(32, 216, 255, 0.24), rgba(255, 79, 184, 0.22));
+        color: #ffffff;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        font-weight: 720;
+        line-height: 1;
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease;
+        white-space: nowrap;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--cyan), var(--violet) 48%, var(--pink));
+        color: #ffffff;
+        box-shadow: 0 16px 44px rgba(255, 79, 184, 0.22);
+      }
+
+      .button-secondary {
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text);
+      }
+
+      .hero {
+        display: grid;
+        align-items: center;
+        padding: 42px 0 18px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.82fr);
+        gap: 56px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        width: fit-content;
+        padding: 8px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.065);
+        color: #dce7ff;
+        font-size: 0.88rem;
+        font-weight: 680;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--green);
+        box-shadow: 0 0 16px var(--green);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 18px;
+        font-size: clamp(2.6rem, 5.8vw, 4.85rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .gradient-text {
+        background: linear-gradient(95deg, #ffffff, #92efff 34%, #ff79d0 75%, #ffffff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .gradient-text::before {
+        content: " ";
+      }
+
+      .hero-copy {
+        color: #d7def3;
+        font-size: clamp(1.03rem, 1.6vw, 1.16rem);
+        line-height: 1.6;
+        max-width: 670px;
+        margin-bottom: 22px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 660px;
+      }
+
+      .metric {
+        min-height: 76px;
+        padding: 14px;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .metric strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 1.1rem;
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.35;
+      }
+
+      .hero-visual {
+        position: relative;
+        min-height: 430px;
+        display: grid;
+        place-items: center;
+      }
+
+      .logo-stage {
+        position: relative;
+        width: min(100%, 390px);
+        aspect-ratio: 1 / 1.05;
+        display: grid;
+        place-items: center;
+      }
+
+      .logo-stage::before {
+        content: "";
+        position: absolute;
+        inset: 16%;
+        background: conic-gradient(from 140deg, rgba(32, 216, 255, 0.44), rgba(255, 79, 184, 0.45), rgba(138, 92, 255, 0.4), rgba(32, 216, 255, 0.44));
+        filter: blur(52px);
+        opacity: 0.9;
+      }
+
+      .logo-card {
+        position: relative;
+        width: min(92%, 352px);
+        border-radius: 28px;
+        box-shadow: 0 22px 72px rgba(0, 0, 0, 0.32), 0 0 58px rgba(255, 79, 184, 0.2);
+        -webkit-mask-image: radial-gradient(ellipse 74% 70% at 60% 50%, #000 0%, #000 43%, rgba(0, 0, 0, 0.7) 58%, rgba(0, 0, 0, 0.32) 74%, transparent 100%);
+        mask-image: radial-gradient(ellipse 74% 70% at 60% 50%, #000 0%, #000 43%, rgba(0, 0, 0, 0.7) 58%, rgba(0, 0, 0, 0.32) 74%, transparent 100%);
+      }
+
+      .task-preview {
+        position: absolute;
+        right: -10px;
+        bottom: 16px;
+        width: min(82%, 330px);
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius);
+        background: rgba(12, 15, 31, 0.74);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 20px 70px rgba(0, 0, 0, 0.42);
+      }
+
+      .task-preview-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .voice-bars {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 28px;
+      }
+
+      .voice-bars i {
+        width: 4px;
+        border-radius: 99px;
+        background: linear-gradient(180deg, var(--cyan), var(--pink));
+      }
+
+      .voice-bars i:nth-child(1) { height: 11px; }
+      .voice-bars i:nth-child(2) { height: 18px; }
+      .voice-bars i:nth-child(3) { height: 26px; }
+      .voice-bars i:nth-child(4) { height: 14px; }
+      .voice-bars i:nth-child(5) { height: 22px; }
+
+      .status-pill {
+        padding: 7px 9px;
+        border-radius: 999px;
+        background: rgba(110, 247, 189, 0.14);
+        color: #9ffbd0;
+        font-size: 0.78rem;
+        font-weight: 750;
+      }
+
+      .task-line {
+        display: grid;
+        gap: 7px;
+        margin-bottom: 13px;
+      }
+
+      .task-line small {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .task-line strong {
+        font-size: 0.98rem;
+        line-height: 1.35;
+      }
+
+      .assignee-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 7px 9px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #e7ebff;
+        font-size: 0.78rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      section {
+        padding: 74px 0;
+      }
+
+      .section-head {
+        max-width: 760px;
+        margin-bottom: 34px;
+      }
+
+      .section-head h2 {
+        margin-bottom: 14px;
+        font-size: clamp(2rem, 4vw, 3.45rem);
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .section-head p {
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.62;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .feature {
+        min-height: 218px;
+        padding: 20px;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.092), rgba(255, 255, 255, 0.045));
+      }
+
+      .icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 18px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(32, 216, 255, 0.2), rgba(255, 79, 184, 0.22));
+        color: #ffffff;
+      }
+
+      .icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+      }
+
+      .feature h3 {
+        margin-bottom: 10px;
+        font-size: 1.04rem;
+      }
+
+      .feature p {
+        color: var(--muted);
+        line-height: 1.55;
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .workflow-band {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .step {
+        position: relative;
+        min-height: 210px;
+        padding: 24px;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid var(--line);
+      }
+
+      .step-number {
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        margin-bottom: 24px;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #101328;
+        font-weight: 850;
+      }
+
+      .step h3 {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.58;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 34px;
+        align-items: start;
+      }
+
+      .audience-list,
+      .trust-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .list-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 16px;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .check {
+        flex: 0 0 auto;
+        width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        background: rgba(32, 216, 255, 0.18);
+        color: #7beaff;
+      }
+
+      .list-item strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .list-item span {
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .trust-panel {
+        padding: 26px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background:
+          linear-gradient(135deg, rgba(32, 216, 255, 0.11), rgba(255, 79, 184, 0.08)),
+          rgba(255, 255, 255, 0.055);
+      }
+
+      .team-section {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.045));
+      }
+
+      .team-board {
+        padding: 24px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background:
+          linear-gradient(135deg, rgba(32, 216, 255, 0.1), rgba(138, 92, 255, 0.08)),
+          rgba(255, 255, 255, 0.06);
+        box-shadow: var(--shadow);
+      }
+
+      .team-board-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .team-board-header strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.1rem;
+      }
+
+      .team-board-header span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .avatar-stack {
+        display: flex;
+        align-items: center;
+        padding-left: 12px;
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        margin-left: -12px;
+        border: 2px solid #111528;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--cyan), var(--pink));
+        color: #fff;
+        font-weight: 820;
+        font-size: 0.86rem;
+      }
+
+      .team-tasks {
+        display: grid;
+        gap: 10px;
+      }
+
+      .team-task {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(9, 11, 24, 0.46);
+      }
+
+      .team-task small,
+      .reminder-card small {
+        color: var(--muted);
+      }
+
+      .team-task strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .role-pill {
+        padding: 7px 9px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #e7ebff;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+
+      .reminder-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .reminder-card {
+        min-height: 220px;
+        padding: 20px;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.045));
+      }
+
+      .reminder-time {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 58px;
+        min-height: 34px;
+        margin-bottom: 18px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(32, 216, 255, 0.14);
+        color: #9bebff;
+        font-weight: 800;
+      }
+
+      .reminder-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.04rem;
+      }
+
+      .reminder-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+        font-size: 0.95rem;
+      }
+
+      .language-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 22px;
+      }
+
+      .language-strip span {
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #e2e7fb;
+        font-size: 0.86rem;
+      }
+
+      .cta {
+        padding: 92px 0 104px;
+      }
+
+      .cta-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: center;
+        padding: 34px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background:
+          linear-gradient(135deg, rgba(32, 216, 255, 0.13), rgba(255, 79, 184, 0.13)),
+          rgba(255, 255, 255, 0.075);
+        box-shadow: var(--shadow);
+      }
+
+      .cta-box h2 {
+        margin-bottom: 10px;
+        font-size: clamp(1.8rem, 3vw, 3rem);
+        line-height: 1.06;
+      }
+
+      .cta-box p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.55;
+      }
+
+      footer {
+        padding: 28px 0 40px;
+        color: #8f98b6;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 920px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          padding-top: 38px;
+        }
+
+        .hero-grid,
+        .split {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-visual {
+          min-height: auto;
+        }
+
+        .feature-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .reminder-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cta-box {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .shell {
+          width: min(100% - 28px, 1120px);
+        }
+
+        .nav-inner {
+          min-height: 66px;
+        }
+
+        .nav-actions .button {
+          display: none;
+        }
+
+        .brand span {
+          font-size: 0.98rem;
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 30px 0 24px;
+        }
+
+        h1 {
+          font-size: clamp(2.18rem, 11vw, 3.1rem);
+        }
+
+        .hero-copy {
+          font-size: 0.98rem;
+          line-height: 1.5;
+        }
+
+        .hero-actions .button {
+          width: 100%;
+        }
+
+        .metrics {
+          display: none;
+        }
+
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .reminder-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .team-task {
+          grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .team-task .role-pill {
+          grid-column: 2;
+          width: fit-content;
+        }
+
+        .hero-visual {
+          margin-top: 16px;
+          min-height: auto;
+        }
+
+        .logo-stage {
+          width: min(42%, 150px);
+          aspect-ratio: 1 / 1;
+        }
+
+        .logo-card {
+          width: 100%;
+        }
+
+        .task-preview {
+          display: none;
+        }
+
+        section {
+          padding: 58px 0;
+        }
+
+        .cta {
+          padding: 62px 0 72px;
+        }
+
+        .cta-box {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="nav">
+        <div class="shell nav-inner">
+          <a class="brand" href="#top" aria-label="Task Coordinator pradžia">
+            <img src="assets/task-coordinator-logo.png" alt="Task Coordinator logotipas">
+            <span>Task Coordinator</span>
           </a>
-          <a href="#PLAYSTORE_URL" class="btn-store play" data-i18n-href="playstore_url">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83 1-.92 1.36-.5l13.5 8.5-13.5 8.5C3.85 21.42 3 21.33 3 20.5zm1.5-14.5l10.45 6.57L4.5 19V6zm1 1.9v10.2l8.1-5.1L5.5 7.9z"/><path d="M5.5 6l10.78 6.77-2.6 1.64L5.5 6z"/><path d="M5.5 18l8.18-5.13 2.6 1.64L5.5 18z"/></svg>
-            <div class="btn-store-text"><small data-i18n="store_get">Get it on</small><span>Google Play</span></div>
-          </a>
-        </div>
-        <a href="#how" class="btn btn-ghost btn-lg" data-i18n="hero_cta_secondary">See How It Works</a>
-      </div>
-      <p class="hero-note" data-i18n="hero_note">Available on iOS, Android, and desktop. GDPR-compliant. EU-hosted.</p>
-      <div class="hero-badges">
-        <span class="badge">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
-          <span data-i18n="badge_voice">Voice-first input</span>
-        </span>
-        <span class="badge">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-          <span data-i18n="badge_langs">25 languages</span>
-        </span>
-        <span class="badge">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          <span data-i18n="badge_email">Auto email + calendar invite</span>
-        </span>
-        <span class="badge">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          <span data-i18n="badge_gdpr">GDPR · EU-hosted</span>
-        </span>
-        <span class="badge">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-          <span data-i18n="badge_pwa">PWA · iOS · Android</span>
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
-<!-- ─── HOW IT WORKS ─── -->
-<section id="how">
-  <div class="container">
-    <div class="how-header reveal">
-      <span class="tag" data-i18n="how_tag">How It Works</span>
-      <h2 class="section-title" data-i18n="how_title">Three steps. Five seconds.</h2>
-      <p class="section-sub" data-i18n="how_sub">No forms, no typing, no friction. Just speak — Task Coordinator handles everything else.</p>
-    </div>
-    <div class="steps-row">
-      <div class="how-step reveal">
-        <span class="step-emoji">🎙️</span>
-        <div class="how-step-num">1</div>
-        <h3 data-i18n="step1_title">Speak naturally</h3>
-        <p data-i18n="step1_body">Tap the microphone and say the task the way you'd tell a colleague: <em>"Remind Sara to send the contract to ABC Corp by Friday, high priority."</em></p>
-      </div>
-      <div class="how-step reveal">
-        <span class="step-emoji">🤖</span>
-        <div class="how-step-num">2</div>
-        <h3 data-i18n="step2_title">AI structures it</h3>
-        <p data-i18n="step2_body">Gemini AI instantly extracts title, assignee, deadline, priority, and description into structured fields. Review and confirm in one tap.</p>
-      </div>
-      <div class="how-step reveal">
-        <span class="step-emoji">📧</span>
-        <div class="how-step-num">3</div>
-        <h3 data-i18n="step3_title">Team gets notified</h3>
-        <p data-i18n="step3_body">Your assignee receives an email with action buttons — Accept, Start, Complete — plus a calendar invite. No login required on their end.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
-<!-- ─── FEATURES ─── -->
-<section id="features">
-  <div class="container">
-    <div class="features-header reveal">
-      <span class="tag" data-i18n="feat_tag">Features</span>
-      <h2 class="section-title" data-i18n-html="feat_title">Built for the field,<br/>not the office.</h2>
-      <p class="section-sub" data-i18n="feat_sub">Every feature exists to save you time — whether you're on a construction site, between meetings, or managing a multilingual team.</p>
-    </div>
-    <div class="features-grid">
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🎙️</div>
-        <h3 data-i18n="f1_title">Voice Input & AI Parsing</h3>
-        <p data-i18n="f1_body">Speak in any of 25 languages. Gemini 2.5 extracts every field automatically and learns your vocabulary over time.</p>
-        <ul>
-          <li data-i18n="f1_b1">One-tap recording</li>
-          <li data-i18n="f1_b2">Natural language deadlines ("next Monday", "end of week")</li>
-          <li data-i18n="f1_b3">Per-user voice learning & custom dictionary</li>
-          <li data-i18n="f1_b4">Manual edit fallback always available</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🌍</div>
-        <h3 data-i18n="f2_title">25 Languages</h3>
-        <p data-i18n="f2_body">All 24 official EU languages plus Norwegian. Voice, UI, emails, and task responses — all fully localized.</p>
-        <ul>
-          <li data-i18n="f2_b1">Natural localization, not literal translation</li>
-          <li data-i18n="f2_b2">Switch language anytime from the header</li>
-          <li data-i18n="f2_b3">Built-in translation feedback tool</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">📧</div>
-        <h3 data-i18n="f3_title">Email Notifications & Actions</h3>
-        <p data-i18n="f3_body">Assignees get an email the moment a task is created — with action buttons they can click without logging in.</p>
-        <ul>
-          <li data-i18n="f3_b1">Accept · Start · Complete · Decline — all from email</li>
-          <li data-i18n="f3_b2">Calendar invite (.ics) attached automatically</li>
-          <li data-i18n="f3_b3">Scheduled reminders before deadlines</li>
-          <li data-i18n="f3_b4">Works with Gmail, Outlook, or any SMTP</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">📋</div>
-        <h3 data-i18n="f4_title">Full Task Management</h3>
-        <p data-i18n="f4_body">A complete workflow from creation to archive — with filters, search, and a live dashboard.</p>
-        <ul>
-          <li data-i18n="f4_b1">Status: Pending → In Progress → Completed</li>
-          <li data-i18n="f4_b2">Priority color-coding: High / Medium / Low</li>
-          <li data-i18n="f4_b3">Quick filters, full-text search, date ranges</li>
-          <li data-i18n="f4_b4">Notes & full activity log per task</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🔄</div>
-        <h3 data-i18n="f5_title">Two-Level Delegation</h3>
-        <p data-i18n="f5_body">Forward a task to a colleague while keeping a link to the original. Stay informed without micromanaging.</p>
-        <ul>
-          <li data-i18n="f5_b1">Delegated tasks visible with a clear badge</li>
-          <li data-i18n="f5_b2">Recipients can act even without an account</li>
-          <li data-i18n="f5_b3">Original sender stays updated throughout</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">📱</div>
-        <h3 data-i18n="f6_title">Mobile-First & PWA</h3>
-        <p data-i18n="f6_body">Designed for phones first — installable as an app on iOS, Android, and desktop with offline support.</p>
-        <ul>
-          <li data-i18n="f6_b1">Progressive Web App — no app store required</li>
-          <li data-i18n="f6_b2">Native iOS, Android, Mac builds via Capacitor</li>
-          <li data-i18n="f6_b3">Works offline for previously loaded tasks</li>
-          <li data-i18n="f6_b4">Dark theme for low-light use</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">📊</div>
-        <h3 data-i18n="f7_title">Dashboard & Export</h3>
-        <p data-i18n="f7_body">Live stat cards for your current workload. Export any filtered view to Excel or CSV in one click.</p>
-        <ul>
-          <li data-i18n="f7_b1">Pending / In Progress / Completed / Archived</li>
-          <li data-i18n="f7_b2">Click any card to filter the task list instantly</li>
-          <li data-i18n="f7_b3">Export to .xlsx or .csv — ready for reporting</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🔒</div>
-        <h3 data-i18n="f8_title">Security & Privacy</h3>
-        <p data-i18n="f8_body">GDPR-aligned from the ground up. Your data is yours — and only yours.</p>
-        <ul>
-          <li data-i18n="f8_b1">EU-hosted backend</li>
-          <li data-i18n="f8_b2">Row-level security — no user sees another's data</li>
-          <li data-i18n="f8_b3">Full data export & one-click account deletion</li>
-          <li data-i18n="f8_b4">Secure tokenized public links with expiry</li>
-        </ul>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">👥</div>
-        <h3 data-i18n="f9_title">Teams & Multi-Tenancy</h3>
-        <p data-i18n="f9_body">Built for individuals and teams alike. Invite members, manage roles, and share task pools.</p>
-        <ul>
-          <li data-i18n="f9_b1">Google Sign-In or email + password</li>
-          <li data-i18n="f9_b2">Invite team members by email</li>
-          <li data-i18n="f9_b3">Smart contact auto-save from voice input</li>
-          <li data-i18n="f9_b4">Multiple email addresses per contact</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
-<!-- ─── SITUATIONS ─── -->
-<section id="situations" style="background: var(--surface);">
-  <div class="container">
-    <div class="situations-header reveal" style="text-align:center; margin-bottom:64px;">
-      <span class="tag" data-i18n="sit_tag">Real Situations</span>
-      <h2 class="section-title" data-i18n-html="sit_title">Stop chasing people.<br/><span style="background:linear-gradient(135deg,var(--accent-bright) 0%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Start coordinating work.</span></h2>
-      <p class="section-sub" style="margin:14px auto 0;" data-i18n="sit_sub">Your team is busy. Coordination shouldn't be. Here's how Task Coordinator fits into real working days.</p>
-    </div>
-    <div style="display:flex; flex-direction:column; gap:32px;">
-
-      <!-- Situation 1 -->
-      <div class="sit-card reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
-        <div style="padding:40px 36px; border-right:1px solid var(--border);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <span style="font-size:28px;">🏗️</span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted2);" data-i18n="sit1_num">Situation #1</span>
-          </div>
-          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px;" data-i18n="sit1_title">Construction Site Supervisor Managing Multiple Crews</h3>
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-bright); margin-bottom:12px;" data-i18n="sit1_problem_label">The Problem</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:12px;" data-i18n="sit1_problem">You're walking through a construction site and notice issues: electrical work, missing materials, a subcontractor who must return, safety problems. You call people and promise yourself you'll write everything down later.</p>
-          <ul style="list-style:none; font-size:13px; color:var(--muted2);">
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit1_p1">Tasks are forgotten</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit1_p2">Deadlines are unclear</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit1_p3">Nobody knows who was responsible</span></li>
-          </ul>
-        </div>
-        <div style="padding:40px 36px; background:rgba(139,92,246,0.06);">
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); margin-bottom:16px;" data-i18n="sit_solution_label">With Task Coordinator</p>
-          <div style="background:rgba(0,0,0,0.25); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:14px; color:var(--accent-bright); font-style:italic; line-height:1.6;" data-i18n="sit1_voice">"Assign Marco to order insulation material today. High priority. Remind Luca to schedule electrical inspection before Friday."</div>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check1">Creates structured tasks</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check2">Assigns the correct people</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check3">Sets deadlines &amp; sends email notifications</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check4">Tracks completion</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Situation 2 -->
-      <div class="sit-card reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
-        <div style="padding:40px 36px; border-right:1px solid var(--border);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <span style="font-size:28px;">💼</span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted2);" data-i18n="sit2_num">Situation #2</span>
-          </div>
-          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px;" data-i18n="sit2_title">Sales Manager Between Customer Meetings</h3>
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-bright); margin-bottom:12px;" data-i18n="sit1_problem_label">The Problem</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:12px;" data-i18n="sit2_problem">You finish a customer meeting and immediately drive to the next one. Notes stay in your notebook until evening. Opportunities slow down because follow-ups happen too late.</p>
-          <ul style="list-style:none; font-size:13px; color:var(--muted2);">
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit2_p1">Proposals delayed</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit2_p2">Follow-ups forgotten</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit2_p3">Opportunities lost</span></li>
-          </ul>
-        </div>
-        <div style="padding:40px 36px; background:rgba(139,92,246,0.06);">
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); margin-bottom:16px;" data-i18n="sit_solution_label">With Task Coordinator</p>
-          <div style="background:rgba(0,0,0,0.25); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:14px; color:var(--accent-bright); font-style:italic; line-height:1.6;" data-i18n="sit2_voice">"Ask Sarah to prepare the ACME proposal by tomorrow noon. Medium priority. Follow up with ACME next Tuesday."</div>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check1">Creates structured tasks</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check2">Assigns the correct people</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check3">Sets deadlines &amp; sends email notifications</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check4">Tracks completion</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Situation 3 -->
-      <div class="sit-card reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
-        <div style="padding:40px 36px; border-right:1px solid var(--border);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <span style="font-size:28px;">🏢</span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted2);" data-i18n="sit3_num">Situation #3</span>
-          </div>
-          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px;" data-i18n="sit3_title">Facility or Property Manager Coordinating Vendors</h3>
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-bright); margin-bottom:12px;" data-i18n="sit1_problem_label">The Problem</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:12px;" data-i18n="sit3_problem">A tenant reports elevator maintenance, heating problems, a cleaning follow-up, and a security camera inspection. Each vendor uses different channels. Phone calls, emails, texts, and handwritten notes become chaos.</p>
-          <ul style="list-style:none; font-size:13px; color:var(--muted2);">
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit3_p1">Requests scattered across channels</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit3_p2">No central history</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit3_p3">Accountability unclear</span></li>
-          </ul>
-        </div>
-        <div style="padding:40px 36px; background:rgba(139,92,246,0.06);">
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); margin-bottom:16px;" data-i18n="sit_solution_label">With Task Coordinator</p>
-          <div style="background:rgba(0,0,0,0.25); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:14px; color:var(--accent-bright); font-style:italic; line-height:1.6;" data-i18n="sit3_voice">"Assign elevator inspection to ServiceLift by Wednesday. Ask cleaning contractor to review floor three tomorrow morning."</div>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check1">Creates structured tasks</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit3_sol1">Tracks progress centrally</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit3_sol2">Maintains a complete history</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check4">Tracks completion</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Situation 4 -->
-      <div class="sit-card reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
-        <div style="padding:40px 36px; border-right:1px solid var(--border);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <span style="font-size:28px;">🌐</span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted2);" data-i18n="sit4_num">Situation #4</span>
-          </div>
-          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px;" data-i18n="sit4_title">Operations Manager Running a Multilingual Team</h3>
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-bright); margin-bottom:12px;" data-i18n="sit1_problem_label">The Problem</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:12px;" data-i18n="sit4_problem">Your workforce speaks different languages. Instructions are misunderstood. Deadlines are interpreted differently. Important details get lost in translation.</p>
-          <ul style="list-style:none; font-size:13px; color:var(--muted2);">
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit4_p1">Instructions misunderstood</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit4_p2">Deadlines interpreted differently</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit4_p3">Details lost in translation</span></li>
-          </ul>
-        </div>
-        <div style="padding:40px 36px; background:rgba(139,92,246,0.06);">
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); margin-bottom:16px;" data-i18n="sit_solution_label">With Task Coordinator</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:20px;" data-i18n="sit4_sol_desc">Create tasks in your own language. Task Coordinator handles the rest.</p>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit4_sol1">Supports 25 European languages</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit4_sol2">Localizes notifications for each recipient</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit4_sol3">Standardizes task information</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit4_sol4">Understands natural speech</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Situation 5 -->
-      <div class="sit-card reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
-        <div style="padding:40px 36px; border-right:1px solid var(--border);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <span style="font-size:28px;">🧑‍💼</span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted2);" data-i18n="sit5_num">Situation #5</span>
-          </div>
-          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px;" data-i18n="sit5_title">Small Business Owner Wearing Ten Different Hats</h3>
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-bright); margin-bottom:12px;" data-i18n="sit1_problem_label">The Problem</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:12px;" data-i18n="sit5_problem">Every day generates dozens of small tasks. Most are communicated verbally. Many are forgotten. You become the bottleneck for everything.</p>
-          <ul style="list-style:none; font-size:13px; color:var(--muted2);">
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit5_p1">Tasks forgotten</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit5_p2">You become the bottleneck</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit5_p3">No visibility on progress</span></li>
-          </ul>
-        </div>
-        <div style="padding:40px 36px; background:rgba(139,92,246,0.06);">
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); margin-bottom:16px;" data-i18n="sit_solution_label">With Task Coordinator</p>
-          <div style="background:rgba(0,0,0,0.25); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:14px; color:var(--accent-bright); font-style:italic; line-height:1.6;" data-i18n="sit5_voice">"Remind Tom to send invoice 245. Ask Anna to confirm delivery with the supplier. Schedule customer follow-up for Friday."</div>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit5_sol1">Tasks organized instantly</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit5_sol2">Team members notified automatically</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit5_sol3">Progress visible at a glance</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit5_sol4">Accountability is clear</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Situation 6 -->
-      <div class="sit-card reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
-        <div style="padding:40px 36px; border-right:1px solid var(--border);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <span style="font-size:28px;">🔧</span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted2);" data-i18n="sit6_num">Situation #6</span>
-          </div>
-          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px;" data-i18n="sit6_title">Service Company Dispatching Field Technicians</h3>
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-bright); margin-bottom:12px;" data-i18n="sit1_problem_label">The Problem</p>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:12px;" data-i18n="sit6_problem">Your technicians are constantly moving between customer locations. New requests arrive throughout the day. Information is shared through calls and messages. Important details disappear in conversations.</p>
-          <ul style="list-style:none; font-size:13px; color:var(--muted2);">
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit6_p1">Details lost in calls</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit6_p2">No real-time visibility</span></li>
-            <li style="padding:3px 0; display:flex; gap:8px;"><span style="color:#ef4444;">✗</span> <span data-i18n="sit6_p3">Extra follow-up calls needed</span></li>
-          </ul>
-        </div>
-        <div style="padding:40px 36px; background:rgba(139,92,246,0.06);">
-          <p style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); margin-bottom:16px;" data-i18n="sit_solution_label">With Task Coordinator</p>
-          <div style="background:rgba(0,0,0,0.25); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:14px; color:var(--accent-bright); font-style:italic; line-height:1.6;" data-i18n="sit6_voice">"Assign emergency maintenance at Oak Street to David. Complete today before 5 PM."</div>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit6_sol1">Task received instantly by technician</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit6_sol2">Deadline &amp; calendar reminder included</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit6_sol3">Status updates without extra calls</span></li>
-            <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="sit_check4">Tracks completion</span></li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── SIT MOBILE CSS ─── -->
-<style>
-@media (max-width: 768px) {
-  .sit-card { grid-template-columns: 1fr !important; }
-  .sit-card > div:first-child { border-right: none !important; border-bottom: 1px solid var(--border); }
-}
-</style>
-
-<hr class="divider" />
-
-<!-- ─── FOR WHO ─── -->
-<section id="for-who">
-  <div class="container">
-    <div class="forwho-inner">
-      <div class="reveal">
-        <span class="tag" data-i18n="who_tag">Ideal For</span>
-        <h2 class="section-title" data-i18n="who_title">Built for people who can't stop to type.</h2>
-        <ul class="forwho-list">
-          <li>
-            <span class="forwho-icon">🏗️</span>
-            <div>
-              <strong data-i18n="who1_title">Construction & Service Managers</strong>
-              <span data-i18n="who1_body">Coordinate crews on the move — assign tasks on site without touching a keyboard.</span>
+          <nav class="nav-links" aria-label="Pagrindinė navigacija">
+            <a href="#funkcijos">Funkcijos</a>
+            <a href="#kaip-veikia">Kaip veikia</a>
+            <a href="#komanda">Komanda</a>
+            <a href="#kam-skirta">Kam skirta</a>
+            <a href="#saugumas">Saugumas</a>
+          </nav>
+          <div class="nav-actions">
+            <div class="language-switch" aria-label="Pasirinkti kalbą">
+              <button type="button" data-lang="lt" aria-pressed="true">LT</button>
+              <button type="button" data-lang="en" aria-pressed="false">EN</button>
+              <button type="button" data-lang="it" aria-pressed="false">IT</button>
             </div>
-          </li>
-          <li>
-            <span class="forwho-icon">💼</span>
-            <div>
-              <strong data-i18n="who2_title">Sales Managers</strong>
-              <span data-i18n="who2_body">Dictate follow-ups between meetings. Never lose a commitment made on a call.</span>
-            </div>
-          </li>
-          <li>
-            <span class="forwho-icon">🏢</span>
-            <div>
-              <strong data-i18n="who3_title">Property & Facility Managers</strong>
-              <span data-i18n="who3_body">Delegate vendor tasks in seconds — with automatic reminders and status tracking.</span>
-            </div>
-          </li>
-          <li>
-            <span class="forwho-icon">🌐</span>
-            <div>
-              <strong data-i18n="who4_title">Multilingual Teams</strong>
-              <span data-i18n="who4_body">Each team member works in their own language. The system handles the rest.</span>
-            </div>
-          </li>
-          <li>
-            <span class="forwho-icon">🧑‍💼</span>
-            <div>
-              <strong data-i18n="who5_title">Small Business Owners</strong>
-              <span data-i18n="who5_body">Zero-friction delegation without project management overhead or expensive software.</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="forwho-right reveal">
-        <p class="quote" data-i18n-html="who_quote">"Most task apps assume you're sitting at a desk.<br/>Task Coordinator assumes <span class='highlight'>you're not.</span>"</p>
-        <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-i18n="who_desc">It turns 5 spoken seconds into a fully structured task with a deadline, an assignee, an email, a calendar invite, and a complete audit trail — in 25 languages, on any device, with privacy by default.</p>
-        <div style="margin-top:28px; display:flex; flex-direction:column; gap:12px;">
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span data-i18n="who_check1">No subscription lock-in</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span data-i18n="who_check2">Assignees don't need an account</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span data-i18n="who_check3">Works with your existing email provider</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--teal)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span data-i18n="who_check4">GDPR-compliant, EU-hosted</span>
+            <a class="button button-secondary" href="mailto:info@processolution.pro">Susisiekti</a>
           </div>
         </div>
-      </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="shell hero-grid">
+            <div>
+              <div class="eyebrow">Balsu valdomas užduočių koordinavimas komandoms</div>
+              <h1>
+                Deleguokite užduotis
+                <span class="gradient-text">tiesiog kalbėdami.</span>
+              </h1>
+              <p class="hero-copy">
+                Pamirškite ilgą rašymą telefonu. Su Task Coordinator užduotis sukursite per kelias
+                sekundes: pasakykite, ką reikia padaryti, kam priskirti ir iki kada. AI viską
+                supras, paruoš užduotį ir išsiųs ją komandai.
+              </p>
+              <div class="hero-actions">
+                <a class="button button-primary" href="mailto:info@processolution.pro?subject=Noriu%20isbandyti%20Task%20Coordinator">Noriu išbandyti</a>
+                <a class="button button-secondary" href="#kaip-veikia">Pamatyti kaip veikia</a>
+              </div>
+              <div class="metrics" aria-label="Pagrindiniai privalumai">
+                <div class="metric">
+                  <strong>25 kalbos</strong>
+                  <span>24 oficialios ES kalbos ir norvegų kalba.</span>
+                </div>
+                <div class="metric">
+                  <strong>0 registracijų</strong>
+                  <span>Vykdytojai atsako tiesiai iš el. laiško.</span>
+                </div>
+                <div class="metric">
+                  <strong>2 lygiai</strong>
+                  <span>Užduotis galima perduoti toliau kontroliuojamai.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-visual" aria-label="Task Coordinator produkto vizualas">
+              <div class="logo-stage">
+                <img class="logo-card" src="assets/task-coordinator-logo.png" alt="Task Coordinator programėlės ikona">
+                <div class="task-preview" aria-label="AI paruoštos užduoties pavyzdys">
+                  <div class="task-preview-top">
+                    <div class="voice-bars" aria-hidden="true">
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <span class="status-pill">AI atpažino</span>
+                  </div>
+                  <div class="task-line">
+                    <small>Užduotis</small>
+                    <strong>Paruošti kliento pasiūlymą iki penktadienio 15:00</strong>
+                  </div>
+                  <div class="assignee-row">
+                    <span class="chip">Vykdytoja: Maria</span>
+                    <span class="chip">Terminas: penktadienis</span>
+                    <span class="chip">Kvietimas: .ics</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="funkcijos">
+          <div class="shell">
+            <div class="section-head">
+              <h2>Viskas, ko reikia greitam delegavimui.</h2>
+              <p>
+                Task Coordinator sukurtas vienam tikslui: greitai paskirti užduotį, sekti atsakomybę
+                ir gauti rezultatą be sudėtingos projektinės sistemos.
+              </p>
+            </div>
+            <div class="feature-grid">
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v10"/><path d="M8 7v5a4 4 0 0 0 8 0V7"/><path d="M5 12a7 7 0 0 0 14 0"/><path d="M12 19v2"/></svg>
+                </div>
+                <h3>Balso įvestis</h3>
+                <p>Diktuokite natūralia kalba. AI atpažins terminus, vykdytojus, datą ir kontekstą.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
+                </div>
+                <h3>Užduočių delegavimas</h3>
+                <p>Paskirkite darbus el. paštu. Komandos nariams nereikia kurti paskyros.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.018 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+                </div>
+                <h3>El. pašto pranešimai</h3>
+                <p>Vykdytojai gauna aiškų laišką su veiksmais: Priimti, Atmesti arba Atlikta.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4v16"/><path d="M4 20h16"/><path d="M8 16v-6"/><path d="M12 16V7"/><path d="M16 16v-3"/></svg>
+                </div>
+                <h3>Statistika ir filtrai</h3>
+                <p>Matykite, kas vyksta komandoje realiu laiku: kas priėmė, kas vėluoja, kas baigta.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/><path d="M3 12a9 9 0 1 0 9-9"/></svg>
+                </div>
+                <h3>Dvigubas delegavimas</h3>
+                <p>Užduotis galima perduoti toliau iki 2 lygių, išlaikant koordinavimo kontrolę.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M7 3v5"/><path d="M17 3v5"/><path d="M3 8h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/></svg>
+                </div>
+                <h3>Kalendoriaus kvietimai</h3>
+                <p>Siųskite .ics kvietimus, kad terminai iškart atsirastų gavėjo kalendoriuje.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>
+                </div>
+                <h3>Automatinis archyvavimas</h3>
+                <p>Atliktos užduotys po 7 dienų keliauja į archyvą, todėl sąrašas lieka švarus.</p>
+              </article>
+              <article class="feature">
+                <div class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/><path d="M19 8h3"/><path d="M20.5 6.5v3"/></svg>
+                </div>
+                <h3>Kontaktų atmintis</h3>
+                <p>Sistema įsimena dažnai naudojamus kontaktus ir pagreitina pakartotinį delegavimą.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="kaip-veikia" class="workflow-band">
+          <div class="shell">
+            <div class="section-head">
+              <h2>Trys žingsniai nuo minties iki rezultato.</h2>
+              <p>Procesas trumpas, nes komandoms dažniausiai reikia ne dar vienos lentos, o aiškaus veiksmo.</p>
+            </div>
+            <div class="steps">
+              <article class="step">
+                <span class="step-number">1</span>
+                <h3>Pasakykite užduotį</h3>
+                <p>Pavyzdžiui: "Maria, paruošk sutarties santrauką iki rytojaus 10 valandos".</p>
+              </article>
+              <article class="step">
+                <span class="step-number">2</span>
+                <h3>AI paruošia kortelę</h3>
+                <p>Task Coordinator išskiria vykdytoją, terminą, veiksmą ir sugeneruoja tvarkingą užduotį.</p>
+              </article>
+              <article class="step">
+                <span class="step-number">3</span>
+                <h3>Komanda atsako laišku</h3>
+                <p>Gavėjas priima, atmeta arba pažymi atlikta tiesiai iš el. laiško. Jūs matote būseną.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="komanda" class="team-section">
+          <div class="shell split">
+            <div>
+              <div class="section-head">
+                <h2>Suburkite komandą per kelias sekundes.</h2>
+                <p>
+                  Pavadinkite organizaciją, pakvieskite narius el. paštu ir dirbkite bendroje
+                  aplinkoje, kur matosi užduotys, kontaktai, progresas ir atsakomybės.
+                </p>
+              </div>
+              <div class="audience-list">
+                <div class="list-item">
+                  <span class="check">✓</span>
+                  <div><strong>Greitas komandos sukūrimas</strong><span>Sukurkite organizaciją ir pakvieskite žmones be ilgo nustatymo.</span></div>
+                </div>
+                <div class="list-item">
+                  <span class="check">✓</span>
+                  <div><strong>Lengvas prisijungimas</strong><span>Narys gauna laišką, paspaudžia nuorodą, prisijungia per Google arba el. paštu ir prisijungia prie komandos.</span></div>
+                </div>
+                <div class="list-item">
+                  <span class="check">✓</span>
+                  <div><strong>Bendros užduotys ir kontaktai</strong><span>Visa komanda dirba toje pačioje vietoje ir mato savo progresą.</span></div>
+                </div>
+                <div class="list-item">
+                  <span class="check">✓</span>
+                  <div><strong>Vaidmenys ir teisės</strong><span>Savininkas valdo komandą, o nariai susitelkia į užduočių atlikimą.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="team-board" aria-label="Komandos darbo aplinkos pavyzdys">
+              <div class="team-board-header">
+                <div>
+                  <strong>Jūsų komanda</strong>
+                  <span>4 nariai pakviesti el. paštu</span>
+                </div>
+                <div class="avatar-stack" aria-hidden="true">
+                  <span class="avatar">KS</span>
+                  <span class="avatar">IV</span>
+                  <span class="avatar">MR</span>
+                  <span class="avatar">+</span>
+                </div>
+              </div>
+              <div class="team-tasks">
+                <div class="team-task">
+                  <span class="check">✓</span>
+                  <div><strong>Pasiūlymas klientui</strong><small>Maria priėmė, terminas šiandien 15:00</small></div>
+                  <span class="role-pill">Narys</span>
+                </div>
+                <div class="team-task">
+                  <span class="check">✓</span>
+                  <div><strong>Kontaktų sąrašas</strong><small>Bendrinama su visa organizacija</small></div>
+                  <span class="role-pill">Bendra</span>
+                </div>
+                <div class="team-task">
+                  <span class="check">✓</span>
+                  <div><strong>Komandos teisės</strong><small>Savininkas valdo narius ir prieigas</small></div>
+                  <span class="role-pill">Savininkas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="kam-skirta">
+          <div class="shell split">
+            <div class="section-head">
+              <h2>Sukurta vadovams, kurie juda greitai.</h2>
+              <p>
+                Skirtingai nei sudėtingos projektų valdymo sistemos, Task Coordinator nereikalauja
+                mokymų, ilgo diegimo ar komandos migracijos.
+              </p>
+            </div>
+            <div class="audience-list">
+              <div class="list-item">
+                <span class="check">✓</span>
+                <div><strong>Komandų vadovams</strong><span>Koordinuokite kasdienes užduotis telefonu, kelyje ar susitikime.</span></div>
+              </div>
+              <div class="list-item">
+                <span class="check">✓</span>
+                <div><strong>Smulkaus ir vidutinio verslo savininkams</strong><span>Deleguokite be papildomos sistemos diegimo visai komandai.</span></div>
+              </div>
+              <div class="list-item">
+                <span class="check">✓</span>
+                <div><strong>Projektų vadovams</strong><span>Greitai paskirstykite darbus, stebėkite atsakymus ir terminus.</span></div>
+              </div>
+              <div class="list-item">
+                <span class="check">✓</span>
+                <div><strong>Visiems, kuriems reikia paprastumo</strong><span>Be mokymų. Be sudėtingo nustatymo. Tiesiog kalbėkite.</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="priminimai" class="workflow-band">
+          <div class="shell">
+            <div class="section-head">
+              <h2>Motyvaciniai priminimai, kurie padeda judėti.</h2>
+              <p>
+                Task Coordinator gali švelniai priminti apie dienos planą ir vakare padėti
+                užfiksuoti progresą. Tonas primena šiltą mentorių, o ne dar vieną triukšmingą alertą.
+              </p>
+            </div>
+            <div class="reminder-grid">
+              <article class="reminder-card">
+                <span class="reminder-time">8:00</span>
+                <h3>Rytinis startas</h3>
+                <p>Švelnus paskatinimas suplanuoti dieną ir iškelti vieną svarbiausią užduotį.</p>
+              </article>
+              <article class="reminder-card">
+                <span class="reminder-time">17:00</span>
+                <h3>Vakarinė refleksija</h3>
+                <p>Trumpa padėka už nuveiktus darbus ir proga ramiai uždaryti dieną.</p>
+              </article>
+              <article class="reminder-card">
+                <span class="reminder-time">Mentorius</span>
+                <h3>Šiltas tonas</h3>
+                <p>Frazės įkvėptos „Atomic Habits“, BJ Fogg ir Cal Newport principais.</p>
+              </article>
+              <article class="reminder-card">
+                <span class="reminder-time">Valdymas</span>
+                <h3>Pilna kontrolė</h3>
+                <p>Įjunkite arba išjunkite priminimus, pakeiskite laikus arba išbandykite dabar.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="saugumas">
+          <div class="shell split">
+            <div class="trust-panel">
+              <div class="section-head">
+                <h2>Saugumas ir privatumas pagal ES standartus.</h2>
+                <p>
+                  Duomenys saugomi šifruotai. Sprendimas kuriamas taip, kad atitiktų BDAR (GDPR)
+                  reikalavimus, o vartotojas galėtų eksportuoti arba ištrinti savo duomenis.
+                </p>
+              </div>
+              <div class="trust-list">
+                <div class="list-item">
+                  <span class="check">✓</span>
+                  <div><strong>Šifruotas saugojimas</strong><span>Užduočių ir kontaktų duomenys apsaugomi techninėmis priemonėmis.</span></div>
+                </div>
+                <div class="list-item">
+                  <span class="check">✓</span>
+                  <div><strong>Eksportas ir ištrynimas</strong><span>Vartotojas gali kontroliuoti savo duomenis bet kuriuo metu.</span></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="section-head">
+                <h2>Veikia 25 kalbomis.</h2>
+                <p>Visos 24 oficialios Europos Sąjungos kalbos ir norvegų kalba, kad komandos galėtų diktuoti natūraliai.</p>
+              </div>
+              <div class="language-strip" aria-label="Palaikomų kalbų apžvalga">
+                <span>LT</span><span>EN</span><span>DE</span><span>FR</span><span>ES</span><span>IT</span>
+                <span>PL</span><span>LV</span><span>ET</span><span>NL</span><span>SV</span><span>DA</span>
+                <span>FI</span><span>NO</span><span>PT</span><span>EL</span><span>CS</span><span>SK</span>
+                <span>SL</span><span>HR</span><span>HU</span><span>RO</span><span>BG</span><span>GA</span><span>MT</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cta">
+          <div class="shell">
+            <div class="cta-box">
+              <div>
+                <h2>Delegavimas turi trukti sekundes, ne minutes.</h2>
+                <p>Pradėkite nuo paprasto balso sakinio. Task Coordinator pasirūpins struktūra, laišku, terminu ir būsena.</p>
+              </div>
+              <a class="button button-primary" href="mailto:info@processolution.pro?subject=Noriu%20Task%20Coordinator%20demo">Gauti demo</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="shell footer-inner">
+          <span>© 2026 Task Coordinator</span>
+          <span>Balsu valdomas užduočių koordinavimas komandoms</span>
+        </div>
+      </footer>
     </div>
-  </div>
-</section>
+    <script>
+      const localeMeta = {
+        lt: {
+          lang: "lt",
+          title: "Task Coordinator - balsu valdomas užduočių koordinavimas komandoms",
+          description:
+            "Task Coordinator leidžia sukurti ir deleguoti užduotis balsu per kelias sekundes. AI supranta vykdytojus, terminus ir paruošia užduotį už jus."
+        },
+        en: {
+          lang: "en",
+          title: "Task Coordinator - voice-powered task coordination for teams",
+          description:
+            "Task Coordinator helps teams create and delegate tasks by voice in seconds. AI understands owners, deadlines and context, then prepares the task for you."
+        },
+        it: {
+          lang: "it",
+          title: "Task Coordinator - coordinamento delle attività per team tramite voce",
+          description:
+            "Task Coordinator consente ai team di creare e delegare attività con la voce in pochi secondi. L'IA riconosce responsabili, scadenze e contesto."
+        }
+      };
 
-<!-- ─── CTA ─── -->
-<section id="cta">
-  <div class="cta-glow"></div>
-  <div class="cta-teal-glow"></div>
-  <div class="container">
-    <div class="cta-inner reveal">
-      <span class="tag" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:rgba(255,255,255,0.8);" data-i18n="cta_tag">Get Early Access</span>
-      <h2 class="section-title" data-i18n-html="cta_title">Ready to stop typing<br/>and start delegating?</h2>
-      <p class="section-sub" data-i18n="cta_sub">Join the early access list. Be the first to try Task Coordinator and shape the product with your feedback.</p>
-      <div class="store-row" style="margin-bottom:16px;">
-        <a href="#APPSTORE_URL" class="btn-store" style="padding:15px 26px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          <div class="btn-store-text"><small data-i18n="store_download">Download on the</small><span>App Store</span></div>
-        </a>
-        <a href="#PLAYSTORE_URL" class="btn-store play" style="padding:15px 26px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83 1-.92 1.36-.5l13.5 8.5-13.5 8.5C3.85 21.42 3 21.33 3 20.5zm1.5-14.5l10.45 6.57L4.5 19V6zm1 1.9v10.2l8.1-5.1L5.5 7.9z"/><path d="M5.5 6l10.78 6.77-2.6 1.64L5.5 6z"/><path d="M5.5 18l8.18-5.13 2.6 1.64L5.5 18z"/></svg>
-          <div class="btn-store-text"><small data-i18n="store_get">Get it on</small><span>Google Play</span></div>
-        </a>
-      </div>
-      <a href="index.html" class="btn btn-ghost btn-lg" data-i18n="cta_back">Back to ProcesSolution</a>
-      <p class="cta-meta"><span data-i18n="cta_questions">Questions?</span> <a href="mailto:info@processolution.pro">info@processolution.pro</a> · <span data-i18n="cta_built">Built by</span> <a href="index.html">ProcesSolution</a></p>
-    </div>
-  </div>
-</section>
+      const t = {
+        "Funkcijos": { en: "Features", it: "Funzionalità" },
+        "Kaip veikia": { en: "How it works", it: "Come funziona" },
+        "Komanda": { en: "Team", it: "Team" },
+        "Kam skirta": { en: "Who it is for", it: "A chi è rivolto" },
+        "Saugumas": { en: "Security", it: "Sicurezza" },
+        "Susisiekti": { en: "Contact", it: "Contatti" },
+        "Balsu valdomas užduočių koordinavimas komandoms": {
+          en: "Voice-powered task coordination for teams",
+          it: "Coordinamento delle attività per team tramite voce"
+        },
+        "Deleguokite užduotis": { en: "Delegate tasks", it: "Delegate le attività" },
+        "tiesiog kalbėdami.": { en: "just by speaking.", it: "semplicemente parlando." },
+        "Pamirškite ilgą rašymą telefonu. Su Task Coordinator užduotis sukursite per kelias sekundes: pasakykite, ką reikia padaryti, kam priskirti ir iki kada. AI viską supras, paruoš užduotį ir išsiųs ją komandai.": {
+          en: "Forget typing long task notes on your phone. With Task Coordinator, you create tasks in seconds: say what needs to be done, who owns it and when it is due. AI understands the details, prepares the task and sends it to your team.",
+          it: "Basta scrivere lunghi testi dal telefono. Con Task Coordinator create attività in pochi secondi: dite cosa va fatto, a chi assegnarlo ed entro quando. L'IA comprende i dettagli, prepara l'attività e la invia al team."
+        },
+        "Noriu išbandyti": { en: "Try it now", it: "Provalo ora" },
+        "Pamatyti kaip veikia": { en: "See how it works", it: "Scopri come funziona" },
+        "25 kalbos": { en: "25 languages", it: "25 lingue" },
+        "24 oficialios ES kalbos ir norvegų kalba.": {
+          en: "The 24 official EU languages plus Norwegian.",
+          it: "Le 24 lingue ufficiali dell'UE più il norvegese."
+        },
+        "0 registracijų": { en: "No sign-up required", it: "Nessuna registrazione" },
+        "Vykdytojai atsako tiesiai iš el. laiško.": {
+          en: "Assignees respond directly from the email.",
+          it: "Gli assegnatari rispondono direttamente dall'e-mail."
+        },
+        "2 lygiai": { en: "2 levels", it: "2 livelli" },
+        "Užduotis galima perduoti toliau kontroliuojamai.": {
+          en: "Tasks can be forwarded in a controlled two-level flow.",
+          it: "Le attività possono essere inoltrate in modo controllato fino a due livelli."
+        },
+        "AI atpažino": { en: "AI detected", it: "IA pronta" },
+        "Užduotis": { en: "Task", it: "Attività" },
+        "Paruošti kliento pasiūlymą iki penktadienio 15:00": {
+          en: "Prepare the client proposal by Friday at 3:00 PM",
+          it: "Preparare la proposta per il cliente entro venerdì alle 15:00"
+        },
+        "Vykdytoja: Maria": { en: "Owner: Maria", it: "Responsabile: Maria" },
+        "Terminas: penktadienis": { en: "Due: Friday", it: "Scadenza: venerdì" },
+        "Kvietimas: .ics": { en: "Invite: .ics", it: "Invito: .ics" },
+        "Viskas, ko reikia greitam delegavimui.": {
+          en: "Everything you need to delegate fast.",
+          it: "Tutto ciò che serve per delegare rapidamente."
+        },
+        "Task Coordinator sukurtas vienam tikslui: greitai paskirti užduotį, sekti atsakomybę ir gauti rezultatą be sudėtingos projektinės sistemos.": {
+          en: "Task Coordinator is built for one purpose: assign a task quickly, keep ownership clear and get the result without a heavy project management system.",
+          it: "Task Coordinator nasce per un obiettivo preciso: assegnare rapidamente un'attività, mantenere chiare le responsabilità e ottenere risultati senza un sistema di project management complesso."
+        },
+        "Balso įvestis": { en: "Voice input", it: "Input vocale" },
+        "Diktuokite natūralia kalba. AI atpažins terminus, vykdytojus, datą ir kontekstą.": {
+          en: "Dictate in natural language. AI identifies deadlines, assignees, dates and context.",
+          it: "Dettate in linguaggio naturale. L'IA riconosce scadenze, assegnatari, date e contesto."
+        },
+        "Užduočių delegavimas": { en: "Task delegation", it: "Delega delle attività" },
+        "Paskirkite darbus el. paštu. Komandos nariams nereikia kurti paskyros.": {
+          en: "Assign work by email. Team members do not need to create an account.",
+          it: "Assegnate il lavoro via e-mail. I membri del team non devono creare un account."
+        },
+        "El. pašto pranešimai": { en: "Email notifications", it: "Notifiche e-mail" },
+        "Vykdytojai gauna aiškų laišką su veiksmais: Priimti, Atmesti arba Atlikta.": {
+          en: "Assignees receive a clear email with actions: Accept, Decline or Done.",
+          it: "Gli assegnatari ricevono un'e-mail chiara con le azioni: Accetta, Rifiuta o Completata."
+        },
+        "Statistika ir filtrai": { en: "Stats and filters", it: "Statistiche e filtri" },
+        "Matykite, kas vyksta komandoje realiu laiku: kas priėmė, kas vėluoja, kas baigta.": {
+          en: "See what is happening across the team in real time: accepted, overdue and completed work.",
+          it: "Vedete in tempo reale cosa accade nel team: attività accettate, in ritardo o completate."
+        },
+        "Dvigubas delegavimas": { en: "Two-level delegation", it: "Delega a due livelli" },
+        "Užduotis galima perduoti toliau iki 2 lygių, išlaikant koordinavimo kontrolę.": {
+          en: "Tasks can be passed on up to two levels while keeping coordination under control.",
+          it: "Le attività possono essere trasferite fino a due livelli mantenendo il controllo del coordinamento."
+        },
+        "Kalendoriaus kvietimai": { en: "Calendar invites", it: "Inviti calendario" },
+        "Siųskite .ics kvietimus, kad terminai iškart atsirastų gavėjo kalendoriuje.": {
+          en: "Send .ics invites so deadlines appear directly in the recipient's calendar.",
+          it: "Inviate inviti .ics affinché le scadenze compaiano subito nel calendario del destinatario."
+        },
+        "Automatinis archyvavimas": { en: "Automatic archiving", it: "Archiviazione automatica" },
+        "Atliktos užduotys po 7 dienų keliauja į archyvą, todėl sąrašas lieka švarus.": {
+          en: "Completed tasks move to the archive after 7 days, keeping the active list clean.",
+          it: "Le attività completate vengono archiviate dopo 7 giorni, mantenendo pulito l'elenco attivo."
+        },
+        "Kontaktų atmintis": { en: "Contact memory", it: "Memoria dei contatti" },
+        "Sistema įsimena dažnai naudojamus kontaktus ir pagreitina pakartotinį delegavimą.": {
+          en: "The system remembers frequently used contacts and speeds up repeat delegation.",
+          it: "Il sistema memorizza i contatti usati più spesso e accelera le deleghe ricorrenti."
+        },
+        "Trys žingsniai nuo minties iki rezultato.": {
+          en: "Three steps from thought to result.",
+          it: "Tre passaggi dall'idea al risultato."
+        },
+        "Procesas trumpas, nes komandoms dažniausiai reikia ne dar vienos lentos, o aiškaus veiksmo.": {
+          en: "The process is short because teams often need a clear action, not another board to manage.",
+          it: "Il processo è breve perché ai team serve spesso un'azione chiara, non un'altra bacheca da gestire."
+        },
+        "Pasakykite užduotį": { en: "Say the task", it: "Dite l'attività" },
+        "Pavyzdžiui: \"Maria, paruošk sutarties santrauką iki rytojaus 10 valandos\".": {
+          en: "For example: \"Maria, prepare the contract summary by 10 tomorrow morning.\"",
+          it: "Ad esempio: \"Maria, prepara il riepilogo del contratto entro domani alle 10.\""
+        },
+        "AI paruošia kortelę": { en: "AI prepares the card", it: "L'IA prepara la scheda" },
+        "Task Coordinator išskiria vykdytoją, terminą, veiksmą ir sugeneruoja tvarkingą užduotį.": {
+          en: "Task Coordinator extracts the assignee, deadline and action, then generates a clean task.",
+          it: "Task Coordinator identifica assegnatario, scadenza e azione, quindi genera un'attività ordinata."
+        },
+        "Komanda atsako laišku": { en: "The team replies by email", it: "Il team risponde via e-mail" },
+        "Gavėjas priima, atmeta arba pažymi atlikta tiesiai iš el. laiško. Jūs matote būseną.": {
+          en: "The recipient accepts, declines or marks the task as done directly from the email. You see the status.",
+          it: "Il destinatario accetta, rifiuta o segna l'attività come completata direttamente dall'e-mail. Voi vedete lo stato."
+        },
+        "Suburkite komandą per kelias sekundes.": {
+          en: "Build your team in seconds.",
+          it: "Create il vostro team in pochi secondi."
+        },
+        "Pavadinkite organizaciją, pakvieskite narius el. paštu ir dirbkite bendroje aplinkoje, kur matosi užduotys, kontaktai, progresas ir atsakomybės.": {
+          en: "Name your organisation, invite members by email and work in a shared space where tasks, contacts, progress and ownership are visible.",
+          it: "Date un nome all'organizzazione, invitate i membri via e-mail e lavorate in uno spazio condiviso dove attività, contatti, avanzamento e responsabilità sono visibili."
+        },
+        "Greitas komandos sukūrimas": { en: "Fast team setup", it: "Creazione rapida del team" },
+        "Sukurkite organizaciją ir pakvieskite žmones be ilgo nustatymo.": {
+          en: "Create an organisation and invite people without a long setup process.",
+          it: "Create un'organizzazione e invitate le persone senza una configurazione lunga."
+        },
+        "Lengvas prisijungimas": { en: "Easy onboarding", it: "Accesso semplice" },
+        "Narys gauna laišką, paspaudžia nuorodą, prisijungia per Google arba el. paštu ir prisijungia prie komandos.": {
+          en: "A member receives an email, clicks the link, signs in with Google or email and joins the team.",
+          it: "Il membro riceve un'e-mail, clicca sul link, accede con Google o via e-mail ed entra nel team."
+        },
+        "Bendros užduotys ir kontaktai": { en: "Shared tasks and contacts", it: "Attività e contatti condivisi" },
+        "Visa komanda dirba toje pačioje vietoje ir mato savo progresą.": {
+          en: "The whole team works in the same place and can track its own progress.",
+          it: "Tutto il team lavora nello stesso ambiente e segue i propri progressi."
+        },
+        "Vaidmenys ir teisės": { en: "Roles and permissions", it: "Ruoli e permessi" },
+        "Savininkas valdo komandą, o nariai susitelkia į užduočių atlikimą.": {
+          en: "The owner manages the team while members focus on completing tasks.",
+          it: "Il proprietario gestisce il team, mentre i membri si concentrano sul completamento delle attività."
+        },
+        "Jūsų komanda": { en: "Your team", it: "Il vostro team" },
+        "4 nariai pakviesti el. paštu": { en: "4 members invited by email", it: "4 membri invitati via e-mail" },
+        "Pasiūlymas klientui": { en: "Client proposal", it: "Proposta per il cliente" },
+        "Maria priėmė, terminas šiandien 15:00": {
+          en: "Maria accepted, due today at 3:00 PM",
+          it: "Maria ha accettato, scadenza oggi alle 15:00"
+        },
+        "Narys": { en: "Member", it: "Membro" },
+        "Kontaktų sąrašas": { en: "Contact list", it: "Elenco contatti" },
+        "Bendrinama su visa organizacija": { en: "Shared with the whole organisation", it: "Condiviso con tutta l'organizzazione" },
+        "Bendra": { en: "Shared", it: "Condiviso" },
+        "Komandos teisės": { en: "Team permissions", it: "Permessi del team" },
+        "Savininkas valdo narius ir prieigas": { en: "Owner manages members and access", it: "Il proprietario gestisce membri e accessi" },
+        "Savininkas": { en: "Owner", it: "Proprietario" },
+        "Sukurta vadovams, kurie juda greitai.": {
+          en: "Built for leaders who move fast.",
+          it: "Pensato per chi guida team dinamici."
+        },
+        "Skirtingai nei sudėtingos projektų valdymo sistemos, Task Coordinator nereikalauja mokymų, ilgo diegimo ar komandos migracijos.": {
+          en: "Unlike complex project management systems, Task Coordinator does not require training, a long rollout or a team migration.",
+          it: "A differenza dei sistemi di project management complessi, Task Coordinator non richiede formazione, lunghi tempi di adozione o migrazioni del team."
+        },
+        "Komandų vadovams": { en: "Team leads", it: "Responsabili di team" },
+        "Koordinuokite kasdienes užduotis telefonu, kelyje ar susitikime.": {
+          en: "Coordinate daily work from your phone, on the move or during a meeting.",
+          it: "Coordinate le attività quotidiane dal telefono, in movimento o durante una riunione."
+        },
+        "Smulkaus ir vidutinio verslo savininkams": { en: "Small and mid-sized business owners", it: "Titolari di piccole e medie imprese" },
+        "Deleguokite be papildomos sistemos diegimo visai komandai.": {
+          en: "Delegate without rolling out another system to the entire team.",
+          it: "Delegate senza introdurre un altro sistema per tutto il team."
+        },
+        "Projektų vadovams": { en: "Project managers", it: "Project manager" },
+        "Greitai paskirstykite darbus, stebėkite atsakymus ir terminus.": {
+          en: "Assign work quickly and track responses and deadlines.",
+          it: "Assegnate rapidamente il lavoro e monitorate risposte e scadenze."
+        },
+        "Visiems, kuriems reikia paprastumo": { en: "Anyone who needs simplicity", it: "Chiunque abbia bisogno di semplicità" },
+        "Be mokymų. Be sudėtingo nustatymo. Tiesiog kalbėkite.": {
+          en: "No training. No complex setup. Just speak.",
+          it: "Nessuna formazione. Nessuna configurazione complessa. Basta parlare."
+        },
+        "Motyvaciniai priminimai, kurie padeda judėti.": {
+          en: "Motivational reminders that help work move forward.",
+          it: "Promemoria motivazionali che aiutano ad avanzare."
+        },
+        "Task Coordinator gali švelniai priminti apie dienos planą ir vakare padėti užfiksuoti progresą. Tonas primena šiltą mentorių, o ne dar vieną triukšmingą alertą.": {
+          en: "Task Coordinator can gently prompt the daily plan in the morning and help capture progress in the evening. The tone feels like a warm mentor, not another noisy alert.",
+          it: "Task Coordinator può ricordare con delicatezza il piano della giornata al mattino e aiutare a registrare i progressi la sera. Il tono è quello di un mentore attento, non di un altro avviso invadente."
+        },
+        "Rytinis startas": { en: "Morning start", it: "Avvio del mattino" },
+        "Švelnus paskatinimas suplanuoti dieną ir iškelti vieną svarbiausią užduotį.": {
+          en: "A gentle prompt to plan the day and name the single most important task.",
+          it: "Un invito gentile a pianificare la giornata e scegliere l'attività più importante."
+        },
+        "Vakarinė refleksija": { en: "Evening reflection", it: "Riflessione serale" },
+        "Trumpa padėka už nuveiktus darbus ir proga ramiai uždaryti dieną.": {
+          en: "A short note of appreciation for completed work and a calm way to close the day.",
+          it: "Un breve riconoscimento per il lavoro svolto e un modo sereno per chiudere la giornata."
+        },
+        "Mentorius": { en: "Mentor", it: "Mentore" },
+        "Šiltas tonas": { en: "Warm tone", it: "Tono umano" },
+        "Frazės įkvėptos „Atomic Habits“, BJ Fogg ir Cal Newport principais.": {
+          en: "Phrases inspired by the principles behind Atomic Habits, BJ Fogg and Cal Newport.",
+          it: "Frasi ispirate ai principi di Atomic Habits, BJ Fogg e Cal Newport."
+        },
+        "Valdymas": { en: "Control", it: "Controllo" },
+        "Pilna kontrolė": { en: "Full control", it: "Controllo completo" },
+        "Įjunkite arba išjunkite priminimus, pakeiskite laikus arba išbandykite dabar.": {
+          en: "Turn reminders on or off, change the times or try them immediately.",
+          it: "Attivate o disattivate i promemoria, modificate gli orari o provateli subito."
+        },
+        "Saugumas ir privatumas pagal ES standartus.": {
+          en: "Security and privacy aligned with EU standards.",
+          it: "Sicurezza e privacy secondo gli standard europei."
+        },
+        "Duomenys saugomi šifruotai. Sprendimas kuriamas taip, kad atitiktų BDAR (GDPR) reikalavimus, o vartotojas galėtų eksportuoti arba ištrinti savo duomenis.": {
+          en: "Data is stored encrypted. The product is designed to support GDPR requirements, with the ability to export or delete your data at any time.",
+          it: "I dati vengono archiviati in forma cifrata. Il prodotto è progettato per rispettare il GDPR e consente di esportare o eliminare i propri dati in qualsiasi momento."
+        },
+        "Šifruotas saugojimas": { en: "Encrypted storage", it: "Archiviazione cifrata" },
+        "Užduočių ir kontaktų duomenys apsaugomi techninėmis priemonėmis.": {
+          en: "Task and contact data is protected with technical safeguards.",
+          it: "I dati di attività e contatti sono protetti con misure tecniche."
+        },
+        "Eksportas ir ištrynimas": { en: "Export and deletion", it: "Esportazione ed eliminazione" },
+        "Vartotojas gali kontroliuoti savo duomenis bet kuriuo metu.": {
+          en: "Users can stay in control of their data at any time.",
+          it: "Gli utenti mantengono il controllo dei propri dati in qualsiasi momento."
+        },
+        "Veikia 25 kalbomis.": { en: "Works in 25 languages.", it: "Disponibile in 25 lingue." },
+        "Visos 24 oficialios Europos Sąjungos kalbos ir norvegų kalba, kad komandos galėtų diktuoti natūraliai.": {
+          en: "All 24 official European Union languages plus Norwegian, so teams can dictate naturally.",
+          it: "Tutte le 24 lingue ufficiali dell'Unione Europea più il norvegese, così i team possono dettare in modo naturale."
+        },
+        "Delegavimas turi trukti sekundes, ne minutes.": {
+          en: "Delegation should take seconds, not minutes.",
+          it: "Delegare dovrebbe richiedere secondi, non minuti."
+        },
+        "Pradėkite nuo paprasto balso sakinio. Task Coordinator pasirūpins struktūra, laišku, terminu ir būsena.": {
+          en: "Start with a simple spoken sentence. Task Coordinator handles the structure, email, deadline and status.",
+          it: "Iniziate con una semplice frase a voce. Task Coordinator gestisce struttura, e-mail, scadenza e stato."
+        },
+        "Gauti demo": { en: "Get a demo", it: "Richiedi una demo" }
+      };
 
-<!-- ─── FOOTER STRIP ─── -->
-<div class="footer-strip">
-  <div class="container" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-    <p style="font-size:13px; color:rgba(255,255,255,0.35);">© 2025 ProcesSolution. Task Coordinator.</p>
-    <div style="display:flex; gap:20px;">
-      <a href="index.html">ProcesSolution.pro</a>
-      <a href="mailto:info@processolution.pro">info@processolution.pro</a>
-    </div>
-  </div>
-</div>
+      const normalize = (value) => value.replace(/\s+/g, " ").trim();
+      const textBindings = [];
 
-<script>
-/* ── TRANSLATIONS ── */
-const T = {
-  en: {
-    nav_back: "Back to main site",
-    nav_cta: "Download",
-    store_download: "Download on the",
-    store_get: "Get it on",
-    hero_eyebrow: "Voice-Powered Task Management · 25 Languages · Mobile-First",
-    hero_title: "Speak a task.<br/><span class='accent'>Done in 5 seconds.</span>",
-    hero_sub: "Task Coordinator turns spoken words into structured, delegable assignments — with a deadline, an assignee, an automatic email, and a calendar invite. No typing required.",
-    hero_cta_primary: "Get Early Access →",
-    hero_cta_secondary: "See How It Works",
-    hero_note: "Available on iOS, Android, and desktop. GDPR-compliant. EU-hosted.",
-    badge_voice: "Voice-first input",
-    badge_langs: "25 languages",
-    badge_email: "Auto email + calendar invite",
-    badge_gdpr: "GDPR · EU-hosted",
-    badge_pwa: "PWA · iOS · Android",
-    how_tag: "How It Works",
-    how_title: "Three steps. Five seconds.",
-    how_sub: "No forms, no typing, no friction. Just speak — Task Coordinator handles everything else.",
-    step1_title: "Speak naturally",
-    step1_body: "Tap the microphone and say the task the way you'd tell a colleague: <em>\"Remind Sara to send the contract to ABC Corp by Friday, high priority.\"</em>",
-    step2_title: "AI structures it",
-    step2_body: "Gemini AI instantly extracts title, assignee, deadline, priority, and description into structured fields. Review and confirm in one tap.",
-    step3_title: "Team gets notified",
-    step3_body: "Your assignee receives an email with action buttons — Accept, Start, Complete — plus a calendar invite. No login required on their end.",
-    feat_tag: "Features",
-    feat_title: "Built for the field,<br/>not the office.",
-    feat_sub: "Every feature exists to save you time — whether you're on a construction site, between meetings, or managing a multilingual team.",
-    f1_title: "Voice Input & AI Parsing", f1_body: "Speak in any of 25 languages. Gemini 2.5 extracts every field automatically and learns your vocabulary over time.", f1_b1: "One-tap recording", f1_b2: "Natural language deadlines (\"next Monday\", \"end of week\")", f1_b3: "Per-user voice learning & custom dictionary", f1_b4: "Manual edit fallback always available",
-    f2_title: "25 Languages", f2_body: "All 24 official EU languages plus Norwegian. Voice, UI, emails, and task responses — all fully localized.", f2_b1: "Natural localization, not literal translation", f2_b2: "Switch language anytime from the header", f2_b3: "Built-in translation feedback tool",
-    f3_title: "Email Notifications & Actions", f3_body: "Assignees get an email the moment a task is created — with action buttons they can click without logging in.", f3_b1: "Accept · Start · Complete · Decline — all from email", f3_b2: "Calendar invite (.ics) attached automatically", f3_b3: "Scheduled reminders before deadlines", f3_b4: "Works with Gmail, Outlook, or any SMTP",
-    f4_title: "Full Task Management", f4_body: "A complete workflow from creation to archive — with filters, search, and a live dashboard.", f4_b1: "Status: Pending → In Progress → Completed", f4_b2: "Priority color-coding: High / Medium / Low", f4_b3: "Quick filters, full-text search, date ranges", f4_b4: "Notes & full activity log per task",
-    f5_title: "Two-Level Delegation", f5_body: "Forward a task to a colleague while keeping a link to the original. Stay informed without micromanaging.", f5_b1: "Delegated tasks visible with a clear badge", f5_b2: "Recipients can act even without an account", f5_b3: "Original sender stays updated throughout",
-    f6_title: "Mobile-First & PWA", f6_body: "Designed for phones first — installable as an app on iOS, Android, and desktop with offline support.", f6_b1: "Progressive Web App — no app store required", f6_b2: "Native iOS, Android, Mac builds via Capacitor", f6_b3: "Works offline for previously loaded tasks", f6_b4: "Dark theme for low-light use",
-    f7_title: "Dashboard & Export", f7_body: "Live stat cards for your current workload. Export any filtered view to Excel or CSV in one click.", f7_b1: "Pending / In Progress / Completed / Archived", f7_b2: "Click any card to filter the task list instantly", f7_b3: "Export to .xlsx or .csv — ready for reporting",
-    f8_title: "Security & Privacy", f8_body: "GDPR-aligned from the ground up. Your data is yours — and only yours.", f8_b1: "EU-hosted backend", f8_b2: "Row-level security — no user sees another's data", f8_b3: "Full data export & one-click account deletion", f8_b4: "Secure tokenized public links with expiry",
-    f9_title: "Teams & Multi-Tenancy", f9_body: "Built for individuals and teams alike. Invite members, manage roles, and share task pools.", f9_b1: "Google Sign-In or email + password", f9_b2: "Invite team members by email", f9_b3: "Smart contact auto-save from voice input", f9_b4: "Multiple email addresses per contact",
-    who_tag: "Ideal For",
-    who_title: "Built for people who can't stop to type.",
-    who1_title: "Construction & Service Managers", who1_body: "Coordinate crews on the move — assign tasks on site without touching a keyboard.",
-    who2_title: "Sales Managers", who2_body: "Dictate follow-ups between meetings. Never lose a commitment made on a call.",
-    who3_title: "Property & Facility Managers", who3_body: "Delegate vendor tasks in seconds — with automatic reminders and status tracking.",
-    who4_title: "Multilingual Teams", who4_body: "Each team member works in their own language. The system handles the rest.",
-    who5_title: "Small Business Owners", who5_body: "Zero-friction delegation without project management overhead or expensive software.",
-    who_quote: "\"Most task apps assume you're sitting at a desk.<br/>Task Coordinator assumes <span class='highlight'>you're not.</span>\"",
-    who_desc: "It turns 5 spoken seconds into a fully structured task with a deadline, an assignee, an email, a calendar invite, and a complete audit trail — in 25 languages, on any device, with privacy by default.",
-    who_check1: "No subscription lock-in", who_check2: "Assignees don't need an account", who_check3: "Works with your existing email provider", who_check4: "GDPR-compliant, EU-hosted",
-    sit_tag: "Real Situations",
-    sit_title: "Stop chasing people.<br/><span style=\"background:linear-gradient(135deg,var(--accent-bright) 0%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;\">Start coordinating work.</span>",
-    sit_sub: "Your team is busy. Coordination shouldn't be. Here's how Task Coordinator fits into real working days.",
-    sit_solution_label: "With Task Coordinator",
-    sit_check1: "Creates structured tasks", sit_check2: "Assigns the correct people", sit_check3: "Sets deadlines & sends email notifications", sit_check4: "Tracks completion",
-    sit1_num: "Situation #1", sit1_title: "Construction Site Supervisor Managing Multiple Crews",
-    sit1_problem_label: "The Problem",
-    sit1_problem: "You're walking through a construction site and notice issues: electrical work, missing materials, a subcontractor who must return, safety problems. You call people and promise yourself you'll write everything down later.",
-    sit1_p1: "Tasks are forgotten", sit1_p2: "Deadlines are unclear", sit1_p3: "Nobody knows who was responsible",
-    sit1_voice: "\"Assign Marco to order insulation material today. High priority. Remind Luca to schedule electrical inspection before Friday.\"",
-    sit2_num: "Situation #2", sit2_title: "Sales Manager Between Customer Meetings",
-    sit2_problem: "You finish a customer meeting and immediately drive to the next one. Notes stay in your notebook until evening. Opportunities slow down because follow-ups happen too late.",
-    sit2_p1: "Proposals delayed", sit2_p2: "Follow-ups forgotten", sit2_p3: "Opportunities lost",
-    sit2_voice: "\"Ask Sarah to prepare the ACME proposal by tomorrow noon. Medium priority. Follow up with ACME next Tuesday.\"",
-    sit3_num: "Situation #3", sit3_title: "Facility or Property Manager Coordinating Vendors",
-    sit3_problem: "A tenant reports elevator maintenance, heating problems, a cleaning follow-up, and a security camera inspection. Each vendor uses different channels. Phone calls, emails, texts, and handwritten notes become chaos.",
-    sit3_p1: "Requests scattered across channels", sit3_p2: "No central history", sit3_p3: "Accountability unclear",
-    sit3_voice: "\"Assign elevator inspection to ServiceLift by Wednesday. Ask cleaning contractor to review floor three tomorrow morning.\"",
-    sit3_sol1: "Tracks progress centrally", sit3_sol2: "Maintains a complete history",
-    sit4_num: "Situation #4", sit4_title: "Operations Manager Running a Multilingual Team",
-    sit4_problem: "Your workforce speaks different languages. Instructions are misunderstood. Deadlines are interpreted differently. Important details get lost in translation.",
-    sit4_p1: "Instructions misunderstood", sit4_p2: "Deadlines interpreted differently", sit4_p3: "Details lost in translation",
-    sit4_sol_desc: "Create tasks in your own language. Task Coordinator handles the rest.",
-    sit4_sol1: "Supports 25 European languages", sit4_sol2: "Localizes notifications for each recipient", sit4_sol3: "Standardizes task information", sit4_sol4: "Understands natural speech",
-    sit5_num: "Situation #5", sit5_title: "Small Business Owner Wearing Ten Different Hats",
-    sit5_problem: "Every day generates dozens of small tasks. Most are communicated verbally. Many are forgotten. You become the bottleneck for everything.",
-    sit5_p1: "Tasks forgotten", sit5_p2: "You become the bottleneck", sit5_p3: "No visibility on progress",
-    sit5_voice: "\"Remind Tom to send invoice 245. Ask Anna to confirm delivery with the supplier. Schedule customer follow-up for Friday.\"",
-    sit5_sol1: "Tasks organized instantly", sit5_sol2: "Team members notified automatically", sit5_sol3: "Progress visible at a glance", sit5_sol4: "Accountability is clear",
-    sit6_num: "Situation #6", sit6_title: "Service Company Dispatching Field Technicians",
-    sit6_problem: "Your technicians are constantly moving between customer locations. New requests arrive throughout the day. Information is shared through calls and messages. Important details disappear in conversations.",
-    sit6_p1: "Details lost in calls", sit6_p2: "No real-time visibility", sit6_p3: "Extra follow-up calls needed",
-    sit6_voice: "\"Assign emergency maintenance at Oak Street to David. Complete today before 5 PM.\"",
-    sit6_sol1: "Task received instantly by technician", sit6_sol2: "Deadline & calendar reminder included", sit6_sol3: "Status updates without extra calls",
-    cta_tag: "Get Early Access",
-    cta_title: "Ready to stop typing<br/>and start delegating?",
-    cta_sub: "Join the early access list. Be the first to try Task Coordinator and shape the product with your feedback.",
-    cta_btn: "Request Early Access →",
-    cta_back: "Back to ProcesSolution",
-    cta_questions: "Questions?",
-    cta_built: "Built by",
-  },
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      let node = walker.nextNode();
+      while (node) {
+        const key = normalize(node.nodeValue);
+        if (key && t[key]) {
+          textBindings.push({
+            node,
+            key,
+            prefix: node.nodeValue.match(/^\s*/)[0],
+            suffix: node.nodeValue.match(/\s*$/)[0]
+          });
+        }
+        node = walker.nextNode();
+      }
 
-  it: {
-    nav_back: "Torna al sito principale",
-    nav_cta: "Scarica",
-    store_download: "Scarica su",
-    store_get: "Disponibile su",
-    hero_eyebrow: "Gestione attività vocale · 25 lingue · Mobile-first",
-    hero_title: "Di' un'attività.<br/><span class='accent'>Fatto in 5 secondi.</span>",
-    hero_sub: "Task Coordinator trasforma le parole parlate in incarichi strutturati e delegabili — con scadenza, responsabile, email automatica e invito calendario. Nessuna digitazione richiesta.",
-    hero_cta_primary: "Accesso Anticipato →",
-    hero_cta_secondary: "Come Funziona",
-    hero_note: "Disponibile su iOS, Android e desktop. Conforme GDPR. Hosted in UE.",
-    badge_voice: "Input vocale",
-    badge_langs: "25 lingue",
-    badge_email: "Email auto + invito calendario",
-    badge_gdpr: "GDPR · Hosted in UE",
-    badge_pwa: "PWA · iOS · Android",
-    how_tag: "Come Funziona",
-    how_title: "Tre passi. Cinque secondi.",
-    how_sub: "Nessun modulo, nessuna digitazione, nessuna attesa. Parla — Task Coordinator fa il resto.",
-    step1_title: "Parla naturalmente",
-    step1_body: "Tocca il microfono e di' l'attività come la diresti a un collega: <em>\"Ricorda a Sara di inviare il contratto ad ABC Corp entro venerdì, alta priorità.\"</em>",
-    step2_title: "L'AI la struttura",
-    step2_body: "Gemini AI estrae immediatamente titolo, responsabile, scadenza, priorità e descrizione nei campi strutturati. Rivedi e conferma con un tocco.",
-    step3_title: "Il team viene notificato",
-    step3_body: "Il responsabile riceve un'email con pulsanti d'azione — Accetta, Inizia, Completa — più un invito calendario. Nessun accesso richiesto dalla loro parte.",
-    feat_tag: "Funzionalità",
-    feat_title: "Pensato per il campo,<br/>non per l'ufficio.",
-    feat_sub: "Ogni funzione esiste per farti risparmiare tempo — che tu sia in cantiere, tra un meeting e l'altro, o stia gestendo un team multilingue.",
-    f1_title: "Input vocale & AI", f1_body: "Parla in una delle 25 lingue. Gemini 2.5 estrae ogni campo automaticamente e impara il tuo vocabolario nel tempo.", f1_b1: "Registrazione con un tocco", f1_b2: "Scadenze in linguaggio naturale (\"lunedì prossimo\", \"fine settimana\")", f1_b3: "Apprendimento vocale per utente e dizionario personalizzato", f1_b4: "Modifica manuale sempre disponibile",
-    f2_title: "25 Lingue", f2_body: "Tutte le 24 lingue ufficiali UE più il norvegese. Voce, interfaccia, email e risposte — completamente localizzati.", f2_b1: "Localizzazione naturale, non traduzione letterale", f2_b2: "Cambia lingua in qualsiasi momento dall'intestazione", f2_b3: "Strumento integrato di feedback sulla traduzione",
-    f3_title: "Email & Azioni", f3_body: "Il responsabile riceve un'email nel momento in cui l'attività viene creata — con pulsanti cliccabili senza accedere.", f3_b1: "Accetta · Inizia · Completa · Rifiuta — tutto via email", f3_b2: "Invito calendario (.ics) allegato automaticamente", f3_b3: "Promemoria programmati prima delle scadenze", f3_b4: "Funziona con Gmail, Outlook o qualsiasi SMTP",
-    f4_title: "Gestione Attività Completa", f4_body: "Un flusso di lavoro completo dalla creazione all'archivio — con filtri, ricerca e dashboard in tempo reale.", f4_b1: "Stato: In attesa → In corso → Completato", f4_b2: "Codice colore per priorità: Alta / Media / Bassa", f4_b3: "Filtri rapidi, ricerca full-text, intervalli di date", f4_b4: "Note e registro attività completo per ogni task",
-    f5_title: "Delega a Due Livelli", f5_body: "Passa un'attività a un collega mantenendo il collegamento all'originale. Rimani informato senza microgestire.", f5_b1: "Attività delegate visibili con badge chiaro", f5_b2: "I destinatari possono agire anche senza account", f5_b3: "Il mittente originale rimane aggiornato",
-    f6_title: "Mobile-First & PWA", f6_body: "Progettato prima per il telefono — installabile come app su iOS, Android e desktop con supporto offline.", f6_b1: "Progressive Web App — nessun app store richiesto", f6_b2: "Build native per iOS, Android, Mac via Capacitor", f6_b3: "Funziona offline per le attività già caricate", f6_b4: "Tema scuro per ambienti con poca luce",
-    f7_title: "Dashboard & Export", f7_body: "Schede statistiche in tempo reale per il tuo carico di lavoro. Esporta qualsiasi vista filtrata in Excel o CSV con un clic.", f7_b1: "In attesa / In corso / Completato / Archiviato", f7_b2: "Clicca su una scheda per filtrare immediatamente la lista", f7_b3: "Esporta in .xlsx o .csv — pronto per i report",
-    f8_title: "Sicurezza & Privacy", f8_body: "Conforme GDPR fin dalla progettazione. I tuoi dati sono tuoi — e solo tuoi.", f8_b1: "Backend hosted in UE", f8_b2: "Sicurezza a livello di riga — nessun utente vede i dati degli altri", f8_b3: "Export dati completo & cancellazione account in un clic", f8_b4: "Link pubblici tokenizzati sicuri con scadenza",
-    f9_title: "Team & Multi-Tenant", f9_body: "Pensato sia per singoli che per team. Invita membri, gestisci ruoli e condividi pool di attività.", f9_b1: "Accesso con Google o email + password", f9_b2: "Invita i membri del team via email", f9_b3: "Salvataggio automatico dei contatti dall'input vocale", f9_b4: "Più indirizzi email per contatto",
-    who_tag: "Ideale Per",
-    who_title: "Per chi non può fermarsi a digitare.",
-    who1_title: "Responsabili Cantiere & Servizi", who1_body: "Coordina squadre in movimento — assegna attività in cantiere senza toccare una tastiera.",
-    who2_title: "Responsabili Vendite", who2_body: "Ditta follow-up tra un meeting e l'altro. Non perdere mai un impegno preso al telefono.",
-    who3_title: "Gestori Immobili & Strutture", who3_body: "Delega attività ai fornitori in pochi secondi — con promemoria automatici e tracciamento dello stato.",
-    who4_title: "Team Multilingue", who4_body: "Ogni membro del team lavora nella propria lingua. Il sistema pensa al resto.",
-    who5_title: "Titolari di Piccole Imprese", who5_body: "Delega senza attrito, senza overhead di project management e senza software costoso.",
-    who_quote: "\"La maggior parte delle app di task assume che tu sia seduto alla scrivania.<br/>Task Coordinator assume che <span class='highlight'>non lo sei.</span>\"",
-    who_desc: "Trasforma 5 secondi di voce in un'attività completamente strutturata con scadenza, responsabile, email, invito calendario e traccia completa — in 25 lingue, su qualsiasi dispositivo, con privacy predefinita.",
-    who_check1: "Nessun abbonamento obbligatorio", who_check2: "I responsabili non hanno bisogno di un account", who_check3: "Funziona con il tuo provider email esistente", who_check4: "Conforme GDPR, hosted in UE",
-    sit_tag: "Situazioni Reali",
-    sit_title: "Smetti di rincorrere le persone.<br/><span style=\"background:linear-gradient(135deg,var(--accent-bright) 0%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;\">Inizia a coordinare il lavoro.</span>",
-    sit_sub: "Il tuo team è impegnato. Il coordinamento non deve esserlo. Ecco come Task Coordinator si inserisce nelle giornate lavorative reali.",
-    sit_solution_label: "Con Task Coordinator",
-    sit_check1: "Crea attività strutturate", sit_check2: "Assegna le persone giuste", sit_check3: "Imposta scadenze e invia notifiche email", sit_check4: "Traccia il completamento",
-    sit1_num: "Situazione #1", sit1_title: "Capocantiere che gestisce più squadre",
-    sit1_problem_label: "Il Problema",
-    sit1_problem: "Stai ispezionando un cantiere e noti problemi: lavori elettrici, materiali mancanti, un subappaltatore che deve tornare, problemi di sicurezza. Chiami le persone e ti prometti di scrivere tutto dopo.",
-    sit1_p1: "I compiti vengono dimenticati", sit1_p2: "Le scadenze sono poco chiare", sit1_p3: "Nessuno sa chi era responsabile",
-    sit1_voice: "\"Assegna a Marco di ordinare il materiale isolante oggi. Alta priorità. Ricorda a Luca di programmare l'ispezione elettrica entro venerdì.\"",
-    sit2_num: "Situazione #2", sit2_title: "Responsabile Vendite tra un appuntamento e l'altro",
-    sit2_problem: "Finisci un incontro con un cliente e vai subito al successivo. Gli appunti restano nel taccuino fino a sera. Le opportunità rallentano perché i follow-up arrivano troppo tardi.",
-    sit2_p1: "Proposte in ritardo", sit2_p2: "Follow-up dimenticati", sit2_p3: "Opportunità perse",
-    sit2_voice: "\"Chiedi a Sara di preparare l'offerta ACME entro domani a mezzogiorno. Priorità media. Follow-up con ACME martedì prossimo.\"",
-    sit3_num: "Situazione #3", sit3_title: "Property Manager che coordina i fornitori",
-    sit3_problem: "Un inquilino segnala manutenzione ascensore, problemi al riscaldamento, un follow-up con le pulizie e un'ispezione delle telecamere. Ogni fornitore usa canali diversi. Chiamate, email, messaggi e appunti diventano caos.",
-    sit3_p1: "Richieste sparse su più canali", sit3_p2: "Nessuno storico centrale", sit3_p3: "Responsabilità poco chiara",
-    sit3_voice: "\"Assegna l'ispezione dell'ascensore a ServiceLift entro mercoledì. Chiedi all'impresa di pulizie di controllare il terzo piano domani mattina.\"",
-    sit3_sol1: "Traccia i progressi centralmente", sit3_sol2: "Mantiene uno storico completo",
-    sit4_num: "Situazione #4", sit4_title: "Responsabile Operativo con team multilingue",
-    sit4_problem: "Il tuo personale parla lingue diverse. Le istruzioni vengono fraintese. Le scadenze sono interpretate in modo diverso. I dettagli importanti si perdono nella traduzione.",
-    sit4_p1: "Istruzioni fraintese", sit4_p2: "Scadenze interpretate diversamente", sit4_p3: "Dettagli persi nella traduzione",
-    sit4_sol_desc: "Crea attività nella tua lingua. Task Coordinator pensa al resto.",
-    sit4_sol1: "Supporta 25 lingue europee", sit4_sol2: "Localizza le notifiche per ogni destinatario", sit4_sol3: "Standardizza le informazioni sulle attività", sit4_sol4: "Comprende il parlato naturale",
-    sit5_num: "Situazione #5", sit5_title: "Titolare di piccola impresa con mille ruoli",
-    sit5_problem: "Ogni giorno genera decine di piccole attività. La maggior parte viene comunicata verbalmente. Molte vengono dimenticate. Diventi il collo di bottiglia di tutto.",
-    sit5_p1: "Attività dimenticate", sit5_p2: "Diventi il collo di bottiglia", sit5_p3: "Nessuna visibilità sui progressi",
-    sit5_voice: "\"Ricorda a Tom di inviare la fattura 245. Chiedi ad Anna di confermare la consegna con il fornitore. Programma il follow-up con il cliente per venerdì.\"",
-    sit5_sol1: "Attività organizzate istantaneamente", sit5_sol2: "Membri del team notificati automaticamente", sit5_sol3: "Progressi visibili a colpo d'occhio", sit5_sol4: "Responsabilità chiara",
-    sit6_num: "Situazione #6", sit6_title: "Azienda di servizi che coordina i tecnici sul campo",
-    sit6_problem: "I tuoi tecnici si spostano continuamente tra le sedi dei clienti. Nuove richieste arrivano durante il giorno. Le informazioni vengono condivise tramite chiamate e messaggi. I dettagli importanti spariscono nelle conversazioni.",
-    sit6_p1: "Dettagli persi nelle chiamate", sit6_p2: "Nessuna visibilità in tempo reale", sit6_p3: "Necessità di chiamate di follow-up extra",
-    sit6_voice: "\"Assegna la manutenzione urgente in Via Quercia a David. Da completare oggi entro le 17.\"",
-    sit6_sol1: "Attività ricevuta immediatamente dal tecnico", sit6_sol2: "Scadenza e promemoria calendario inclusi", sit6_sol3: "Aggiornamenti di stato senza chiamate extra",
-    cta_tag: "Accesso Anticipato",
-    cta_title: "Pronto a smettere di digitare<br/>e iniziare a delegare?",
-    cta_sub: "Unisciti alla lista di accesso anticipato. Sii tra i primi a provare Task Coordinator e contribuisci a migliorarlo con il tuo feedback.",
-    cta_btn: "Richiedi Accesso Anticipato →",
-    cta_back: "Torna a ProcesSolution",
-    cta_questions: "Domande?",
-    cta_built: "Creato da",
-  },
+      const setLanguage = (lang) => {
+        const meta = localeMeta[lang] || localeMeta.lt;
+        document.documentElement.lang = meta.lang;
+        document.title = meta.title;
+        const description = document.querySelector('meta[name="description"]');
+        if (description) description.setAttribute("content", meta.description);
 
-  lt: {
-    nav_back: "Grįžti į pagrindinę svetainę",
-    nav_cta: "Atsisiųsti",
-    store_download: "Atsisiųsti iš",
-    store_get: "Gauti per",
-    hero_eyebrow: "Balsinis užduočių valdymas · 25 kalbos · Mobiliesiems",
-    hero_title: "Pasakyk užduotį.<br/><span class='accent'>Atlikta per 5 sekundes.</span>",
-    hero_sub: "Task Coordinator paverčia ištartus žodžius struktūruotomis, deleguojamomis užduotimis — su terminu, vykdytoju, automatiniu el. laišku ir kalendoriaus kvietimu. Rašyti nereikia.",
-    hero_cta_primary: "Gauti ankstyvo naudojimo prieigą →",
-    hero_cta_secondary: "Kaip tai veikia",
-    hero_note: "Pasiekiama „iOS”, „Android” ir staliniame kompiuteryje. Atitinka BDAR. Talpinama ES.",
-    badge_voice: "Balsinis įvedimas",
-    badge_langs: "25 kalbos",
-    badge_email: "Automatinis el. laiškas + kalendoriaus kvietimas",
-    badge_gdpr: "BDAR · Talpinama ES",
-    badge_pwa: "PWA · iOS · Android",
-    how_tag: "Kaip tai veikia",
-    how_title: "Trys žingsniai. Penkios sekundės.",
-    how_sub: "Jokių formų, jokio rašymo, jokio trikdžio. Tiesiog kalbėk — Task Coordinator pasirūpins visu kitu.",
-    step1_title: "Kalbėk natūraliai",
-    step1_body: "Palieskite mikrofoną ir pasakykite užduotį taip, kaip sakytumėte kolegai: <em>\"Primink Sarai išsiųsti sutartį ABC Corp iki penktadienio, aukštas prioritetas.\"</em>",
-    step2_title: "DI struktūrizuoja",
-    step2_body: "Gemini DI akimirksniu išskaičiuoja pavadinimą, vykdytoją, terminą, prioritetą ir aprašymą į struktūruotus laukus. Peržiūrėkite ir patvirtinkite vienu paspaudimu.",
-    step3_title: "Komanda informuojama",
-    step3_body: "Vykdytojas gauna el. laišką su veiksmų mygtukais — Priimti, Pradėti, Baigti — ir kalendoriaus kvietimą. Jiems prisijungti nereikia.",
-    feat_tag: "Funkcijos",
-    feat_title: "Sukurta laukui,<br/>ne biurui.",
-    feat_sub: "Kiekviena funkcija egzistuoja tam, kad sutaupytų jūsų laiko — nesvarbu, ar esate statybvietėje, tarp susitikimų, ar valdote daugiakalbę komandą.",
-    f1_title: "Balsinis įvedimas ir DI analizė", f1_body: "Kalbėkite bet kuria iš 25 kalbų. Gemini 2.5 automatiškai išskaičiuoja kiekvieną lauką ir laikui bėgant mokosi jūsų žodyno.", f1_b1: "Įrašymas vienu paspaudimu", f1_b2: "Natūralios kalbos terminai (\"kitą pirmadienį\", \"savaitės pabaigoje\")", f1_b3: "Kiekvieno vartotojo balsinis mokymasis ir žodynas", f1_b4: "Rankinio redagavimo galimybė visada prieinama",
-    f2_title: "25 kalbos", f2_body: "Visos 24 oficialios ES kalbos ir norvegų kalba. Balsas, sąsaja, el. laiškai ir atsakymai — visiškai lokalizuota.", f2_b1: "Natūrali lokalizacija, ne pažodinis vertimas", f2_b2: "Keiskite kalbą bet kada iš antraštės", f2_b3: "Integruotas vertimo atsiliepimų įrankis",
-    f3_title: "El. pašto pranešimai ir veiksmai", f3_body: "Vykdytojas gauna el. laišką užduočiai sukūrus — su veiksmų mygtukais, kuriuos gali spausti neprisijungęs.", f3_b1: "Priimti · Pradėti · Baigti · Atmesti — viskas el. paštu", f3_b2: "Kalendoriaus kvietimas (.ics) pridedamas automatiškai", f3_b3: "Suplanuoti priminimai prieš terminus", f3_b4: "Veikia su „Gmail”, „Outlook” ar bet kokiu SMTP",
-    f4_title: "Pilnas užduočių valdymas", f4_body: "Visas darbo srautas nuo sukūrimo iki archyvavimo — su filtrais, paieška ir gyvais statistiniais duomenimis.", f4_b1: "Būsena: Laukiama → Vykdoma → Atlikta", f4_b2: "Prioritetų spalvinė kodavimas: Aukštas / Vidutinis / Žemas", f4_b3: "Greiti filtrai, visos teksto paieška, datų intervalai", f4_b4: "Pastabos ir pilnas veiklos žurnalas kiekvienai užduočiai",
-    f5_title: "Dviejų lygių delegavimas", f5_body: "Perduokite užduotį kolegai išlaikant ryšį su originalu. Likite informuoti nemikrovaldydami.", f5_b1: "Deleguotos užduotys matomos su aiškiu ženklu", f5_b2: "Gavėjai gali veikti net neturėdami paskyros", f5_b3: "Originalus siuntėjas nuolat informuojamas",
-    f6_title: "Mobiliesiems skirta ir PWA", f6_body: "Sukurta pirmiausia telefonams — įdiegiama kaip programėlė „iOS”, „Android” ir staliniame kompiuteryje su neprisijungusio vartotojo palaikymu.", f6_b1: "Progresyvioji žiniatinklio programėlė — programų parduotuvė nereikalinga", f6_b2: "Vietiniai „iOS”, „Android”, „Mac” sukūrimai per „Capacitor”", f6_b3: "Veikia neprisijungus anksčiau įkeltoms užduotims", f6_b4: "Tamsi tema naudojimui silpnoje šviesoje",
-    f7_title: "Prietaisų skydas ir eksportas", f7_body: "Tiesioginės statistinės kortelės jūsų dabartiniam darbo krūviui. Eksportuokite bet kurį filtruotą rodinį į „Excel” arba CSV vienu spustelėjimu.", f7_b1: "Laukiama / Vykdoma / Atlikta / Archyvuota", f7_b2: "Spustelėkite bet kurią kortelę, kad iš karto filtruotumėte sąrašą", f7_b3: "Eksportuoti į .xlsx arba .csv — paruošta ataskaitoms",
-    f8_title: "Saugumas ir privatumas", f8_body: "BDAR laikomasi nuo pat pradžių. Jūsų duomenys yra jūsų — ir tik jūsų.", f8_b1: "ES talpinamas serveris", f8_b2: "Eilučių lygio sauga — jokie vartotojai nemato kitų duomenų", f8_b3: "Pilnas duomenų eksportas ir paskyros ištrynimas vienu spustelėjimu", f8_b4: "Saugios žetonizuotos viešos nuorodos su galiojimo laiku",
-    f9_title: "Komandos ir kelių nuomininkų sistema", f9_body: "Sukurta tiek asmenims, tiek komandoms. Kvieskite narius, valdykite vaidmenis ir dalinkitės užduočių fondais.", f9_b1: "Prisijungimas su „Google” arba el. paštu + slaptažodžiu", f9_b2: "Kvieskite komandos narius el. paštu", f9_b3: "Išmanus kontaktų automatinis išsaugojimas iš balsinio įvedimo", f9_b4: "Keli el. pašto adresai vienam kontaktui",
-    who_tag: "Kam skirta",
-    who_title: "Skirta žmonėms, kurie negali sustoti rašyti.",
-    who1_title: "Statybos ir paslaugų vadovai", who1_body: "Koordinuokite brigadas judėdami — skirkite užduotis vietoje neliesdami klaviatūros.",
-    who2_title: "Pardavimų vadovai", who2_body: "Diktuokite tolesnius veiksmus tarp susitikimų. Niekada neprarasite įsipareigojimų, prisiimtų per skambutį.",
-    who3_title: "Nekilnojamojo turto ir objektų valdytojai", who3_body: "Deleguokite tiekėjų užduotis per sekundes — su automatiniais priminimais ir būsenos sekimu.",
-    who4_title: "Daugiakalbės komandos", who4_body: "Kiekvienas komandos narys dirba savo kalba. Sistema pasirūpins visu kitu.",
-    who5_title: "Smulkaus verslo savininkai", who5_body: "Delegavimas be trikdžių — be projektų valdymo viršenybės ar brangios programinės įrangos.",
-    who_quote: "\"Dauguma užduočių programėlių mano, kad sėdite prie stalo.<br/>Task Coordinator mano, kad <span class='highlight'>nesėdite.</span>\"",
-    who_desc: "Paverčia 5 sekundes balso pilnai struktūruota užduotimi su terminu, vykdytoju, el. laišku, kalendoriaus kvietimu ir pilnu audito žurnalu — 25 kalbomis, bet kuriame įrenginyje, su privačiomis numatytomis nuostatomis.",
-    who_check1: "Jokio prenumeratos įkalinimo", who_check2: "Vykdytojams paskyra nereikalinga", who_check3: "Veikia su jūsų esamu el. pašto tiekėju", who_check4: "Atitinka BDAR, talpinama ES",
-    sit_tag: "Realios situacijos",
-    sit_title: "Liaukitės vaikščioti paskui žmones.<br/><span style=\"background:linear-gradient(135deg,var(--accent-bright) 0%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;\">Pradėkite koordinuoti darbą.</span>",
-    sit_sub: "Jūsų komanda užimta. Koordinavimas neturi būti sunkus. Štai kaip Task Coordinator tinka į realias darbo dienas.",
-    sit_solution_label: "Su Task Coordinator",
-    sit_check1: "Kuria struktūruotas užduotis", sit_check2: "Priskiria tinkamus žmones", sit_check3: "Nustato terminus ir siunčia el. pašto pranešimus", sit_check4: "Seka užbaigimą",
-    sit1_num: "Situacija #1", sit1_title: "Statybvietės prižiūrėtojas, valdantis kelias brigadas",
-    sit1_problem_label: "Problema",
-    sit1_problem: "Vaikštote po statybvietę ir pastebite problemų: elektros darbai, trūkstamos medžiagos, subrangovas, kuris turi grįžti, saugos problemos. Skambinate žmonėms ir žadate sau viską užrašyti vėliau.",
-    sit1_p1: "Užduotys pamirštamos", sit1_p2: "Terminai neaiškūs", sit1_p3: "Niekas nežino, kas buvo atsakingas",
-    sit1_voice: "\"Paskirk Marcui užsakyti izoliacinę medžiagą šiandien. Aukštas prioritetas. Primink Lucai suplanuoti elektros patikrinimą iki penktadienio.\"",
-    sit2_num: "Situacija #2", sit2_title: "Pardavimų vadovas tarp klientų susitikimų",
-    sit2_problem: "Baigiate susitikimą su klientu ir iš karto vykstate į kitą. Užrašai lieka bloknotuose iki vakaro. Galimybės lėtėja, nes tolesni veiksmai vykdomi per vėlai.",
-    sit2_p1: "Pasiūlymai vėluoja", sit2_p2: "Tolesni veiksmai pamirštami", sit2_p3: "Galimybės prarandamos",
-    sit2_voice: "\"Paprašyk Saros paruošti ACME pasiūlymą iki rytojaus pietų. Vidutinis prioritetas. Susisiek su ACME kitą antradienį.\"",
-    sit3_num: "Situacija #3", sit3_title: "Objektų valdytojas, koordinuojantis tiekėjus",
-    sit3_problem: "Nuomininkas praneša apie lifto priežiūrą, šildymo problemas, valymo tolesnius veiksmus ir saugos kamerų patikrinimą. Kiekvienas tiekėjas naudoja skirtingus kanalus. Skambučiai, el. laiškai, žinutės ir ranka rašyti užrašai tampa chaosu.",
-    sit3_p1: "Užklausos išsibarsčiusios per kanalus", sit3_p2: "Nėra centralizuotos istorijos", sit3_p3: "Atsakomybė neaiški",
-    sit3_voice: "\"Paskirk lifto patikrinimą ServiceLift iki trečiadienio. Paprašyk valymo rangovo patikrinti trečią aukštą rytoj ryte.\"",
-    sit3_sol1: "Centralizuotai seka pažangą", sit3_sol2: "Išlaiko išsamią istoriją",
-    sit4_num: "Situacija #4", sit4_title: "Operacijų vadovas, vadovaujantis daugiakalbei komandai",
-    sit4_problem: "Jūsų darbuotojai kalba skirtingomis kalbomis. Instrukcijos suprantamos neteisingai. Terminai interpretuojami skirtingai. Svarbios detalės prarandamos vertime.",
-    sit4_p1: "Instrukcijos suprantamos neteisingai", sit4_p2: "Terminai interpretuojami skirtingai", sit4_p3: "Detalės prarandamos vertime",
-    sit4_sol_desc: "Kurkite užduotis savo kalba. Task Coordinator pasirūpins visu kitu.",
-    sit4_sol1: "Palaiko 25 Europos kalbas", sit4_sol2: "Lokalizuoja pranešimus kiekvienam gavėjui", sit4_sol3: "Standartizuoja užduočių informaciją", sit4_sol4: "Supranta natūralią kalbą",
-    sit5_num: "Situacija #5", sit5_title: "Smulkaus verslo savininkas dešimtyje skirtingų vaidmenų",
-    sit5_problem: "Kiekvieną dieną kyla dešimtys mažų užduočių. Dauguma jų perduodamos žodžiu. Daugelis pamirštamos. Tampate visų kliūtimi.",
-    sit5_p1: "Užduotys pamirštamos", sit5_p2: "Tampate kliūtimi", sit5_p3: "Nėra pažangos matomumo",
-    sit5_voice: "\"Primink Tomui išsiųsti sąskaitą 245. Paprašyk Anos patvirtinti pristatymą su tiekėju. Suplanuok kliento tolesnius veiksmus penktadienį.\"",
-    sit5_sol1: "Užduotys organizuojamos akimirksniu", sit5_sol2: "Komandos nariai informuojami automatiškai", sit5_sol3: "Pažanga matoma iš pirmo žvilgsnio", sit5_sol4: "Atsakomybė aiški",
-    sit6_num: "Situacija #6", sit6_title: "Paslaugų įmonė, siunčianti lauko technikus",
-    sit6_problem: "Jūsų technikai nuolat juda tarp klientų vietų. Naujos užklausos gaunamos visą dieną. Informacija dalijamasi skambučiais ir žinutėmis. Svarbios detalės dingsta pokalbiuose.",
-    sit6_p1: "Detalės prarandamos skambučiuose", sit6_p2: "Nėra realaus laiko matomumo", sit6_p3: "Reikia papildomų tolesniųjų skambučių",
-    sit6_voice: "\"Paskirk avariją Ąžuolo gatvėje Davidui. Baigti šiandien iki 17:00.\"",
-    sit6_sol1: "Užduotis akimirksniu gauna technikas", sit6_sol2: "Terminas ir kalendoriaus priminimas įtrauktas", sit6_sol3: "Būsenos atnaujinimai be papildomų skambučių",
-    cta_tag: "Gauti ankstyvo naudojimo prieigą",
-    cta_title: "Pasiruošę nustoti rašyti<br/>ir pradėti deleguoti?",
-    cta_sub: "Prisijunkite prie ankstyvo naudojimo sąrašo. Būkite vieni iš pirmųjų, išbandančių Task Coordinator, ir padėkite formuoti produktą savo atsiliepimais.",
-    cta_btn: "Prašyti ankstyvo naudojimo prieigos →",
-    cta_back: "Grįžti į ProcesSolution",
-    cta_questions: "Klausimai?",
-    cta_built: "Sukūrė",
-  }
-};
+        textBindings.forEach(({ node, key, prefix, suffix }) => {
+          node.nodeValue = `${prefix}${lang === "lt" ? key : t[key][lang] || key}${suffix}`;
+        });
 
-let currentLang = 'en';
+        document.querySelectorAll("[data-lang]").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
+        });
 
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
-  const d = T[lang] || T.en;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    if (d[key] !== undefined) el.textContent = d[key];
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const key = el.dataset.i18nHtml;
-    if (d[key] !== undefined) el.innerHTML = d[key];
-  });
-}
+        localStorage.setItem("taskCoordinatorLang", lang);
+      };
 
-/* ── REVEAL ON SCROLL ── */
-const revealEls = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-revealEls.forEach(el => observer.observe(el));
-// Fallback: se dopo 800ms nessun elemento è diventato visibile (es. file://) li mostriamo tutti
-setTimeout(() => {
-  revealEls.forEach(el => el.classList.add('visible'));
-}, 800);
-</script>
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.lang));
+      });
 
-</body>
+      setLanguage(localStorage.getItem("taskCoordinatorLang") || "lt");
+    </script>
+  </body>
 </html>
