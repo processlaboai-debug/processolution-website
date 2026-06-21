@@ -1411,12 +1411,15 @@ function closePrivacyOutside(e) {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePrivacy(); });
 
-/* ── Booking CTA placeholder ── */
+/* ── Booking CTA ── */
+const tallyLinks = {
+  it: 'https://tally.so/r/Xx9Rvd',
+  en: 'https://tally.so/r/Xx9Rvd',
+  lt: 'https://tally.so/r/Xx9Rvd'
+};
 document.getElementById('bookBtn').addEventListener('click', function(e) {
   e.preventDefault();
-  // Replace with your Calendly link:
-  // window.open('https://calendly.com/YOUR_LINK', '_blank');
-  alert('Booking link coming soon! Reach us at info@processolution.pro');
+  window.open(tallyLinks[currentLang] || tallyLinks.it, '_blank');
 });
 
 /* ── Scroll reveal ── */
