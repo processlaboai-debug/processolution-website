@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account and data deletion — ProcesSolution</title>
+  <meta name="description" content="Account and data deletion — Task Coordinator by ProcesSolution (Stone grupė, MB)." />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="canonical" href="https://processolution.pro/delete-account" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- GENERATO da tools/legal/sync_legal.py: non modificare a mano, rilancia lo script. -->
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f6ff;
+      --border: rgba(0,0,0,0.09);
+      --accent: #7c6ff5;
+      --text: #1a1a2e;
+      --muted: #4b4b6a;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 820px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+    header.top { border-bottom: 1px solid var(--border); background: var(--surface); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; padding-bottom: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; }
+    .brand img { width: 34px; height: 34px; object-fit: contain; }
+    .brand span { color: var(--accent); }
+    .lang { display: flex; gap: 6px; }
+    .lang a { font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; text-decoration: none;
+      border: 1px solid var(--border); color: var(--muted); }
+    .lang a[aria-current="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    main.wrap { padding-top: 28px; padding-bottom: 56px; overflow-wrap: anywhere; }
+    .doc-label { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(26px, 5vw, 36px); line-height: 1.2; margin: 0 0 16px; }
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 21px; line-height: 1.3; margin: 36px 0 10px; }
+    h3 { font-size: 17px; margin: 22px 0 6px; }
+    a { color: var(--accent); }
+    ul, ol { padding-left: 22px; }
+    li { margin: 4px 0; }
+    .table-scroll { overflow-x: auto; margin: 14px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+    th, td { text-align: left; vertical-align: top; padding: 8px 10px; border: 1px solid var(--border); }
+    th { background: var(--surface); }
+    .box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin: 16px 0; }
+    .btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; }
+    footer.bottom { border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; padding: 22px 0 36px; }
+    footer.bottom nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 10px; }
+    footer.bottom a { color: var(--muted); }
+    [data-lang] { display: none; }
+    html[lang="en"] [data-lang="en"], html[lang="lt"] [data-lang="lt"] { display: block; }
+  </style>
+  <script>
+    (function () {
+      var p = new URLSearchParams(location.search).get('lang');
+      var nav = (navigator.language || '').toLowerCase().indexOf('lt') === 0 ? 'lt' : 'en';
+      document.documentElement.lang = (p === 'lt' || p === 'en') ? p : nav;
+    })();
+  </script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/logo.png" alt="" />Proces<span>Solution</span></a>
+      <nav class="lang" aria-label="Language">
+        <a href="?lang=en" data-set="en">EN</a>
+        <a href="?lang=lt" data-set="lt">LT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div data-lang="en">
+      <p class="doc-label">Task Coordinator</p>
+<h1>Account and data deletion</h1>
+<p>Task Coordinator · Stone grupė, MB (ProcesSolution)</p>
+
+<h2>Option 1 — in the app</h2>
+<ol>
+  <li>Sign in to the app.</li>
+  <li>Open “Settings” (gear icon).</li>
+  <li>At the bottom, tap “Delete account” and confirm.</li>
+</ol>
+
+<h2>Option 2 — by email (no need to install the app)</h2>
+<p>Write from your account email address to <a href="mailto:info@processolution.pro?subject=Account%20deletion">info@processolution.pro</a>. We will reply and delete your account within 7 business days, and no later than 1 month.</p>
+<p><a class="btn" href="mailto:info@processolution.pro?subject=Account%20deletion">Request deletion by email</a></p>
+
+<h2>What is deleted</h2>
+<p>Your profile, the tasks you created and their attached files, contacts, senders, voice vocabulary, corrections and templates, email (SMTP) and notification settings, pending invitations and your sign-in account. Deletion starts as soon as we receive the request and cannot be undone.</p>
+<p>If you own an organisation that still has other members, ownership passes to another member and the organisation keeps running.</p>
+
+<h2>What may remain</h2>
+<ul>
+  <li>Database backups – until the end of the infrastructure provider’s backup retention period.</li>
+  <li>Email delivery log – up to 90 days.</li>
+  <li>Unsubscribed addresses list – so that we do not email you again (only the email address is kept).</li>
+  <li>Other users’ tasks that list your email address – they belong to that user’s account.</li>
+</ul>
+<p>More details in the <a href="/privacy?lang=en">Privacy Policy</a> (sections 6 and 7.1).</p>
+    </div>
+    <div data-lang="lt">
+      <p class="doc-label">Task Coordinator</p>
+<h1>Paskyros ir duomenų ištrynimas</h1>
+<p>Task Coordinator · Stone grupė, MB (ProcesSolution)</p>
+
+<h2>1 būdas — programėlėje</h2>
+<ol>
+  <li>Prisijunkite prie programėlės.</li>
+  <li>Atidarykite „Nustatymai“ (krumpliaračio piktograma).</li>
+  <li>Apačioje paspauskite „Ištrinti paskyrą“ ir patvirtinkite.</li>
+</ol>
+
+<h2>2 būdas — el. paštu (nereikia įdiegti programėlės)</h2>
+<p>Parašykite iš savo paskyros el. pašto adreso į <a href="mailto:info@processolution.pro?subject=Paskyros%20i%C5%A1trynimas">info@processolution.pro</a>. Į prašymą atsakysime ir paskyrą ištrinsime per 7 darbo dienas, bet ne vėliau kaip per 1 mėnesį.</p>
+<p><a class="btn" href="mailto:info@processolution.pro?subject=Paskyros%20i%C5%A1trynimas">Prašyti ištrynimo el. paštu</a></p>
+
+<h2>Kas ištrinama</h2>
+<p>Jūsų profilis, jūsų sukurtos užduotys ir prie jų prisegti failai, kontaktai, siuntėjai, balso žodynas, korekcijos ir šablonai, pašto (SMTP) ir pranešimų nustatymai, dar nepriimti kvietimai ir prisijungimo paskyra. Ištrynimas pradedamas gavus prašymą ir yra negrįžtamas.</p>
+<p>Jei esate organizacijos savininkas ir joje lieka kitų narių, savininko teisės perduodamos kitam nariui, o organizacija toliau veikia.</p>
+
+<h2>Kas gali likti</h2>
+<ul>
+  <li>Duomenų bazės atsarginėse kopijose – iki infrastruktūros tiekėjo taikomo saugojimo laikotarpio pabaigos.</li>
+  <li>El. laiškų siuntimo žurnalas – ne ilgiau kaip 90 dienų.</li>
+  <li>Atsisakiusių gauti laiškus adresų sąrašas – kad laiškai nebūtų siunčiami vėl (saugomas tik el. pašto adresas).</li>
+  <li>Kitų vartotojų užduotys, kuriose nurodytas jūsų el. pašto adresas – jos priklauso kito vartotojo paskyrai.</li>
+</ul>
+<p>Daugiau informacijos – <a href="/privacy?lang=lt">privatumo politikoje</a> (6 ir 7.1 skyriai).</p>
+    </div>
+  </main>
+
+  <footer class="bottom">
+    <div class="wrap">
+      <nav data-lang="en">
+        <a href="/privacy?lang=en">Privacy Policy</a>
+        <a href="/terms?lang=en">Terms of Use</a>
+        <a href="/dpa?lang=en">Data Processing Agreement</a>
+        <a href="/delete-account?lang=en">Delete account</a>
+        <a href="/support?lang=en">Support</a>
+      </nav>
+      <nav data-lang="lt">
+        <a href="/privacy?lang=lt">Privatumo politika</a>
+        <a href="/terms?lang=lt">Naudojimosi taisyklės</a>
+        <a href="/dpa?lang=lt">Duomenų tvarkymo sutartis</a>
+        <a href="/delete-account?lang=lt">Paskyros ištrynimas</a>
+        <a href="/support?lang=lt">Pagalba</a>
+      </nav>
+      <div>© Stone grupė, MB · ProcesSolution · <a href="mailto:info@processolution.pro">info@processolution.pro</a></div>
+    </div>
+  </footer>
+  <script>
+    document.querySelectorAll('.lang a').forEach(function (a) {
+      a.setAttribute('aria-current', a.dataset.set === document.documentElement.lang ? 'true' : 'false');
+    });
+  </script>
+</body>
+</html>
