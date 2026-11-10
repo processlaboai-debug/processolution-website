@@ -1,0 +1,6 @@
+# Pagine legali di Task Coordinator: il testo vive nell'app, qui solo redirect.
+/privacy          https://task.processolution.pro/privacy          301
+/delete-account   https://task.processolution.pro/delete-account   301
+/terms            https://task.processolution.pro/legal/terms      301
+/dpa              https://task.processolution.pro/legal/dpa        301
+/support          https://task.processolution.pro/support          301
