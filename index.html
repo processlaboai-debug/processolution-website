@@ -1396,6 +1396,11 @@ function setLang(lang) {
     if (dict[key] !== undefined) el.innerHTML = dict[key];
   });
 
+  // Task Coordinator page opens in the same language as the home
+  document.querySelectorAll('a[href^="task-coordinator.html"]').forEach(a => {
+    a.setAttribute('href', 'task-coordinator.html?lang=' + lang);
+  });
+
   // Task Coordinator documents: LT version for LT, English for EN and IT
   document.querySelectorAll('a[data-doc]').forEach(a => {
     a.href = 'https://task.processolution.pro/' + (lang === 'lt' ? 'lt' : 'en') + '/' + a.dataset.doc;

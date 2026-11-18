@@ -58,7 +58,15 @@
       }
 
       .page {
+        /* "clip" taglia le decorazioni che escono dai bordi senza creare un'area di scorrimento:
+           con "hidden" la barra di navigazione sticky non restava in alto. */
         overflow: hidden;
+        overflow: clip;
+      }
+
+      section[id] {
+        /* le sezioni raggiunte dal menu non finiscono sotto la barra fissa */
+        scroll-margin-top: 80px;
       }
 
       .shell {
@@ -1611,14 +1619,22 @@
           link.href = `https://task.processolution.pro/${lang === "lt" ? "lt" : "en"}/${link.dataset.doc}`;
         });
 
-        localStorage.setItem("taskCoordinatorLang", lang);
+        try { localStorage.setItem("taskCoordinatorLang", lang); } catch (e) {}
       };
 
       document.querySelectorAll("[data-lang]").forEach((button) => {
         button.addEventListener("click", () => setLanguage(button.dataset.lang));
       });
 
-      setLanguage(localStorage.getItem("taskCoordinatorLang") || "lt");
+      // Lingua iniziale: ?lang= (arriva dalla home), poi l'ultima scelta, poi la lingua del browser.
+      const pickLanguage = () => {
+        const valid = (l) => (l && localeMeta[l] ? l : null);
+        let saved = null;
+        try { saved = localStorage.getItem("taskCoordinatorLang"); } catch (e) {}
+        const browser = (navigator.language || "").slice(0, 2).toLowerCase();
+        return valid(new URLSearchParams(location.search).get("lang")) || valid(saved) || valid(browser) || "en";
+      };
+      setLanguage(pickLanguage());
     </script>
   </body>
 </html>
