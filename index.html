@@ -6,7 +6,7 @@
   <title>ProcesSolution | Smart Process Automation for Businesses</title>
   <meta property="og:title" content="ProcesSolution | Smart Process Automation for Businesses" />
   <meta property="og:site_name" content="ProcesSolution" />
-  <meta name="description" content="We build custom AI agents and workflow automations for accountants, lawyers, consultants, and small firms. Version 1 delivered in 5 business days." />
+  <meta name="description" content="We design and implement practical solutions that simplify everyday work, automate repetitive tasks and connect business processes." />
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -117,10 +117,10 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 20px;
       list-style: none;
     }
-    .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a { white-space: nowrap; font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
     .nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 
@@ -379,6 +379,11 @@
     .modal-close:hover { color: var(--text); border-color: rgba(0,0,0,0.3); }
 
     /* ─── MOBILE ─── */
+    @media (max-width: 1200px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--border); padding: 20px 24px; gap: 16px; z-index: 99; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    }
     @media (max-width: 900px) {
       .hero-img { display: none; }
       .hero-layout { justify-content: center; }
@@ -400,6 +405,15 @@
       .footer-bottom { flex-direction: column; text-align: center; }
       .modal { padding: 28px 20px; }
       .lang-btn { padding: 5px 7px; }
+      /* barra in alto su telefono: logo più piccolo, il pulsante "Prenota" è già nella pagina */
+      .nav-logo img { height: 40px; }
+      .nav-logo span { font-size: 19px; letter-spacing: 0.02em; }
+      .nav-right > .btn { display: none; }
+      .nav-right { gap: 8px; }
+    }
+    @media (max-width: 380px) {
+      .nav-logo span { font-size: 17px; }
+      .nav-logo img { height: 34px; }
     }
 
     /* ─── SCROLL REVEAL ─── */
@@ -483,6 +497,16 @@
     @media (max-width: 600px) {
       .product-card { flex-direction: column; padding: 28px 24px; gap: 20px; }
     }
+    /* nuovi testi 2026-11 */
+    .hero-sub + .hero-sub-2 { margin-top: -24px; }
+    .section-sub-2 { margin-top: 12px; }
+    .after-intro { font-size: 15px; font-weight: 600; color: var(--muted); margin: -8px 0 8px; }
+    .area-solutions { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .area-solutions strong { color: var(--text); }
+    .step .step-note { margin-top: 10px; font-style: italic; }
+    .cred-right .tag { display: inline-block; margin-bottom: 12px; }
+    .product-card-tagline { font-size: 16px; font-weight: 600; color: var(--text); }
+    .product-card-features-label { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -495,11 +519,11 @@
       <span>Proces<span style="color:var(--accent);">Solution</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#problem" data-i18n="nav_problem">The Problem</a></li>
-      <li><a href="#process" data-i18n="nav_process">How It Works</a></li>
-      <li><a href="#results" data-i18n="nav_results">Results</a></li>
-      <li><a href="#products">Products</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#problems" data-i18n="nav_help">Where We Help</a></li>
+      <li><a href="#process" data-i18n="nav_process">Process</a></li>
+      <li><a href="#why" data-i18n="nav_why">Why Us</a></li>
+      <li><a href="#products" data-i18n="nav_products">Products</a></li>
+      <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
     </ul>
     <div class="nav-right">
       <div class="lang-switcher">
@@ -521,19 +545,16 @@
   <img class="hero-img" src="google-deepmind-LIlsk-UFVxk-unsplash.jpg" alt="" aria-hidden="true" />
   <div class="container hero-layout">
     <div class="hero-content">
-      <div class="hero-eyebrow">
-        <div class="dot"></div>
-        <span data-i18n="hero_eyebrow">Custom AI Automation · Delivered in 5 Business Days</span>
-      </div>
       <h1 class="hero-title">
-        <span data-i18n-html="hero_title">People create value.<br/><span class="accent">AI handles the routine.</span></span>
+        <span data-i18n-html="hero_title">People create value.<br/><span class="accent">Smart solutions handle the routine.</span></span>
       </h1>
-      <p class="hero-sub" data-i18n="hero_sub">We build AI agents and assistants that automate repetitive tasks, manage information and run processes — so your team can work more productively and focus on what creates the greatest value for your business.</p>
+      <p class="hero-sub" data-i18n="hero_sub">We design and implement practical solutions that simplify everyday work, automate repetitive tasks and connect business processes.</p>
+      <p class="hero-sub hero-sub-2" data-i18n="hero_sub2">From smart workflows and software integrations to intelligent assistants and AI agents, we help professionals, small firms and businesses work more efficiently — without unnecessary complexity.</p>
       <div class="hero-actions">
-        <a href="#cta" class="btn btn-primary btn-lg" data-i18n="hero_cta_primary">Book a Free 30-Min Call</a>
-        <a href="#process" class="btn btn-ghost btn-lg" data-i18n="hero_cta_secondary">See How It Works</a>
+        <a href="#cta" class="btn btn-primary btn-lg" data-i18n="hero_cta_primary">Book a Free 30-Minute Consultation</a>
+        <a href="#problems" class="btn btn-ghost btn-lg" data-i18n="hero_cta_secondary">Discover Our Solutions</a>
       </div>
-      <p class="hero-note" data-i18n="hero_note">Clear insights and practical solutions for your business.</p>
+      <p class="hero-note" data-i18n="hero_note">Practical technology. Real business improvements.</p>
     </div>
   </div>
 </section>
@@ -545,28 +566,33 @@
   <div class="container">
     <div class="reveal">
       <span class="tag" data-i18n="prob_tag">Sound familiar?</span>
-      <h2 class="section-title" data-i18n="prob_title">Daily admin tasks take time you could spend on clients, growth and strategy.</h2>
+      <h2 class="section-title" data-i18n="prob_title">Too much time spent on tasks that don't move your business forward?</h2>
     </div>
     <div class="problem-grid">
       <div class="reveal">
-        <p class="section-sub" data-i18n="prob_sub">Accountants, lawyers, consultants and business owners spend hours every day on tasks that are necessary — but do nothing to grow the business.</p>
+        <p class="section-sub" data-i18n="prob_sub">Professionals, small teams and business owners spend valuable hours on administrative work, manual data entry, follow-ups and information management.</p>
+        <p class="section-sub section-sub-2" data-i18n="prob_sub2">These activities are necessary, but they don't always require human attention.</p>
         <ul class="pain-list">
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain1">Manual data entry and copy-pasting between tools</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain2">Repetitive follow-ups and chasing information</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain3">Compiling reports by hand every week</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain4">Knowing something could be automated — but no IT team to build it</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain5">Off-the-shelf tools that don't fit how you actually work</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain1">Manually entering and transferring data between different systems.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain2">Repetitive emails, reminders and follow-ups.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain3">Preparing reports and collecting information by hand.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain4">Searching through emails and documents to find what you need.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain5">Keeping track of tasks, deadlines and responsibilities manually.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain6">Using multiple tools that don't communicate with each other.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="pain7">Knowing that work could be simplified, but not knowing where to start.</span></li>
         </ul>
       </div>
       <div class="reveal">
         <div class="after-box">
-          <h3 data-i18n="after_title">After working with ProcesSolution:</h3>
+          <h3 data-i18n="after_title">Imagine a smarter way of working.</h3>
+          <p class="after-intro" data-i18n="after_intro">With ProcesSolution, you get:</p>
           <ul class="after-list">
-            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after1">Automated processes instead of manual work</span></li>
-            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after2">Hours saved every week</span></li>
-            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after3">A solution tailored to your specific business activities</span></li>
-            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after4">A team ready to work independently</span></li>
-            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after5">Reliable support when you need it</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after1">Automated workflows instead of repetitive manual tasks.</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after2">Connected systems and better-organised information.</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after3">More time for clients, business development and strategic work.</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after4">Solutions designed around the way your business actually operates.</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after5">Processes that work more consistently, with less manual coordination.</span></li>
+            <li><svg class="check-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-i18n="after6">Practical support to improve and expand your solutions over time.</span></li>
           </ul>
         </div>
       </div>
@@ -576,33 +602,46 @@
 
 <hr class="divider" />
 
-<!-- ═══════════════ PROBLEMS DETAIL ═══════════════ -->
+<!-- ═══════════════ WHERE WE HELP ═══════════════ -->
 <section id="problems">
   <div class="container">
     <div class="reveal" style="text-align:center; margin-bottom:48px;">
-      <span class="tag" data-i18n="probs_tag">Sound familiar?</span>
-      <h2 class="section-title" data-i18n="probs_title">The problems your team faces every day.</h2>
-      <p class="section-sub" data-i18n="probs_sub">What resonates isn't a feature list — it's the problems you recognise from your own working day.</p>
+      <span class="tag" data-i18n="help_tag">Where can we help?</span>
+      <h2 class="section-title" data-i18n="help_title">Smart solutions for everyday business challenges.</h2>
+      <p class="section-sub" style="margin:14px auto 0;" data-i18n="help_sub">We don't start with technology. We start with the tasks, processes and bottlenecks that take up your time.</p>
     </div>
     <div class="why-grid">
       <div class="why-card reveal">
-        <h3 class="why-card-title" data-i18n="probs_cat1_title">Operations &amp; Process Management</h3>
+        <h3 class="why-card-title" data-i18n="area1_title">Operations &amp; Process Management</h3>
         <ul class="pain-list" style="margin-top:16px;">
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat1_p1">Important information gets lost between emails, messages and calls.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat1_p2">The team constantly asks who needs to do what and by when.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat1_p3">Processes only work as long as someone is actively watching over them.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat1_p4">Too much time goes to coordination, too little to actual work.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat1_p5">Task status is only clear when someone manually updates a spreadsheet.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat1_p6">Work gets stuck between departments because nobody sees the full picture.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area1_p1">Important information gets lost between emails, messages and calls.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area1_p2">Teams spend too much time coordinating activities.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area1_p3">Processes depend on someone constantly checking and updating their status.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area1_p4">Tasks and responsibilities are difficult to track.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area1_p5">Work gets delayed because information is scattered across different tools.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area1_p6">Repetitive administrative operations take time away from more valuable activities.</span></li>
         </ul>
+        <p class="area-solutions"><strong data-i18n="area_sol_label">Our solutions:</strong> <span data-i18n="area1_sol">automated workflows, task management, information processing, document handling and system integrations.</span></p>
       </div>
       <div class="why-card reveal">
-        <h3 class="why-card-title" data-i18n="probs_cat2_title">Sales &amp; Customer Service</h3>
+        <h3 class="why-card-title" data-i18n="area2_title">Administration &amp; Document Management</h3>
         <ul class="pain-list" style="margin-top:16px;">
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat2_p1">Responses to client enquiries are slow because information is scattered across different systems.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat2_p2">Potential clients are lost because nobody follows up on time.</span></li>
-          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="probs_cat2_p3">Sales people spend more time managing the CRM than talking to clients.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area2_p1">Documents arrive through different channels and need manual processing.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area2_p2">Data has to be copied from documents into spreadsheets or business systems.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area2_p3">Deadlines and administrative activities require constant attention.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area2_p4">Information is difficult to retrieve and organise.</span></li>
         </ul>
+        <p class="area-solutions"><strong data-i18n="area_sol_label">Our solutions:</strong> <span data-i18n="area2_sol">document processing, automated data extraction, digital filing, information validation and administrative workflows.</span></p>
+      </div>
+      <div class="why-card reveal">
+        <h3 class="why-card-title" data-i18n="area3_title">Sales &amp; Customer Management</h3>
+        <ul class="pain-list" style="margin-top:16px;">
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area3_p1">Customer enquiries are not always answered promptly.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area3_p2">Potential clients are lost because follow-ups are delayed.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area3_p3">Customer information is scattered across different systems.</span></li>
+          <li><svg class="pain-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span data-i18n="area3_p4">Sales teams spend too much time updating CRM records.</span></li>
+        </ul>
+        <p class="area-solutions"><strong data-i18n="area_sol_label">Our solutions:</strong> <span data-i18n="area3_sol">automated lead management, customer follow-ups, CRM integrations and smart communication workflows.</span></p>
       </div>
     </div>
   </div>
@@ -615,39 +654,41 @@
   <div class="container">
     <div class="process-header reveal">
       <span class="tag" data-i18n="proc_tag">The Process</span>
-      <h2 class="section-title" data-i18n-html="proc_title">Fast start. Clear path. Measurable result.</h2>
-      <p class="section-sub" data-i18n="proc_sub">You get the first version of the solution in 5 business days, and a fully working automation in 3–4 weeks.</p>
+      <h2 class="section-title" data-i18n-html="proc_title">A clear path from problem to practical solution.</h2>
+      <p class="section-sub" data-i18n="proc_sub">Every project starts with understanding how you work and identifying where smart automation can make a real difference.</p>
     </div>
     <div class="steps">
       <div class="step reveal">
-        <div class="step-num">STEP 01</div>
+        <div class="step-num"><span data-i18n="step_word">STEP</span> 01</div>
         <div class="step-icon">☎️</div>
-        <h3 data-i18n="step1_title">Strategic Consultation</h3>
-        <p data-i18n="step1_body">We show you where time is being lost, what's worth automating and what results you can achieve with AI.</p>
+        <h3 data-i18n="step1_title">Business Consultation</h3>
+        <p data-i18n="step1_body">We discuss your daily activities, identify repetitive tasks and explore opportunities to simplify your processes.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">STEP 02</div>
+        <div class="step-num"><span data-i18n="step_word">STEP</span> 02</div>
         <div class="step-icon">📋</div>
-        <h3 data-i18n="step2_title">Strategic Preparation & System Setup</h3>
-        <p data-i18n="step2_body">We define the project scope, align on access and workflows, and prepare all the necessary infrastructure. You know exactly what will be done and what the next steps are.</p>
+        <h3 data-i18n="step2_title">Process Analysis &amp; Solution Design</h3>
+        <p data-i18n="step2_body">We map the workflow, define the project scope and select the most suitable technologies. You know what we propose, why it is needed and how it will work.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">STEP 03</div>
+        <div class="step-num"><span data-i18n="step_word">STEP</span> 03</div>
         <div class="step-icon">⚡</div>
-        <h3 data-i18n="step3_title">Working Prototype in 5 Business Days</h3>
-        <p data-i18n="step3_body">From the first week you can test the solution in a real working environment. Based on your team's feedback, we refine it until it fully meets your needs.</p>
+        <h3 data-i18n="step3_title">Working Prototype</h3>
+        <p data-i18n="step3_body">We build an initial version of the solution for testing in a real working environment.</p>
+        <p class="step-note" data-i18n="step3_note">Our target is to deliver the first prototype within 5 business days, where project complexity and access requirements allow.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">STEP 04</div>
+        <div class="step-num"><span data-i18n="step_word">STEP</span> 04</div>
         <div class="step-icon">🎯</div>
-        <h3 data-i18n="step4_title">Final Solution Handover</h3>
-        <p data-i18n="step4_body">A fully working solution within 3–4 weeks of signing. We transfer all access and clear usage documentation. Team training — as needed.</p>
+        <h3 data-i18n="step4_title">Implementation &amp; Handover</h3>
+        <p data-i18n="step4_body">We refine, test and implement the solution. We provide the necessary documentation, access and team training.</p>
+        <p class="step-note" data-i18n="step4_note">Typical implementation time: 3–4 weeks, depending on project scope and complexity.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">STEP 05</div>
+        <div class="step-num"><span data-i18n="step_word">STEP</span> 05</div>
         <div class="step-icon">🔄</div>
-        <h3 data-i18n="step5_title">Continued Growth (optional)</h3>
-        <p data-i18n="step5_body">Automation doesn't have to stop with the first project. We help you expand the solution, automate new processes and adapt to evolving business needs.</p>
+        <h3 data-i18n="step5_title">Continuous Improvement (Optional)</h3>
+        <p data-i18n="step5_body">As your business evolves, your processes can evolve too. We help you extend, adapt and improve your solutions whenever new needs arise.</p>
       </div>
     </div>
   </div>
@@ -657,40 +698,45 @@
 <section id="why">
   <div class="container">
     <div class="why-header reveal">
-      <span class="tag" data-i18n="why_tag">Why ProcesSolution</span>
-      <h2 class="section-title" data-i18n-html="why_title">AI solutions for your business.</h2>
-      <p class="section-sub" data-i18n="why_sub">Choose from our recommended solutions — AI agents and automation tools that take over repetitive tasks, optimise your processes and free your team's time for the work that matters most.</p>
+      <span class="tag" data-i18n="why_tag">Why ProcesSolution?</span>
+      <h2 class="section-title" data-i18n-html="why_title">Practical solutions. Designed around your business.</h2>
+      <p class="section-sub" data-i18n="why_sub">We believe technology should adapt to the way people work — not the other way around.</p>
     </div>
     <div class="why-grid">
       <div class="why-card reveal">
         <div class="why-card-icon">🎯</div>
         <h3 data-i18n="why1_title">Built Around Your Workflow</h3>
-        <p data-i18n="why1_body">We build automation solutions that reflect your processes, your team's way of working, and your specific business needs.</p>
+        <p data-i18n="why1_body">Every business is different. We design solutions based on your actual processes, tools and operational needs.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-card-icon">🧩</div>
+        <h3 data-i18n="why2_title">The Right Technology for the Job</h3>
+        <p data-i18n="why2_body">Not every problem needs AI. Sometimes a simple automation or software integration is the smarter choice. We select the technology that makes the most sense.</p>
       </div>
       <div class="why-card reveal">
         <div class="why-card-icon">⚡</div>
-        <h3 data-i18n="why2_title">A working solution in 5 business days</h3>
-        <p data-i18n="why2_body">We believe in fast results, not long projects. That's why we deliver the first version of your automation within the first week — so you can start seeing real value as soon as possible.</p>
+        <h3 data-i18n="why3_title">Fast, Practical Results</h3>
+        <p data-i18n="why3_body">We focus on working solutions, not endless planning. Our goal is to deliver an initial prototype quickly and develop it through practical testing.</p>
       </div>
       <div class="why-card reveal">
         <div class="why-card-icon">💬</div>
-        <h3 data-i18n="why3_title">Work directly with the solution builders</h3>
-        <p data-i18n="why3_body">Every step is discussed with the people building your solution — so decisions are made faster, communication stays clear, and costs stay lower.</p>
+        <h3 data-i18n="why4_title">Direct Communication</h3>
+        <p data-i18n="why4_body">You work directly with the people analysing, designing and implementing your solution. Clear communication and short decision-making paths.</p>
       </div>
       <div class="why-card reveal">
-        <div class="why-card-icon">🔒</div>
-        <h3 data-i18n="why4_title">Full control from day one</h3>
-        <p data-i18n="why4_body">You get not just a working solution, but all the access, tools, and knowledge you need to manage it and grow it independently.</p>
+        <div class="why-card-icon">🔑</div>
+        <h3 data-i18n="why5_title">Your Systems, Your Control</h3>
+        <p data-i18n="why5_body">You receive the necessary access, documentation and knowledge to use and manage your solution independently.</p>
       </div>
       <div class="why-card reveal">
         <div class="why-card-icon">🇪🇺</div>
-        <h3 data-i18n="why5_title">Security and compliance without compromise</h3>
-        <p data-i18n="why5_body">Solutions can be deployed on EU infrastructure, and data protection is addressed at the design stage — not as an afterthought.</p>
+        <h3 data-i18n="why6_title">Security &amp; Data Protection</h3>
+        <p data-i18n="why6_body">We consider data protection and security from the beginning. Solutions can be deployed on EU infrastructure, depending on project requirements.</p>
       </div>
       <div class="why-card reveal">
         <div class="why-card-icon">🧠</div>
-        <h3 data-i18n="why6_title">Business experience before technology</h3>
-        <p data-i18n="why6_body">Before building AI agents and automations, we spent decades working in process-heavy industries, recruitment, and finance. That background helps us build solutions oriented towards real business outcomes — not just technical novelty.</p>
+        <h3 data-i18n="why7_title">Business Experience Before Technology</h3>
+        <p data-i18n="why7_body">Our experience in process-intensive industries, recruitment and finance helps us understand business needs before choosing technical solutions.</p>
       </div>
     </div>
   </div>
@@ -703,20 +749,17 @@
   <div class="container">
     <div class="cred-inner">
       <div class="reveal">
-        <span class="tag" data-i18n="cred_tag">Expertise</span>
-        <h2 class="section-title" data-i18n-html="cred_title">Technology experts with real business experience.</h2>
-        <ul class="cred-list">
-          <li><span class="icon">🤖</span><span data-i18n="cred1">Practical AI and automation expertise — we build solutions using LLMs, Python, n8n, and industrial automation technologies.</span></li>
-          <li><span class="icon">🏭</span><span data-i18n="cred2">20+ years of business experience — in the process industry, recruitment, and accounting, helping us quickly understand processes and identify automation opportunities.</span></li>
-          <li><span class="icon">🇪🇺</span><span data-i18n="cred3">GDPR and EU infrastructure — solutions can be deployed on EU infrastructure, with data protection and compliance built in from the start.</span></li>
-          <li><span class="icon">🌍</span><span data-i18n="cred4">International experience — we work with clients in Lithuania, Italy, and international markets.</span></li>
-          <li><span class="icon">🗣️</span><span data-i18n="cred5">We communicate in your language — projects delivered in Lithuanian, English, and Italian.</span></li>
-        </ul>
+        <span class="tag" data-i18n="cred_tag">Our Expertise</span>
+        <h2 class="section-title" data-i18n-html="cred_title">Technology knowledge. Real business experience.</h2>
+        <p class="section-sub" style="margin-top:14px;" data-i18n="cred_sub">We combine practical technology skills with more than 20 years of business experience.</p>
+        <ul class="cred-list" data-i18n-html="cred_list"><li><span class="icon">⚙️</span><span><strong>Process Automation:</strong> workflow design, process optimisation and system integrations.</span></li><li><span class="icon">🤖</span><span><strong>Technology:</strong> n8n, Python, LLMs and other automation technologies.</span></li><li><span class="icon">🏭</span><span><strong>Business Experience:</strong> process industry, recruitment, administration and finance.</span></li><li><span class="icon">🇪🇺</span><span><strong>Data Protection:</strong> GDPR-aware solution design and EU infrastructure options.</span></li><li><span class="icon">🌍</span><span><strong>International Experience:</strong> projects and business experience in Lithuania, Italy and international markets.</span></li><li><span class="icon">🗣️</span><span><strong>Multilingual Communication:</strong> we work in Lithuanian, English and Italian.</span></li></ul>
       </div>
       <div class="cred-right reveal">
-        <h3 data-i18n="founders_title">Experience you can rely on</h3>
-        <p data-i18n="founders_p1">Before building AI agents and automation solutions, Migle Micheloni and Kristina Stone spent more than two decades working in the business sectors whose processes they now help optimise.</p>
-        <p data-i18n="founders_p2">That's why every project starts not from technology, but from the business problem. Throughout the entire process, you work directly with the founders — the people who analyse, design, and deliver the solution.</p>
+        <span class="tag" data-i18n="founders_tag">Experience you can rely on</span>
+        <h3 data-i18n="founders_title">We understand business processes because we have worked with them.</h3>
+        <p data-i18n="founders_p1">Before designing automation solutions, Migle Micheloni and Kristina Stone spent more than two decades working in business environments where processes, information and operational efficiency matter every day.</p>
+        <p data-i18n="founders_p3">We bring that experience into every project.</p>
+        <p data-i18n="founders_p2">You work directly with the founders — from the initial analysis to solution design, implementation and support.</p>
         <div class="founders">
           <span class="founder-chip">Migle Micheloni · Co-Founder</span>
           <span class="founder-chip">Kristina Stone · Co-Founder</span>
@@ -732,27 +775,30 @@
 <section id="products">
   <div class="container">
     <div class="reveal" style="text-align:center; margin-bottom:48px;">
-      <span class="tag">Our Products</span>
-      <h2 class="section-title">Ready-to-use AI tools</h2>
-      <p class="section-sub" style="margin:14px auto 0;">Standalone apps built on the same automation principles we apply for clients — available now.</p>
+      <span class="tag" data-i18n="prod_tag">Our Products</span>
+      <h2 class="section-title" data-i18n="prod_title">Ready-to-use solutions for everyday work.</h2>
+      <p class="section-sub" style="margin:14px auto 0;" data-i18n="prod_sub">Alongside customised projects, we develop standalone digital tools designed to solve specific business problems.</p>
     </div>
     <div class="reveal" style="display:flex; justify-content:center;">
       <a href="task-coordinator.html" class="product-card">
         <div class="product-card-icon">🎙️</div>
         <div class="product-card-body">
-          <div class="product-card-label">New</div>
+          <div class="product-card-label" data-i18n="prod_new">New</div>
           <h3 class="product-card-title">Task Coordinator</h3>
-          <p class="product-card-desc" data-i18n="prod1_desc">With Task Coordinator, tasks are created in seconds — just say what needs to be done, who to assign it to and by when. AI handles the rest. Or type it if you prefer.</p>
+          <p class="product-card-tagline" data-i18n="prod1_tagline">Organise, assign and track tasks with less effort.</p>
+          <p class="product-card-desc" data-i18n="prod1_desc">Create tasks in seconds using voice or text. The system processes the information and prepares the task, assignee and deadline.</p>
+          <p class="product-card-features-label" data-i18n="prod1_feat">Features:</p>
           <ul class="product-card-bullets">
-            <li data-i18n="prod1_f1">Voice input — dictate in natural language; AI extracts the task, assignee and deadline</li>
-            <li data-i18n="prod1_f2">Task delegation — assign tasks by email; no account needed for assignees</li>
-            <li data-i18n="prod1_f3">Email notifications — assignees receive a clear email with Accept / Decline / Done buttons</li>
-            <li data-i18n="prod1_f4">Two-level delegation — tasks can be passed on further (2 levels)</li>
-            <li data-i18n="prod1_f5">Statistics &amp; filters — see what's happening across your team in real time</li>
-            <li data-i18n="prod1_f6">Auto-archiving — completed tasks are archived after 7 days</li>
-            <li data-i18n="prod1_f7">Calendar invites — send .ics invites directly to the assignee's calendar</li>
+            <li data-i18n="prod1_f1">Voice and text task creation.</li>
+            <li data-i18n="prod1_f2">Task assignment by email.</li>
+            <li data-i18n="prod1_f3">No account required for task recipients.</li>
+            <li data-i18n="prod1_f4">Email notifications with Accept / Decline / Done actions.</li>
+            <li data-i18n="prod1_f5">Two-level task delegation.</li>
+            <li data-i18n="prod1_f6">Statistics and task filters.</li>
+            <li data-i18n="prod1_f7">Automatic archiving of completed tasks after 7 days.</li>
+            <li data-i18n="prod1_f8">Calendar invitations through .ics files.</li>
           </ul>
-          <span class="product-card-cta">Discover Task Coordinator →</span>
+          <span class="product-card-cta" data-i18n="prod1_cta">Discover Task Coordinator →</span>
         </div>
       </a>
     </div>
@@ -766,8 +812,7 @@
   <div class="container">
     <div class="faq-header reveal">
       <span class="tag" data-i18n="faq_tag">FAQ</span>
-      <h2 class="section-title" data-i18n-html="faq_title">You probably have at least one of these questions.</h2>
-      <p class="section-sub" data-i18n="faq_sub">These are the questions we hear most often before a first meeting. If you have others — we'll cover them during the consultation.</p>
+      <h2 class="section-title" data-i18n-html="faq_title">Frequently asked questions.</h2>
     </div>
     <div class="faq-list">
       <div class="faq-item reveal">
@@ -775,49 +820,49 @@
           <span data-i18n="faq1_q">Do I need technical knowledge?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq1_a">No. You define the problem you want to solve, and we take care of the entire technical side — from idea to working solution.</div>
+        <div class="faq-answer" data-i18n="faq1_a">No. We design solutions to be practical and easy to use. We also provide instructions and training when needed.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span data-i18n="faq2_q">Will we need to change our existing software?</span>
+          <span data-i18n="faq2_q">Will I need to change my existing software?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq2_a">Most likely not. Our goal is to make the most of what you already use and connect your systems into an effective process. We build the automation around your business — not the other way around.</div>
+        <div class="faq-answer" data-i18n="faq2_a">Not necessarily. Our first step is to understand which tools you already use and whether they can be connected.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span data-i18n="faq3_q">How quickly will we see results?</span>
+          <span data-i18n="faq3_q">How quickly can I see results?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq3_a">We deliver the first working version of the automation within 5 business days of project start. Your team tests it and provides feedback right away. The final, fully optimised version is typically ready within 3–4 weeks (from the date the agreement is signed) — so you start seeing real value well before the project is complete.</div>
+        <div class="faq-answer" data-i18n="faq3_a">The first prototype can be ready within 5 business days, depending on project requirements. Full implementation typically takes 3–4 weeks.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question" onclick="toggleFaq(this)">
           <span data-i18n="faq4_q">Who owns the automation after the project?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq4_a">Full ownership is yours. At project completion, we hand over everything we've built — tools, access, and documentation — with no dependency on us or any third party. We also prepare a detailed walkthrough video so your team can confidently use and manage the solution independently.</div>
+        <div class="faq-answer" data-i18n="faq4_a">You receive the agreed solution, access credentials and documentation. Ownership and licensing arrangements are defined in the project agreement.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span data-i18n="faq5_q">What happens if our process changes after handover?</span>
+          <span data-i18n="faq5_q">What happens if my business processes change?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq5_a">Business processes evolve constantly, so we build solutions with long-term flexibility in mind. Since you own everything we deliver, your team can adapt the automation to new requirements independently — or together with us. If needed, we offer an optional ongoing support plan covering improvements, new automations, and adaptation to new AI technologies.</div>
+        <div class="faq-answer" data-i18n="faq5_a">Solutions can be adapted and extended as your business evolves. We can also provide ongoing support.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span data-i18n="faq6_q">Is this GDPR-compliant?</span>
+          <span data-i18n="faq6_q">Are the solutions GDPR-compliant?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq6_a">Yes. We address data protection and compliance from the very start of the project — not after deployment. We assess what data will be processed, where it will be stored, and which AI services will be used. Where needed, we deploy on EU infrastructure and help select providers that meet your organisation's security and compliance requirements.</div>
+        <div class="faq-answer" data-i18n="faq6_a">Data protection requirements are considered during solution design. Compliance depends on the specific systems, data, configuration and processing activities.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span data-i18n="faq7_q">We've tried Zapier before and it didn't work. Why is this different?</span>
+          <span data-i18n="faq7_q">We've tried Zapier before. Why is this different?</span>
           <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="faq-answer" data-i18n="faq7_a">Off-the-shelf tools like Zapier are designed for the average use case. When your workflow is specific — exceptions frequent, logic complex — generic tools break down. We build custom systems designed around your exact process, edge cases included.</div>
+        <div class="faq-answer" data-i18n="faq7_a">We don't start by recommending a tool. We start by analysing your process, identifying the actual problem and designing a solution around your business needs.</div>
       </div>
     </div>
   </div>
@@ -851,10 +896,10 @@
       <div>
         <ul class="footer-links">
           <li><h4 data-i18n="footer_nav_label">Navigation</h4></li>
-          <li><a href="#problem" data-i18n="nav_problem">The Problem</a></li>
-          <li><a href="#process" data-i18n="nav_process">How It Works</a></li>
-          <li><a href="#results" data-i18n="nav_results">Results</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#problems" data-i18n="nav_help">Where We Help</a></li>
+          <li><a href="#process" data-i18n="nav_process">Process</a></li>
+          <li><a href="#why" data-i18n="nav_why">Why Us</a></li>
+          <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
           <li><a href="#cta" data-i18n="nav_cta">Book a Consultation</a></li>
         </ul>
       </div>
@@ -920,125 +965,135 @@
 /* ── TRANSLATIONS ── */
 const T = {
   en: {
-    nav_problem: "The Problem",
-    nav_process: "How It Works",
-    nav_results: "Results",
-    nav_cta: "Book a Consultation",
-    hero_eyebrow: "Custom AI Automation · Delivered in 5 Business Days",
-    hero_title: 'People create value.<br/><span class="accent">AI handles the routine.</span>',
-    hero_sub: "We build AI agents and assistants that automate repetitive tasks, manage information and run processes — so your team can work more productively and focus on what creates the greatest value for your business.",
-    hero_cta_primary: "Book a Consultation",
-    hero_cta_secondary: "See How It Works",
-    hero_note: "Clear insights and practical solutions for your business.",
-    stat1: "Business days to Version 1",
-    stat2: "Outreach response rate lift",
-    stat3: "Client owns all code & logins",
-    stat4: "Languages: EN · IT · LT",
+    nav_help: "Where We Help",
+    nav_process: "Process",
+    nav_why: "Why Us",
+    nav_products: "Products",
+    nav_faq: "FAQ",
+    hero_title: "People create value.<br/><span class=\"accent\">Smart solutions handle the routine.</span>",
+    hero_sub: "We design and implement practical solutions that simplify everyday work, automate repetitive tasks and connect business processes.",
+    hero_sub2: "From smart workflows and software integrations to intelligent assistants and AI agents, we help professionals, small firms and businesses work more efficiently — without unnecessary complexity.",
+    hero_cta_primary: "Book a Free 30-Minute Consultation",
+    hero_cta_secondary: "Discover Our Solutions",
+    hero_note: "Practical technology. Real business improvements.",
     prob_tag: "Sound familiar?",
-    prob_title: "Daily admin tasks take time you could spend on clients, growth and strategy.",
-    prob_sub: "Accountants, lawyers, consultants and business owners spend hours every day on tasks that are necessary — but do nothing to grow the business.",
-    pain1: "Data has to be moved manually between different systems",
-    pain2: "Too much time lost to information retrieval and repetitive communication",
-    pain3: "Reports and documents are rebuilt from scratch every week",
-    pain4: "Automation opportunities exist — but there are no technical resources to implement them",
-    pain5: "Generic tools don't adapt to your specific processes and workflows",
-    after_title: "After working with ProcesSolution:",
-    after1: "Automated processes instead of manual work",
-    after2: "Hours saved every week",
-    after3: "A solution tailored to your specific business activities",
-    after4: "A team ready to work independently",
-    after5: "Reliable support when you need it",
-    after6: "",
-    probs_tag: "Sound familiar?",
-    probs_title: "The problems your team faces every day.",
-    probs_sub: "What resonates isn't a feature list — it's the problems you recognise from your own working day.",
-    probs_cat1_title: "Operations & Process Management",
-    probs_cat1_p1: "Important information gets lost between emails, messages and calls.",
-    probs_cat1_p2: "The team constantly asks who needs to do what and by when.",
-    probs_cat1_p3: "Processes only work as long as someone is actively watching over them.",
-    probs_cat1_p4: "Too much time goes to coordination, too little to actual work.",
-    probs_cat1_p5: "Task status is only clear when someone manually updates a spreadsheet.",
-    probs_cat1_p6: "Work gets stuck between departments because nobody sees the full picture.",
-    probs_cat2_title: "Sales & Customer Service",
-    probs_cat2_p1: "Responses to client enquiries are slow because information is scattered across different systems.",
-    probs_cat2_p2: "Potential clients are lost because nobody follows up on time.",
-    probs_cat2_p3: "Sales people spend more time managing the CRM than talking to clients.",
+    prob_title: "Too much time spent on tasks that don't move your business forward?",
+    prob_sub: "Professionals, small teams and business owners spend valuable hours on administrative work, manual data entry, follow-ups and information management.",
+    prob_sub2: "These activities are necessary, but they don't always require human attention.",
+    pain1: "Manually entering and transferring data between different systems.",
+    pain2: "Repetitive emails, reminders and follow-ups.",
+    pain3: "Preparing reports and collecting information by hand.",
+    pain4: "Searching through emails and documents to find what you need.",
+    pain5: "Keeping track of tasks, deadlines and responsibilities manually.",
+    pain6: "Using multiple tools that don't communicate with each other.",
+    pain7: "Knowing that work could be simplified, but not knowing where to start.",
+    after_title: "Imagine a smarter way of working.",
+    after_intro: "With ProcesSolution, you get:",
+    after1: "Automated workflows instead of repetitive manual tasks.",
+    after2: "Connected systems and better-organised information.",
+    after3: "More time for clients, business development and strategic work.",
+    after4: "Solutions designed around the way your business actually operates.",
+    after5: "Processes that work more consistently, with less manual coordination.",
+    after6: "Practical support to improve and expand your solutions over time.",
+    help_tag: "Where can we help?",
+    help_title: "Smart solutions for everyday business challenges.",
+    help_sub: "We don't start with technology. We start with the tasks, processes and bottlenecks that take up your time.",
+    area_sol_label: "Our solutions:",
+    area1_title: "Operations & Process Management",
+    area1_p1: "Important information gets lost between emails, messages and calls.",
+    area1_p2: "Teams spend too much time coordinating activities.",
+    area1_p3: "Processes depend on someone constantly checking and updating their status.",
+    area1_p4: "Tasks and responsibilities are difficult to track.",
+    area1_p5: "Work gets delayed because information is scattered across different tools.",
+    area1_p6: "Repetitive administrative operations take time away from more valuable activities.",
+    area1_sol: "automated workflows, task management, information processing, document handling and system integrations.",
+    area2_title: "Administration & Document Management",
+    area2_p1: "Documents arrive through different channels and need manual processing.",
+    area2_p2: "Data has to be copied from documents into spreadsheets or business systems.",
+    area2_p3: "Deadlines and administrative activities require constant attention.",
+    area2_p4: "Information is difficult to retrieve and organise.",
+    area2_sol: "document processing, automated data extraction, digital filing, information validation and administrative workflows.",
+    area3_title: "Sales & Customer Management",
+    area3_p1: "Customer enquiries are not always answered promptly.",
+    area3_p2: "Potential clients are lost because follow-ups are delayed.",
+    area3_p3: "Customer information is scattered across different systems.",
+    area3_p4: "Sales teams spend too much time updating CRM records.",
+    area3_sol: "automated lead management, customer follow-ups, CRM integrations and smart communication workflows.",
     proc_tag: "The Process",
-    proc_title: "Fast start. Clear path. Measurable result.",
-    proc_sub: "You get the first version of the solution in 5 business days, and a fully working automation in 3–4 weeks.",
-    step1_title: "Strategic Consultation",
-    step1_body: "We show you where time is being lost, what's worth automating and what results you can achieve with AI.",
-    step2_title: "Strategic Preparation & System Setup",
-    step2_body: "We define the project scope, align on access and workflows, and prepare all the necessary infrastructure. You know exactly what will be done and what the next steps are.",
-    step3_title: "Working Prototype in 5 Business Days",
-    step3_body: "From the first week you can test the solution in a real working environment. Based on your team's feedback, we refine it until it fully meets your needs.",
-    step4_title: "Final Solution Handover",
-    step4_body: "A fully working solution within 3–4 weeks of signing. We transfer all access and clear usage documentation. Team training — as needed.",
-    step5_title: "Continued Growth (optional)",
-    step5_body: "Automation doesn't have to stop with the first project. We help you expand the solution, automate new processes and adapt to evolving business needs.",
-    res_tag: "Real Results",
-    res_title: "From problem to working solution.",
-    res_sub: "Every project starts from a concrete business problem and ends with a working automation. We build AI solutions and automations that become part of how you work from day one.",
-    p1_label: "Project 01 — Small Team Coordination",
-    p1_title: "Task Coordinator",
-    p1_body: "A lightweight task coordination app built for small teams — task assignment via form or voice dictation, automatic status tracking, and full email-based communication. No complex setup. An exportable task log so nothing falls through the cracks.",
-    prod1_desc: "With Task Coordinator, tasks are created in seconds — just say what needs to be done, who to assign it to and by when. AI handles the rest. Or type it if you prefer.",
-    prod1_f1: "Voice input — dictate in natural language; AI extracts the task, assignee and deadline",
-    prod1_f2: "Task delegation — assign tasks by email; no account needed for assignees",
-    prod1_f3: "Email notifications — assignees receive a clear email with Accept / Decline / Done buttons",
-    prod1_f4: "Two-level delegation — tasks can be passed on further (2 levels)",
-    prod1_f5: "Statistics & filters — see what's happening across your team in real time",
-    prod1_f6: "Auto-archiving — completed tasks are archived after 7 days",
-    prod1_f7: "Calendar invites — send .ics invites directly to the assignee's calendar",
-    p1_result_label: "Built for teams with no dedicated project manager",
-    p1_result_val: "Zero manual follow-up overhead",
-    p2_label: "Project 02 — Outreach Automation",
-    p2_title: "Personalised Outreach Engine",
-    p2_body: "Outreach to passive clients was generic and low-converting. We built a system that researches each person's LinkedIn profile, recent activity, and role — then drafts a personalised message for the team to review and send with one click.",
-    p2_result_label: "Response rate on passive outreach",
-    p2_result_val: "11% → 34% (+23 percentage points)",
-    why_tag: "Why ProcesSolution",
-    why_title: "AI solutions for your business.",
-    why_sub: "Choose from our recommended solutions — AI agents and automation tools that take over repetitive tasks, optimise your processes and free your team's time for the work that matters most.",
+    proc_title: "A clear path from problem to practical solution.",
+    proc_sub: "Every project starts with understanding how you work and identifying where smart automation can make a real difference.",
+    step_word: "STEP",
+    step1_title: "Business Consultation",
+    step1_body: "We discuss your daily activities, identify repetitive tasks and explore opportunities to simplify your processes.",
+    step2_title: "Process Analysis & Solution Design",
+    step2_body: "We map the workflow, define the project scope and select the most suitable technologies. You know what we propose, why it is needed and how it will work.",
+    step3_title: "Working Prototype",
+    step3_body: "We build an initial version of the solution for testing in a real working environment.",
+    step3_note: "Our target is to deliver the first prototype within 5 business days, where project complexity and access requirements allow.",
+    step4_title: "Implementation & Handover",
+    step4_body: "We refine, test and implement the solution. We provide the necessary documentation, access and team training.",
+    step4_note: "Typical implementation time: 3–4 weeks, depending on project scope and complexity.",
+    step5_title: "Continuous Improvement (Optional)",
+    step5_body: "As your business evolves, your processes can evolve too. We help you extend, adapt and improve your solutions whenever new needs arise.",
+    why_tag: "Why ProcesSolution?",
+    why_title: "Practical solutions. Designed around your business.",
+    why_sub: "We believe technology should adapt to the way people work — not the other way around.",
     why1_title: "Built Around Your Workflow",
-    why1_body: "We build automation solutions that reflect your processes, your team's way of working, and your specific business needs.",
-    why2_title: "A working solution in 5 business days",
-    why2_body: "We believe in fast results, not long projects. That's why we deliver the first version of your automation within the first week — so you can start seeing real value as soon as possible.",
-    why3_title: "Work directly with the solution builders",
-    why3_body: "Every step is discussed with the people building your solution — so decisions are made faster, communication stays clear, and costs stay lower.",
-    why4_title: "Full control from day one",
-    why4_body: "You get not just a working solution, but all the access, tools, and knowledge you need to manage it and grow it independently.",
-    why5_title: "Security and compliance without compromise",
-    why5_body: "Solutions can be deployed on EU infrastructure, and data protection is addressed at the design stage — not as an afterthought.",
-    why6_title: "Business experience before technology",
-    why6_body: "Before building AI agents and automations, we spent decades working in process-heavy industries, recruitment, and finance. That background helps us build solutions oriented towards real business outcomes — not just technical novelty.",
-    cred_tag: "Expertise",
-    cred_title: "Technology experts with real business experience.",
-    cred1: "Practical AI and automation expertise — we build solutions using LLMs, Python, n8n, and industrial automation technologies.",
-    cred2: "20+ years of business experience — in the process industry, recruitment, and accounting, helping us quickly understand processes and identify automation opportunities.",
-    cred3: "GDPR and EU infrastructure — solutions can be deployed on EU infrastructure, with data protection and compliance built in from the start.",
-    cred4: "International experience — we work with clients in Lithuania, Italy, and international markets.",
-    cred5: "We communicate in your language — projects delivered in Lithuanian, English, and Italian.",
-    founders_title: "Experience you can rely on",
-    founders_p1: "Before building AI agents and automation solutions, Migle Micheloni and Kristina Stone spent more than two decades working in the business sectors whose processes they now help optimise.",
-    founders_p2: "That's why every project starts not from technology, but from the business problem. Throughout the entire process, you work directly with the founders — the people who analyse, design, and deliver the solution.",
+    why1_body: "Every business is different. We design solutions based on your actual processes, tools and operational needs.",
+    why2_title: "The Right Technology for the Job",
+    why2_body: "Not every problem needs AI. Sometimes a simple automation or software integration is the smarter choice. We select the technology that makes the most sense.",
+    why3_title: "Fast, Practical Results",
+    why3_body: "We focus on working solutions, not endless planning. Our goal is to deliver an initial prototype quickly and develop it through practical testing.",
+    why4_title: "Direct Communication",
+    why4_body: "You work directly with the people analysing, designing and implementing your solution. Clear communication and short decision-making paths.",
+    why5_title: "Your Systems, Your Control",
+    why5_body: "You receive the necessary access, documentation and knowledge to use and manage your solution independently.",
+    why6_title: "Security & Data Protection",
+    why6_body: "We consider data protection and security from the beginning. Solutions can be deployed on EU infrastructure, depending on project requirements.",
+    why7_title: "Business Experience Before Technology",
+    why7_body: "Our experience in process-intensive industries, recruitment and finance helps us understand business needs before choosing technical solutions.",
+    cred_tag: "Our Expertise",
+    cred_title: "Technology knowledge. Real business experience.",
+    cred_sub: "We combine practical technology skills with more than 20 years of business experience.",
+    cred_list: "<li><span class=\"icon\">⚙️</span><span><strong>Process Automation:</strong> workflow design, process optimisation and system integrations.</span></li><li><span class=\"icon\">🤖</span><span><strong>Technology:</strong> n8n, Python, LLMs and other automation technologies.</span></li><li><span class=\"icon\">🏭</span><span><strong>Business Experience:</strong> process industry, recruitment, administration and finance.</span></li><li><span class=\"icon\">🇪🇺</span><span><strong>Data Protection:</strong> GDPR-aware solution design and EU infrastructure options.</span></li><li><span class=\"icon\">🌍</span><span><strong>International Experience:</strong> projects and business experience in Lithuania, Italy and international markets.</span></li><li><span class=\"icon\">🗣️</span><span><strong>Multilingual Communication:</strong> we work in Lithuanian, English and Italian.</span></li>",
+    founders_tag: "Experience you can rely on",
+    founders_title: "We understand business processes because we have worked with them.",
+    founders_p1: "Before designing automation solutions, Migle Micheloni and Kristina Stone spent more than two decades working in business environments where processes, information and operational efficiency matter every day.",
+    founders_p2: "We bring that experience into every project.",
+    founders_p3: "You work directly with the founders — from the initial analysis to solution design, implementation and support.",
+    prod_tag: "Our Products",
+    prod_title: "Ready-to-use solutions for everyday work.",
+    prod_sub: "Alongside customised projects, we develop standalone digital tools designed to solve specific business problems.",
+    prod_new: "New",
+    prod1_tagline: "Organise, assign and track tasks with less effort.",
+    prod1_desc: "Create tasks in seconds using voice or text. The system processes the information and prepares the task, assignee and deadline.",
+    prod1_feat: "Features:",
+    prod1_f1: "Voice and text task creation.",
+    prod1_f2: "Task assignment by email.",
+    prod1_f3: "No account required for task recipients.",
+    prod1_f4: "Email notifications with Accept / Decline / Done actions.",
+    prod1_f5: "Two-level task delegation.",
+    prod1_f6: "Statistics and task filters.",
+    prod1_f7: "Automatic archiving of completed tasks after 7 days.",
+    prod1_f8: "Calendar invitations through .ics files.",
+    prod1_cta: "Discover Task Coordinator →",
     faq_tag: "FAQ",
-    faq_title: "You probably have at least one of these questions.",
-    faq_sub: "These are the questions we hear most often before a first meeting. If you have others — we'll cover them during the consultation.",
+    faq_title: "Frequently asked questions.",
     faq1_q: "Do I need technical knowledge?",
-    faq1_a: "No. You define the problem you want to solve, and we take care of the entire technical side — from idea to working solution.",
-    faq2_q: "Will we need to change our existing software?",
-    faq2_a: "Most likely not. Our goal is to make the most of what you already use and connect your systems into an effective process. We build the automation around your business — not the other way around.",
-    faq3_q: "How quickly will we see results?",
-    faq3_a: "We deliver the first working version of the automation within 5 business days of project start. Your team tests it and provides feedback right away. The final, fully optimised version is typically ready within 3–4 weeks (from the date the agreement is signed) — so you start seeing real value well before the project is complete.",
+    faq1_a: "No. We design solutions to be practical and easy to use. We also provide instructions and training when needed.",
+    faq2_q: "Will I need to change my existing software?",
+    faq2_a: "Not necessarily. Our first step is to understand which tools you already use and whether they can be connected.",
+    faq3_q: "How quickly can I see results?",
+    faq3_a: "The first prototype can be ready within 5 business days, depending on project requirements. Full implementation typically takes 3–4 weeks.",
     faq4_q: "Who owns the automation after the project?",
-    faq4_a: "Full ownership is yours. At project completion, we hand over everything we've built — tools, access, and documentation — with no dependency on us or any third party. We also prepare a detailed walkthrough video so your team can confidently use and manage the solution independently.",
-    faq5_q: "What happens if our process changes after handover?",
-    faq5_a: "Business processes evolve constantly, so we build solutions with long-term flexibility in mind. Since you own everything we deliver, your team can adapt the automation to new requirements independently — or together with us. If needed, we offer an optional ongoing support plan covering improvements, new automations, and adaptation to new AI technologies.",
-    faq6_q: "Is this GDPR-compliant?",
-    faq6_a: "Yes. We address data protection and compliance from the very start of the project — not after deployment. We assess what data will be processed, where it will be stored, and which AI services will be used. Where needed, we deploy on EU infrastructure and help select providers that meet your organisation's security and compliance requirements.",
-    faq7_q: "We've tried Zapier before and it didn't work. Why is this different?",
-    faq7_a: "Off-the-shelf tools like Zapier are designed for the average use case. When your workflow is specific — exceptions frequent, logic complex — generic tools break down. We build custom systems designed around your exact process, edge cases included.",
+    faq4_a: "You receive the agreed solution, access credentials and documentation. Ownership and licensing arrangements are defined in the project agreement.",
+    faq5_q: "What happens if my business processes change?",
+    faq5_a: "Solutions can be adapted and extended as your business evolves. We can also provide ongoing support.",
+    faq6_q: "Are the solutions GDPR-compliant?",
+    faq6_a: "Data protection requirements are considered during solution design. Compliance depends on the specific systems, data, configuration and processing activities.",
+    faq7_q: "We've tried Zapier before. Why is this different?",
+    faq7_a: "We don't start by recommending a tool. We start by analysing your process, identifying the actual problem and designing a solution around your business needs.",
+    nav_cta: "Book a Consultation",
     cta_tag: "Get Started",
     cta_title: "Book your<br/>strategy consultation.",
     cta_sub: "Fill in the needs form and book a time. We'll map your processes, identify the biggest efficiency gains, and give you concrete recommendations on what to automate first. No commitment — just practical insights.",
@@ -1072,125 +1127,135 @@ const T = {
   },
 
   it: {
-    nav_problem: "Il Problema",
-    nav_process: "Come Funziona",
-    nav_results: "Risultati",
+    nav_help: "Dove aiutiamo",
+    nav_process: "Come lavoriamo",
+    nav_why: "Perché noi",
+    nav_products: "Prodotti",
+    nav_faq: "FAQ",
+    hero_title: "Le persone creano valore.<br/><span class=\"accent\">Le soluzioni intelligenti semplificano il lavoro.</span>",
+    hero_sub: "Progettiamo e realizziamo soluzioni pratiche per semplificare il lavoro quotidiano, automatizzare le attività ripetitive e collegare i processi aziendali.",
+    hero_sub2: "Dai workflow automatizzati alle integrazioni tra software, fino agli assistenti intelligenti e agli agenti AI, aiutiamo professionisti, studi e PMI a lavorare meglio, con meno operazioni manuali e maggiore efficienza.",
+    hero_cta_primary: "Prenota una consulenza gratuita di 30 minuti",
+    hero_cta_secondary: "Scopri le nostre soluzioni",
+    hero_note: "Tecnologia pratica. Risultati concreti.",
+    prob_tag: "Ti riconosci in queste situazioni?",
+    prob_title: "Troppo tempo dedicato ad attività che non fanno crescere il tuo lavoro?",
+    prob_sub: "Professionisti, piccoli studi e imprese dedicano ogni giorno molte ore ad attività amministrative, inserimento dati, gestione delle informazioni, comunicazioni e solleciti.",
+    prob_sub2: "Sono attività necessarie, ma non tutte richiedono tempo e attenzione delle persone.",
+    pain1: "Inserimento manuale e trasferimento di dati tra diversi strumenti.",
+    pain2: "Email, promemoria e solleciti ripetitivi.",
+    pain3: "Preparazione manuale di report e raccolta di informazioni.",
+    pain4: "Ricerca di documenti e dati tra email e archivi.",
+    pain5: "Gestione manuale di attività, scadenze e responsabilità.",
+    pain6: "Software diversi che non comunicano tra loro.",
+    pain7: "Processi che potrebbero essere semplificati, ma manca il tempo per farlo.",
+    after_title: "Immagina un modo più semplice di lavorare.",
+    after_intro: "Con ProcesSolution puoi ottenere:",
+    after1: "Flussi di lavoro automatizzati al posto di operazioni manuali ripetitive.",
+    after2: "Sistemi collegati e informazioni meglio organizzate.",
+    after3: "Più tempo da dedicare ai clienti e allo sviluppo dell'attività.",
+    after4: "Soluzioni progettate sulle reali esigenze del tuo lavoro.",
+    after5: "Processi più fluidi e meno dipendenti dal coordinamento manuale.",
+    after6: "Supporto per migliorare ed estendere le soluzioni nel tempo.",
+    help_tag: "Dove possiamo aiutarti?",
+    help_title: "Soluzioni intelligenti per i problemi quotidiani delle aziende.",
+    help_sub: "Non partiamo dalla tecnologia, ma dalle attività che ti fanno perdere tempo e dai processi che possono funzionare meglio.",
+    area_sol_label: "Le nostre soluzioni:",
+    area1_title: "Gestione operativa e dei processi",
+    area1_p1: "Informazioni disperse tra email, messaggi e telefonate.",
+    area1_p2: "Troppo tempo dedicato al coordinamento delle attività.",
+    area1_p3: "Processi che richiedono continui controlli manuali.",
+    area1_p4: "Difficoltà nel monitorare attività, scadenze e responsabilità.",
+    area1_p5: "Lavoro rallentato da strumenti e informazioni non collegati.",
+    area1_p6: "Operazioni amministrative ripetitive che sottraggono tempo alle attività importanti.",
+    area1_sol: "workflow automatizzati, gestione delle attività, organizzazione delle informazioni, gestione documentale e integrazione tra sistemi.",
+    area2_title: "Amministrazione e gestione documentale",
+    area2_p1: "Documenti ricevuti attraverso diversi canali e da elaborare manualmente.",
+    area2_p2: "Dati da trasferire dai documenti a fogli Excel o gestionali.",
+    area2_p3: "Scadenze e attività amministrative da controllare continuamente.",
+    area2_p4: "Informazioni difficili da archiviare e ritrovare.",
+    area2_sol: "elaborazione documentale, estrazione automatizzata dei dati, archiviazione digitale, controllo delle informazioni e workflow amministrativi.",
+    area3_title: "Vendite e gestione clienti",
+    area3_p1: "Richieste dei clienti a cui non si riesce a rispondere tempestivamente.",
+    area3_p2: "Potenziali clienti persi per mancanza di follow-up.",
+    area3_p3: "Informazioni commerciali disperse tra diversi strumenti.",
+    area3_p4: "Troppo tempo dedicato all'aggiornamento del CRM.",
+    area3_sol: "gestione automatizzata dei contatti, follow-up, integrazione CRM e flussi di comunicazione intelligenti.",
+    proc_tag: "Come lavoriamo",
+    proc_title: "Un percorso chiaro, dal problema alla soluzione.",
+    proc_sub: "Ogni progetto inizia dalla comprensione del tuo lavoro e dall'individuazione delle attività che possono essere semplificate attraverso l'automazione.",
+    step_word: "FASE",
+    step1_title: "Consulenza iniziale",
+    step1_body: "Analizziamo le tue attività quotidiane, individuiamo le operazioni ripetitive e valutiamo dove intervenire per migliorare il lavoro.",
+    step2_title: "Analisi dei processi e progettazione",
+    step2_body: "Definiamo il flusso di lavoro, gli obiettivi, le tecnologie più adatte e le attività da realizzare. Saprai esattamente cosa proponiamo e come funzionerà.",
+    step3_title: "Prototipo funzionante",
+    step3_body: "Realizziamo una prima versione della soluzione, da testare in un ambiente di lavoro reale.",
+    step3_note: "Il nostro obiettivo è presentare il primo prototipo entro 5 giorni lavorativi, quando la complessità del progetto e la disponibilità degli accessi lo consentono.",
+    step4_title: "Implementazione e consegna",
+    step4_body: "Completiamo, testiamo e implementiamo la soluzione. Forniamo accessi, documentazione e formazione al team, quando necessaria.",
+    step4_note: "Tempi indicativi: 3–4 settimane, in funzione della complessità del progetto.",
+    step5_title: "Evoluzione e miglioramento (facoltativo)",
+    step5_body: "La tua attività cambia e anche i processi possono evolversi. Possiamo ampliare, aggiornare e migliorare le soluzioni nel tempo.",
+    why_tag: "Perché ProcesSolution?",
+    why_title: "Soluzioni pratiche, progettate intorno al tuo lavoro.",
+    why_sub: "Crediamo che la tecnologia debba adattarsi al modo in cui lavorano le persone, non il contrario.",
+    why1_title: "Progettate sulle tue esigenze",
+    why1_body: "Ogni attività è diversa. Realizziamo soluzioni basate sui tuoi processi, sugli strumenti utilizzati e sulle necessità operative.",
+    why2_title: "La tecnologia giusta per ogni problema",
+    why2_body: "Non tutto richiede l'intelligenza artificiale. A volte la soluzione migliore è una semplice automazione o l'integrazione tra software. Scegliamo la tecnologia più adatta.",
+    why3_title: "Risultati concreti in tempi rapidi",
+    why3_body: "Puntiamo su soluzioni funzionanti, non su progetti teorici. Vogliamo permetterti di sperimentare rapidamente i benefici dell'automazione.",
+    why4_title: "Comunicazione diretta",
+    why4_body: "Lavori direttamente con chi analizza, progetta e realizza la soluzione. Meno passaggi intermedi, comunicazione chiara e decisioni più rapide.",
+    why5_title: "Controllo e autonomia",
+    why5_body: "Ricevi gli accessi, la documentazione e le informazioni necessarie per utilizzare e gestire la soluzione.",
+    why6_title: "Sicurezza e protezione dei dati",
+    why6_body: "Consideriamo la protezione dei dati fin dalla progettazione. Possiamo valutare infrastrutture europee in funzione delle esigenze del progetto.",
+    why7_title: "Prima l'esperienza aziendale, poi la tecnologia",
+    why7_body: "La nostra esperienza nei settori industriali, amministrativi, finanziari e nella selezione del personale ci permette di comprendere i processi prima di scegliere gli strumenti.",
+    cred_tag: "Le nostre competenze",
+    cred_title: "Competenze tecnologiche ed esperienza aziendale.",
+    cred_sub: "Combiniamo conoscenze tecnologiche ed esperienza professionale maturata in oltre 20 anni di attività.",
+    cred_list: "<li><span class=\"icon\">⚙️</span><span>Automazione dei processi e progettazione di workflow.</span></li><li><span class=\"icon\">🔗</span><span>Integrazione tra software e sistemi aziendali.</span></li><li><span class=\"icon\">🤖</span><span>Tecnologie: n8n, Python, LLM e strumenti di automazione.</span></li><li><span class=\"icon\">🏭</span><span>Esperienza nei settori industriale, amministrativo, finanziario e HR.</span></li><li><span class=\"icon\">🇪🇺</span><span>Progettazione attenta alla protezione dei dati e al GDPR.</span></li><li><span class=\"icon\">🌍</span><span>Esperienza internazionale in Italia, Lituania e altri mercati.</span></li><li><span class=\"icon\">🗣️</span><span>Comunicazione e gestione dei progetti in italiano, inglese e lituano.</span></li>",
+    founders_tag: "Esperienza su cui puoi contare",
+    founders_title: "Conosciamo i processi aziendali perché abbiamo lavorato al loro interno.",
+    founders_p1: "Prima di progettare soluzioni di automazione, Migle Micheloni e Kristina Stone hanno maturato oltre vent'anni di esperienza in contesti aziendali nei quali processi, informazioni ed efficienza operativa sono fondamentali.",
+    founders_p2: "Questa esperienza è alla base di ogni nostro progetto.",
+    founders_p3: "Lavorerai direttamente con le fondatrici, dalla prima analisi alla progettazione, realizzazione e assistenza.",
+    prod_tag: "I nostri prodotti",
+    prod_title: "Strumenti pronti all'uso per semplificare il lavoro.",
+    prod_sub: "Oltre ai progetti personalizzati, sviluppiamo strumenti digitali autonomi pensati per risolvere specifiche esigenze operative.",
+    prod_new: "Novità",
+    prod1_tagline: "Organizza, assegna e monitora le attività con meno passaggi.",
+    prod1_desc: "Crea un'attività in pochi secondi utilizzando la voce o il testo. Il sistema elabora le informazioni e prepara attività, assegnatario e scadenza.",
+    prod1_feat: "Funzionalità:",
+    prod1_f1: "Creazione attività tramite voce o testo.",
+    prod1_f2: "Assegnazione tramite email.",
+    prod1_f3: "Nessun account necessario per chi riceve l'incarico.",
+    prod1_f4: "Notifiche email con pulsanti Accetta / Rifiuta / Completato.",
+    prod1_f5: "Delega delle attività su due livelli.",
+    prod1_f6: "Statistiche e filtri.",
+    prod1_f7: "Archiviazione automatica delle attività completate dopo 7 giorni.",
+    prod1_f8: "Inviti in calendario tramite file .ics.",
+    prod1_cta: "Scopri Task Coordinator →",
+    faq_tag: "FAQ",
+    faq_title: "Domande frequenti",
+    faq1_q: "Devo avere competenze tecniche?",
+    faq1_a: "No. Progettiamo soluzioni semplici da utilizzare e forniamo istruzioni e formazione quando necessario.",
+    faq2_q: "Devo cambiare i software che utilizzo?",
+    faq2_a: "Non necessariamente. Analizziamo prima gli strumenti esistenti e valutiamo se possono essere collegati e integrati.",
+    faq3_q: "Quanto tempo serve per vedere i primi risultati?",
+    faq3_a: "Il primo prototipo può essere disponibile entro 5 giorni lavorativi, in funzione del progetto. L'implementazione completa richiede indicativamente 3–4 settimane.",
+    faq4_q: "Chi gestisce la soluzione dopo la consegna?",
+    faq4_a: "Ricevi la soluzione concordata, gli accessi e la documentazione. Proprietà e licenze vengono definite nell'accordo di progetto.",
+    faq5_q: "Cosa succede se cambiano i miei processi?",
+    faq5_a: "Le soluzioni possono essere aggiornate e ampliate in base alle nuove esigenze. Possiamo offrire anche assistenza continuativa.",
+    faq6_q: "Le soluzioni sono conformi al GDPR?",
+    faq6_a: "La protezione dei dati viene considerata fin dalla progettazione. La conformità dipende dai sistemi utilizzati, dai dati trattati e dalla configurazione concreta.",
+    faq7_q: "Abbiamo già provato Zapier, ma non ha funzionato. Perché dovrebbe essere diverso?",
+    faq7_a: "Non partiamo dalla scelta di uno strumento. Partiamo dall'analisi del tuo processo, individuiamo il problema e progettiamo una soluzione adatta al tuo modo di lavorare.",
     nav_cta: "Prenota una Consulenza",
-    hero_eyebrow: "Automazioni AI su misura · Prima versione in 5 giorni lavorativi",
-    hero_title: 'Le persone creano valore.<br/><span class="accent">La routine la gestisce l\'AI.</span>',
-    hero_sub: "Costruiamo agenti e assistenti AI che automatizzano le attività ripetitive, gestiscono le informazioni ed eseguono i processi — così il tuo team può lavorare in modo più produttivo e concentrarsi su ciò che crea il maggior valore per il business.",
-    hero_cta_primary: "Prenota una Consulenza",
-    hero_cta_secondary: "Come Funziona",
-    hero_note: "Analisi chiare e soluzioni pratiche per il tuo business.",
-    stat1: "Giorni lavorativi alla Versione 1",
-    stat2: "Aumento del tasso di risposta outreach",
-    stat3: "Il cliente possiede tutto il codice",
-    stat4: "Lingue: IT · EN · LT",
-    prob_tag: "Ti riconosci?",
-    prob_title: "Le attività amministrative quotidiane tolgono il tempo che potresti dedicare ai clienti, alla crescita e alla strategia.",
-    prob_sub: "Commercialisti, avvocati, consulenti e imprenditori trascorrono ore ogni giorno in attività necessarie — ma che non contribuiscono alla crescita del business.",
-    pain1: "I dati devono essere spostati manualmente tra sistemi diversi",
-    pain2: "Troppo tempo perso nella ricerca di informazioni e nelle comunicazioni ripetitive",
-    pain3: "Report e documenti vengono ricostruiti da zero ogni settimana",
-    pain4: "Le opportunità di automazione esistono — ma mancano le risorse tecniche per realizzarle",
-    pain5: "Gli strumenti generici non si adattano ai tuoi processi e alle tue specifiche di lavoro",
-    after_title: "Dopo aver lavorato con ProcesSolution:",
-    after1: "Processi automatizzati al posto del lavoro manuale",
-    after2: "Ore risparmiate ogni settimana",
-    after3: "Una soluzione su misura per le attività specifiche del tuo business",
-    after4: "Un team pronto a lavorare in autonomia",
-    after5: "Supporto affidabile quando ne hai bisogno",
-    after6: "",
-    probs_tag: "Ti riconosci?",
-    probs_title: "I problemi che il tuo team affronta ogni giorno.",
-    probs_sub: "Ciò che risuona non è un elenco di funzionalità — sono i problemi che riconosci dalla tua giornata lavorativa.",
-    probs_cat1_title: "Operazioni e gestione dei processi",
-    probs_cat1_p1: "Le informazioni importanti si perdono tra email, messaggi e telefonate.",
-    probs_cat1_p2: "Il team chiede continuamente chi deve fare cosa e entro quando.",
-    probs_cat1_p3: "I processi funzionano solo finché qualcuno li supervisiona attivamente.",
-    probs_cat1_p4: "Troppo tempo va al coordinamento, troppo poco al lavoro vero.",
-    probs_cat1_p5: "Lo stato dei compiti è chiaro solo quando qualcuno aggiorna manualmente il foglio.",
-    probs_cat1_p6: "Il lavoro si blocca tra i reparti perché nessuno vede il quadro completo.",
-    probs_cat2_title: "Vendite e servizio clienti",
-    probs_cat2_p1: "Le risposte alle richieste dei clienti sono lente perché le informazioni sono sparse in sistemi diversi.",
-    probs_cat2_p2: "I potenziali clienti si perdono perché nessuno fa il follow-up in tempo.",
-    probs_cat2_p3: "I venditori passano più tempo a gestire il CRM che a parlare con i clienti.",
-    proc_tag: "Il Processo",
-    proc_title: "Partenza rapida. Percorso chiaro. Risultato misurabile.",
-    proc_sub: "Ricevi la prima versione della soluzione in 5 giorni lavorativi, e un'automazione completamente funzionante in 3–4 settimane.",
-    step1_title: "Consulenza Strategica",
-    step1_body: "Ti mostriamo dove si perde tempo, cosa vale la pena automatizzare e quali risultati puoi raggiungere con l'AI.",
-    step2_title: "Preparazione Strategica e Configurazione del Sistema",
-    step2_body: "Definiamo i confini del progetto, allineiamo gli accessi e i flussi di lavoro e prepariamo tutta l'infrastruttura necessaria. Saprai esattamente cosa verrà fatto e quali saranno i prossimi passi.",
-    step3_title: "Prototipo funzionante in 5 giorni lavorativi",
-    step3_body: "Già dalla prima settimana puoi testare la soluzione in un ambiente di lavoro reale. Sulla base del feedback del tuo team, la raffiniamo finché non soddisfa pienamente le tue esigenze.",
-    step4_title: "Consegna finale della soluzione",
-    step4_body: "Una soluzione completamente funzionante entro 3–4 settimane dalla firma. Trasferiamo tutti gli accessi e una documentazione chiara sull'utilizzo. Formazione del team — secondo necessità.",
-    step5_title: "Crescita continua (opzionale)",
-    step5_body: "L'automazione non deve fermarsi al primo progetto. Ti aiutiamo ad espandere la soluzione, automatizzare nuovi processi e adattarti alle esigenze in evoluzione del business.",
-    res_tag: "Risultati Reali",
-    res_title: "Dal problema alla soluzione funzionante.",
-    res_sub: "Ogni progetto parte da un problema concreto di business e si conclude con un'automazione operativa. Costruiamo soluzioni AI e automazioni che diventano parte del tuo modo di lavorare fin dal primo giorno.",
-    p1_label: "Progetto 01 — Coordinamento Team",
-    p1_title: "Task Coordinator",
-    p1_body: "Un'app leggera per la gestione dei compiti in piccoli team — assegnazione via form o dettatura vocale, monitoraggio automatico dello stato e comunicazione via email. Nessuna configurazione complessa. Log delle attività esportabile.",
-    prod1_desc: "Con Task Coordinator, le attività si creano in pochi secondi — basta dire cosa va fatto, a chi assegnarlo e entro quando. L'AI pensa al resto. O scrivilo, se preferisci.",
-    prod1_f1: "Input vocale — detta in linguaggio naturale; l'AI riconosce il compito, l'assegnatario e la scadenza",
-    prod1_f2: "Delega dei compiti — assegna via email; gli assegnatari non devono registrarsi",
-    prod1_f3: "Notifiche email — gli assegnatari ricevono un'email chiara con i pulsanti Accetta / Rifiuta / Fatto",
-    prod1_f4: "Delega doppia — i compiti possono essere trasferiti ulteriormente (2 livelli)",
-    prod1_f5: "Statistiche e filtri — vedi cosa succede nel tuo team in tempo reale",
-    prod1_f6: "Archiviazione automatica — i compiti completati vengono archiviati dopo 7 giorni",
-    prod1_f7: "Inviti calendario — invia inviti .ics direttamente al calendario dell'assegnatario",
-    p1_result_label: "Creato per team senza project manager dedicato",
-    p1_result_val: "Zero overhead di follow-up manuale",
-    p2_label: "Progetto 02 — Automazione Outreach",
-    p2_title: "Motore di Outreach Personalizzato",
-    p2_body: "L'outreach verso clienti passivi era generico e poco efficace. Abbiamo costruito un sistema che analizza il profilo LinkedIn, l'attività recente e il ruolo di ogni persona — e genera un messaggio personalizzato che il team può rivedere e inviare con un click.",
-    p2_result_label: "Tasso di risposta sull'outreach passivo",
-    p2_result_val: "11% → 34% (+23 punti percentuali)",
-    why_tag: "Perché ProcesSolution",
-    why_title: "Soluzioni AI per la tua azienda.",
-    why_sub: "Scegli tra le nostre soluzioni consigliate — agenti AI e strumenti di automazione che si occupano delle attività ripetitive, ottimizzano i processi e liberano il tempo del tuo team per il lavoro che conta davvero.",
-    why1_title: "Costruito attorno al tuo flusso",
-    why1_body: "Realizziamo soluzioni di automazione che rispecchiano i tuoi processi, il modo di lavorare del tuo team e le esigenze specifiche del tuo business.",
-    why2_title: "Una soluzione funzionante in 5 giorni lavorativi",
-    why2_body: "Crediamo nei risultati rapidi, non nei progetti lunghi. Per questo consegniamo la prima versione della tua automazione entro la prima settimana — così puoi iniziare a vedere valore reale il prima possibile.",
-    why3_title: "Lavori direttamente con chi costruisce la soluzione",
-    why3_body: "Ogni fase viene discussa con le persone che realizzano la tua soluzione — così le decisioni arrivano più in fretta, la comunicazione resta chiara e i costi rimangono contenuti.",
-    why4_title: "Controllo completo dal primo giorno",
-    why4_body: "Ricevi non solo una soluzione funzionante, ma tutti gli accessi, gli strumenti e le conoscenze necessarie per gestirla e farla crescere in autonomia.",
-    why5_title: "Sicurezza e conformità senza compromessi",
-    why5_body: "Le soluzioni possono essere distribuite su infrastruttura EU, e la protezione dei dati viene affrontata in fase di progettazione — non come un elemento aggiuntivo.",
-    why6_title: "Esperienza di business prima della tecnologia",
-    why6_body: "Prima di costruire agenti AI e automazioni, abbiamo lavorato per decenni in settori ad alta intensità di processo, nel recruiting e nella finanza. Questo background ci aiuta a creare soluzioni orientate ai risultati concreti — non alla novità tecnologica.",
-    cred_tag: "Competenze",
-    cred_title: "Esperti di tecnologia con vera esperienza di business.",
-    cred1: "Competenza pratica in AI e automazione — costruiamo soluzioni con LLM, Python, n8n e tecnologie di automazione industriale.",
-    cred2: "20+ anni di esperienza aziendale — nell'industria di processo, nel recruiting e nella contabilità, per comprendere rapidamente i processi e individuare le opportunità di automazione.",
-    cred3: "GDPR e infrastruttura EU — le soluzioni possono essere distribuite su infrastruttura europea, con protezione dei dati e conformità integrate fin dall'inizio.",
-    cred4: "Esperienza internazionale — lavoriamo con clienti in Lituania, Italia e mercati internazionali.",
-    cred5: "Comunichiamo nella tua lingua — i progetti vengono realizzati in lituano, inglese e italiano.",
-    founders_title: "Un'esperienza su cui puoi contare",
-    founders_p1: "Prima di costruire agenti AI e soluzioni di automazione, Migle Micheloni e Kristina Stone hanno trascorso più di due decenni lavorando nei settori aziendali i cui processi oggi aiutano a ottimizzare.",
-    founders_p2: "Per questo ogni progetto parte non dalla tecnologia, ma dal problema di business. Per tutto il processo lavori direttamente con le fondatrici — le persone che analizzano, progettano e consegnano la soluzione.",
-    faq_tag: "Domande Frequenti",
-    faq_title: "Probabilmente hai almeno una di queste domande.",
-    faq_sub: "Sono le domande che sentiamo più spesso prima di un primo incontro. Se ne hai altre — le affronteremo durante la consulenza.",
-    faq1_q: "Ho bisogno di competenze tecniche?",
-    faq1_a: "No. Tu definisci il problema che vuoi risolvere, e noi ci occupiamo dell'intera parte tecnica — dall'idea alla soluzione funzionante.",
-    faq2_q: "Dovremo cambiare il software che usiamo?",
-    faq2_a: "Nella maggior parte dei casi no. Il nostro obiettivo è sfruttare al massimo ciò che già utilizzi e collegare i tuoi sistemi in un processo efficace. Costruiamo l'automazione attorno al tuo business — non il contrario.",
-    faq3_q: "Quanto velocemente vedremo i risultati?",
-    faq3_a: "Consegniamo la prima versione funzionante dell'automazione entro 5 giorni lavorativi dall'avvio del progetto. Il tuo team la testa e fornisce feedback subito. La versione finale, completamente ottimizzata, è generalmente pronta entro 3–4 settimane (dalla data di firma dell'accordo) — così inizi a vedere valore reale ben prima che il progetto sia concluso.",
-    faq4_q: "Chi è il proprietario dell'automazione dopo il progetto?",
-    faq4_a: "La proprietà è tua al 100%. Al termine del progetto consegniamo tutto ciò che abbiamo costruito — strumenti, accessi e documentazione — senza alcuna dipendenza da noi o da terze parti. Prepariamo anche un video di walkthrough dettagliato affinché il tuo team possa utilizzare e gestire la soluzione in autonomia.",
-    faq5_q: "Cosa succede se il nostro processo cambia dopo la consegna?",
-    faq5_a: "I processi aziendali evolvono continuamente, quindi costruiamo soluzioni pensate per durare nel tempo. Poiché sei il proprietario di tutto ciò che consegniamo, il tuo team può adattare l'automazione alle nuove esigenze in autonomia — oppure insieme a noi. Se necessario, offriamo un piano di supporto continuativo opzionale che copre miglioramenti, nuove automazioni e adattamento alle nuove tecnologie AI.",
-    faq6_q: "È conforme al GDPR?",
-    faq6_a: "Sì. Affrontiamo la protezione dei dati e la conformità fin dall'inizio del progetto — non dopo il deployment. Valutiamo quali dati verranno trattati, dove verranno conservati e quali servizi AI verranno utilizzati. Dove necessario, distribuiamo su infrastruttura EU e aiutiamo a selezionare provider che soddisfano i requisiti di sicurezza e conformità della tua organizzazione.",
-    faq7_q: "Abbiamo già provato Zapier e non ha funzionato. Qual è la differenza?",
-    faq7_a: "Strumenti come Zapier sono progettati per il caso medio. Quando il tuo flusso è specifico — con molte eccezioni o logica complessa — gli strumenti generici cedono. Noi costruiamo sistemi custom progettati attorno al tuo processo esatto, casi limite inclusi.",
     cta_tag: "Inizia Ora",
     cta_title: "Prenota la tua<br/>consulenza strategica.",
     cta_sub: "Compila il modulo delle esigenze e prenota un orario. Analizzeremo i tuoi processi, identificheremo le maggiori opportunità di miglioramento dell'efficienza e ti daremo raccomandazioni concrete su cosa automatizzare prima. Nessun impegno — solo insight pratici.",
@@ -1224,125 +1289,135 @@ const T = {
   },
 
   lt: {
-    nav_problem: "Problema",
-    nav_process: "Kaip Tai Veikia",
-    nav_results: "Rezultatai",
-    nav_cta: "Rezervuoti konsultaciją",
-    hero_eyebrow: "Individualūs AI sprendimai · 1-oji versija per 5 darbo dienas",
-    hero_title: 'Žmonės kuria vertę.<br/><span class="accent">Rutiną atlieka AI.</span>',
-    hero_sub: "Kuriame AI agentus/asistentus, kurie automatizuoja pasikartojančias užduotis, tvarko informaciją ir vykdo procesus – kad jūsų komanda galėtų dirbti produktyviau ir susitelkti į tai, kas kuria didžiausią vertę verslui.",
-    hero_cta_primary: "Rezervuoti konsultaciją",
-    hero_cta_secondary: "Kaip Tai Veikia",
-    hero_note: "Aiškios įžvalgos ir praktiniai sprendimai jūsų verslui.",
-    stat1: "Darbo dienos iki 1-osios versijos",
-    stat2: "Atsakymų rodiklio augimas",
-    stat3: "Klientas valdo visą kodą ir prisijungimus",
-    stat4: "Kalbos: LT · EN · IT",
-    prob_tag: "Ar tai jums pažįstama?",
-    prob_title: "Kasdienės administracinės užduotys atima laiką, kurį galėtumėte skirti klientams, augimui ir strategijai.",
-    prob_sub: "Buhalteriai, teisininkai, konsultantai ir kitų verslų savininkai kasdien skiria valandas užduotims, kurios yra būtinos, tačiau neprisideda prie verslo augimo.",
-    pain1: "Duomenis reikia rankiniu būdu perkelti tarp skirtingų sistemų",
-    pain2: "Daug laiko atima informacijos paieška ir pasikartojanti komunikacija",
-    pain3: "Ataskaitos ir dokumentai ruošiami iš naujo kiekvieną savaitę",
-    pain4: "Automatizavimo galimybių yra, tačiau trūksta techninių resursų jas įgyvendinti",
-    pain5: "Universalūs įrankiai nepritaiko prie jūsų procesų ir darbo specifikos",
-    after_title: 'Po darbo su „ProcesSolution":',
-    after1: "Automatizuoti procesai vietoje rankinio darbo",
-    after2: "Sutaupytos valandos kiekvieną savaitę",
-    after3: "Individualiai jūsų veiklai pritaikytas sprendimas",
-    after4: "Komanda pasirengusi dirbti savarankiškai",
-    after5: "Patikimas palaikymas, kai jo prireikia",
-    after6: "",
-    probs_tag: "Pažįstama?",
-    probs_title: "Problemos, su kuriomis jūsų komanda susiduria kasdien.",
-    probs_sub: "Tai, kas atpažįstama, nėra funkcijų sąrašas — tai problemos, kurias matote savo darbo dienoje.",
-    probs_cat1_title: "Operacijų ir procesų valdymas",
-    probs_cat1_p1: "Svarbi informacija pasimeta tarp el. laiškų, žinučių ir skambučių.",
-    probs_cat1_p2: "Komanda nuolat klausinėja, kas ką turi padaryti ir iki kada.",
-    probs_cat1_p3: "Procesai veikia tik tol, kol kažkas juos nuolat prižiūri.",
-    probs_cat1_p4: "Per daug laiko skiriama koordinavimui, per mažai – realiam darbui.",
-    probs_cat1_p5: "Užduočių būsena aiški tik tada, kai kažkas rankiniu būdu atnaujina lentelę.",
-    probs_cat1_p6: "Darbai stringa tarp skyrių, nes niekas nemato viso proceso.",
-    probs_cat2_title: "Pardavimai ir klientų aptarnavimas",
-    probs_cat2_p1: "Į klientų užklausas atsakoma per lėtai, nes informacija išbarstyta skirtingose sistemose.",
-    probs_cat2_p2: "Potencialūs klientai prarandami, nes niekas laiku neseka tolimesnių veiksmų.",
-    probs_cat2_p3: "Pardavėjai daugiau laiko praleidžia administruodami CRM nei bendraudami su klientais.",
-    proc_tag: "Procesas",
-    proc_title: "Greitas startas. Aiškus kelias. Pamatuojamas rezultatas.",
-    proc_sub: "Pirmąją sprendimo versiją gaunate per 5 darbo dienas, o pilnai veikiantį automatizavimą – per 3–4 savaites.",
-    step1_title: "Strateginė konsultacija",
-    step1_body: "Parodysime, kur prarandamas laikas, ką verta automatizuoti ir kokį rezultatą galite pasiekti su AI.",
-    step2_title: "Strateginis pasirengimas ir sistemos paruošimas",
-    step2_body: "Apibrėžiame projekto ribas, suderinąme prieigos bei darbo eigą ir paruošiame visą reikalingą infrastruktūrą. Jūs tiksliai žinote, kas bus daroma ir kokie bus tolimesni žingsniai.",
-    step3_title: "Veikiantis prototipas per 5 darbo dienas",
-    step3_body: "Jau pirmąją savaitę galite išbandyti sprendimą realioje darbo aplinkoje. Remdamiesi komandos atsiliepimais, jį tobuliname iki pilnai jūsų poreikius atitinkančio rezultato.",
-    step4_title: "Galutinis sprendimo perdavimas",
-    step4_body: "Pilnai veikiantis sprendimas per 3–4 savaites nuo sutarties pasirašymo. Perduodame prieigą ir aiškią naudojimo dokumentaciją. Komandos mokymai – pagal poreikį.",
-    step5_title: "Tolimesnis augimas (pasirinktinai)",
-    step5_body: "Automatizavimas neturi sustoti ties pirmuoju projektu. Padedame plėsti sprendimą, automatizuoti naujus procesus ir prisitaikyti prie augančių verslo poreikių.",
-    res_tag: "Tikri Rezultatai",
-    res_title: "Nuo problemos iki veikiančio sprendimo.",
-    res_sub: "Kiekvienas projektas prasideda nuo konkrečios verslo problemos ir baigiasi veikiančiu automatizavimu. Kuriame AI sprendimus ir automatizavimus, kurie iš karto tampa jūsų darbo dalimi.",
-    p1_label: "Projektas 01 — Mažos komandos koordinavimas",
-    p1_title: "Užduočių koordinatorius",
-    p1_body: "Lengva užduočių koordinavimo programa mažoms komandoms — užduočių priskyrimas per formą ar balso diktavimą, automatinis statuso sekimas ir visapusiškas bendravimas el. paštu. Jokios sudėtingos sąrankos. Eksportuojamas užduočių žurnalas.",
-    prod1_desc: "Su Task Coordinator užduotis sukuriate per kelias sekundes – tiesiog pasakykite, ką reikia padaryti, kam priskirti ir iki kada. Dirbtinis intelektas viską supranta ir paruošia už jus. Arba įveskite tekstą, jei pageidaujate.",
-    prod1_f1: "Balso įvestis – diktuokite užduotį natūralia kalba, AI atpažins terminus, vykdytojus ir laiką",
-    prod1_f2: "Užduočių delegavimas – paskirkite užduotis komandos nariams el. paštu, jiems nereikia registruotis",
-    prod1_f3: 'El. pašto pranešimai – vykdytojai gauna patogų laišką su mygtukais „Priimti" / „Atmesti" / „Atlikta"',
-    prod1_f4: "Dvigubas delegavimas – užduotis galima perduoti toliau (2 lygiai)",
-    prod1_f5: "Statistika ir filtrai – matykite, kas vyksta jūsų komandoje realiu laiku",
-    prod1_f6: "Automatinis archyvavimas – atliktos užduotys archyvuojamos po 7 dienų",
-    prod1_f7: "Kalendoriaus kvietimai – siųskite .ics kvietimus tiesiai į gavėjo kalendorių",
-    p1_result_label: "Sukurta komandoms be dedikuoto projekto vadovo",
-    p1_result_val: "Nulinės rankinio sekimo išlaidos",
-    p2_label: "Projektas 02 — Komunikacijos automatizavimas",
-    p2_title: "Personalizuotos komunikacijos variklis",
-    p2_body: "Komunikacija su pasyviais klientais buvo generinė ir mažai efektyvi. Sukūrėme sistemą, kuri analizuoja kiekvieno asmens LinkedIn profilį, paskutinę veiklą ir vaidmenį — ir sugeneruoja personalizuotą žinutę, kurią komanda peržiūri ir išsiunčia vienu paspaudimu.",
-    p2_result_label: "Atsakymų rodiklis su pasyviais klientais",
-    p2_result_val: "11% → 34% (+23 procentiniai punktai)",
-    why_tag: "Kodėl ProcesSolution",
-    why_title: "AI sprendimai įmonėms.",
-    why_sub: "Galima panaudoti iš aukščiau rekomenduotų — AI agentai ir automatizavimo sprendimai, kurie perima rutiną, optimizuoja procesus ir išlaisvina jūsų komandos laiką svarbiausiems darbams.",
-    why1_title: "Sukurta pagal jūsų darbo eigą",
-    why1_body: "Kuriame automatizavimo sprendimus, kurie atspindi jūsų procesus, komandos darbo būdą ir konkrečius verslo poreikius.",
-    why2_title: "Veikiantis sprendimas per 5 darbo dienas",
-    why2_body: "Tikime greitu rezultatu, ne ilgais projektais. Todėl pirmąją automatizavimo versiją pristatome jau per pirmą savaitę, kad realią naudą galėtumėte įvertinti kuo anksčiau.",
-    why3_title: "Dirbate tiesiogiai su sprendimo kūrėjais",
-    why3_body: "Kiekvieną etapą aptariate su kūrėjais, todėl sprendimai priimami greičiau, komunikacija išlieka aiški, o kaštai — mažesni.",
-    why4_title: "Pilna kontrolė nuo pirmos dienos",
-    why4_body: "Jūs gaunate ne tik veikiantį sprendimą, bet ir visas reikalingas prieigos, įrankiai bei žinias, reikalingas jo valdymui ir plėtrai.",
-    why5_title: "Saugumas ir atitiktis be kompromisų",
-    why5_body: "Sprendimus galime diegti ES infrastruktūroje, o duomenų apsaugos klausimus sprendžiame dar projektavimo etape, ne po įdiegimo.",
-    why6_title: "Verslo patirtis prieš technologijas",
-    why6_body: "Prieš kurdami AI agentus ir automatizavimus, suprantame procesus, kuriuos jie turi pagerinti. Daugiau kaip du dešimtmečiai darbo lengvosios ir sunkiosios pramonės procesu, personalo atrankos ir finansų srityse padeda mums kurti sprendimus, orientuotus į realų verslo rezultatą, o ne vien technologinį naujumą.",
-    cred_tag: "Kompetencijos",
-    cred_title: "Technologijų ekspertai su realia verslo patirtimi.",
-    cred1: "Praktinė AI ir automatizavimo kompetencija — kuriame sprendimus naudodami LLM, Python, n8n ir pramoninės automatizacijos technologijas.",
-    cred2: "20+ metų patirtis versle — pramonės, personalo atrankos ir buhalterijos srityse leidžia greitai suprasti procesus ir identifikuoti automatizavimo galimybes.",
-    cred3: "BDAR ir ES infrastruktūra — sprendimus galime diegti ES infrastruktūroje, atsižvelgdami į duomenų apsaugos ir atitikties reikalavimus.",
-    cred4: "Tarptautinė patirtis — dirbame su klientais Lietuvoje, Italijoje ir tarptautinėse rinkose.",
-    cred5: "Bendraujame jūsų kalba — projektus įgyvendiname lietuvių, anglų ir italų kalbomis.",
-    founders_title: "Patirtis, kuria galite pasitikėti",
-    founders_p1: "Prieš kurdamos AI agentus ir automatizavimo sprendimus, Miglė Micheloni ir Kristina Stone daugiau nei du dešimtmečius dirbo verslo srityse, kurių procesus šiandien padeda optimizuoti.",
-    founders_p2: "Todėl kiekvieną projektą pradedame ne nuo technologijos, o nuo verslo problemos. Viso proceso metu dirbate tiesiogiai su įkūrėjomis – žmonėmis, kurie analizuoja, projektuoja ir įgyvendina sprendimą.",
+    nav_help: "Kur padedame",
+    nav_process: "Kaip dirbame",
+    nav_why: "Kodėl mes",
+    nav_products: "Produktai",
+    nav_faq: "DUK",
+    hero_title: "Žmonės kuria vertę.<br/><span class=\"accent\">Išmanūs sprendimai pasirūpina kasdieniais darbais.</span>",
+    hero_sub: "Kuriame ir diegiame praktinius sprendimus, kurie supaprastina kasdienį darbą, automatizuoja pasikartojančias užduotis ir sujungia verslo procesus.",
+    hero_sub2: "Nuo automatizuotų darbo eigų ir programinės įrangos integracijų iki išmaniųjų asistentų bei DI agentų – padedame specialistams, mažoms įmonėms ir verslams dirbti efektyviau, skiriant mažiau laiko rankiniam darbui.",
+    hero_cta_primary: "Užsisakykite nemokamą 30 min. konsultaciją",
+    hero_cta_secondary: "Susipažinkite su mūsų sprendimais",
+    hero_note: "Praktinės technologijos. Apčiuopiami verslo rezultatai.",
+    prob_tag: "Ar pažįstama?",
+    prob_title: "Per daug laiko skiriate darbams, kurie nepadeda augti jūsų verslui?",
+    prob_sub: "Specialistai, mažos komandos ir įmonių savininkai kasdien daug laiko skiria administracinėms užduotims, duomenų suvedimui, informacijos paieškai, susirašinėjimui ir priminimams.",
+    prob_sub2: "Šios užduotys būtinos, tačiau ne visoms joms reikia žmogaus dėmesio.",
+    pain1: "Rankinis duomenų perkėlimas tarp skirtingų sistemų.",
+    pain2: "Pasikartojantys el. laiškai, priminimai ir užklausos.",
+    pain3: "Rankinis ataskaitų rengimas ir informacijos rinkimas.",
+    pain4: "Dokumentų ir duomenų paieška el. laiškuose bei archyvuose.",
+    pain5: "Rankinis užduočių, terminų ir atsakomybių stebėjimas.",
+    pain6: "Skirtingos programos, kurios neveikia kartu.",
+    pain7: "Žinote, kad darbą galima supaprastinti, tačiau trūksta laiko tai padaryti.",
+    after_title: "Įsivaizduokite paprastesnį darbo būdą.",
+    after_intro: "Su ProcesSolution galite:",
+    after1: "Automatizuoti pasikartojančias darbo užduotis.",
+    after2: "Sujungti sistemas ir geriau organizuoti informaciją.",
+    after3: "Daugiau laiko skirti klientams ir verslo plėtrai.",
+    after4: "Gauti sprendimus, pritaikytus jūsų darbo procesams.",
+    after5: "Sumažinti rankinio darbo ir koordinavimo poreikį.",
+    after6: "Nuolat tobulinti ir plėsti naudojamus sprendimus.",
+    help_tag: "Kur galime padėti?",
+    help_title: "Išmanūs sprendimai kasdieniams verslo iššūkiams.",
+    help_sub: "Pradedame ne nuo technologijų, o nuo jūsų darbo procesų ir užduočių, kurios užima daugiausia laiko.",
+    area_sol_label: "Mūsų sprendimai:",
+    area1_title: "Veiklos ir procesų valdymas",
+    area1_p1: "Svarbi informacija pasimeta tarp el. laiškų, žinučių ir skambučių.",
+    area1_p2: "Komandos per daug laiko skiria veiklos koordinavimui.",
+    area1_p3: "Procesai priklauso nuo nuolatinės rankinės kontrolės.",
+    area1_p4: "Sunku stebėti užduotis, terminus ir atsakomybes.",
+    area1_p5: "Darbas stringa, nes informacija išskaidyta skirtingose sistemose.",
+    area1_p6: "Pasikartojančios administracinės užduotys atima laiką iš svarbesnių darbų.",
+    area1_sol: "automatizuotos darbo eigos, užduočių valdymas, informacijos apdorojimas, dokumentų tvarkymas ir sistemų integracijos.",
+    area2_title: "Administravimas ir dokumentų valdymas",
+    area2_p1: "Dokumentai gaunami skirtingais kanalais ir apdorojami rankiniu būdu.",
+    area2_p2: "Duomenis reikia perkelti iš dokumentų į lenteles ar verslo sistemas.",
+    area2_p3: "Terminus ir administracines užduotis reikia nuolat stebėti.",
+    area2_p4: "Informaciją sunku rasti ir tvarkingai archyvuoti.",
+    area2_sol: "dokumentų apdorojimas, automatinis duomenų išgavimas, skaitmeninis archyvavimas, informacijos tikrinimas ir administracinių procesų automatizavimas.",
+    area3_title: "Pardavimai ir klientų valdymas",
+    area3_p1: "Į klientų užklausas ne visada atsakoma laiku.",
+    area3_p2: "Potencialūs klientai prarandami dėl pavėluotų priminimų.",
+    area3_p3: "Klientų informacija išskaidyta skirtingose sistemose.",
+    area3_p4: "Pardavimų komandos per daug laiko skiria CRM duomenų atnaujinimui.",
+    area3_sol: "automatizuotas kontaktų valdymas, priminimai, CRM integracijos ir išmanios komunikacijos darbo eigos.",
+    proc_tag: "Kaip dirbame?",
+    proc_title: "Aiškus kelias nuo problemos iki praktinio sprendimo.",
+    proc_sub: "Kiekvienas projektas prasideda nuo jūsų darbo procesų supratimo ir galimybių juos supaprastinti įvertinimo.",
+    step_word: "ETAPAS",
+    step1_title: "Pirminė konsultacija",
+    step1_body: "Aptariame kasdienes veiklas, nustatome pasikartojančias užduotis ir ieškome galimybių supaprastinti darbą.",
+    step2_title: "Procesų analizė ir sprendimo projektavimas",
+    step2_body: "Apibrėžiame darbo eigą, projekto apimtį ir tinkamiausias technologijas. Aiškiai žinote, ką siūlome ir kaip sprendimas veiks.",
+    step3_title: "Veikiantis prototipas",
+    step3_body: "Sukuriame pirmąją sprendimo versiją, kurią galima išbandyti realioje darbo aplinkoje.",
+    step3_note: "Siekiame pateikti pirmąjį prototipą per 5 darbo dienas, jei tai leidžia projekto sudėtingumas ir reikalingų prieigų gavimas.",
+    step4_title: "Įgyvendinimas ir perdavimas",
+    step4_body: "Patobuliname, išbandome ir įdiegiame sprendimą. Suteikiame reikalingas prieigas, dokumentaciją ir, jei reikia, apmokome komandą.",
+    step4_note: "Įprasta įgyvendinimo trukmė – 3–4 savaitės, priklausomai nuo projekto apimties ir sudėtingumo.",
+    step5_title: "Nuolatinis tobulinimas (pasirinktinai)",
+    step5_body: "Verslui augant, gali keistis ir jo procesai. Padėsime plėsti, atnaujinti ir tobulinti sprendimus pagal naujus poreikius.",
+    why_tag: "Kodėl ProcesSolution?",
+    why_title: "Praktiniai sprendimai, pritaikyti jūsų verslui.",
+    why_sub: "Tikime, kad technologijos turi prisitaikyti prie žmonių darbo būdo, o ne atvirkščiai.",
+    why1_title: "Pritaikyta jūsų darbo procesams",
+    why1_body: "Kiekvienas verslas skirtingas. Sprendimus kuriame atsižvelgdami į jūsų procesus, naudojamus įrankius ir konkrečius poreikius.",
+    why2_title: "Tinkama technologija konkrečiai užduočiai",
+    why2_body: "Ne kiekvienai problemai reikia dirbtinio intelekto. Kartais geriausias pasirinkimas yra paprasta automatizacija arba programinės įrangos integracija. Parenkame tinkamiausią sprendimą.",
+    why3_title: "Greiti ir praktiški rezultatai",
+    why3_body: "Orientuojamės į veikiančius sprendimus, o ne ilgus teorinius projektus. Siekiame kuo greičiau pateikti prototipą ir jį tobulinti remiantis praktiniais bandymais.",
+    why4_title: "Tiesioginis bendravimas",
+    why4_body: "Dirbsite tiesiogiai su žmonėmis, kurie analizuoja, projektuoja ir įgyvendina sprendimą.",
+    why5_title: "Jūsų sistemos ir jūsų kontrolė",
+    why5_body: "Gaunate reikalingas prieigas, dokumentaciją ir žinias, kad galėtumėte savarankiškai naudotis sprendimu ir jį valdyti.",
+    why6_title: "Duomenų saugumas",
+    why6_body: "Duomenų apsaugos reikalavimus vertiname nuo pat projekto pradžios. Priklausomai nuo projekto poreikių, galime naudoti ES infrastruktūrą.",
+    why7_title: "Verslo patirtis prieš technologijas",
+    why7_body: "Mūsų patirtis pramonės, administravimo, finansų ir personalo atrankos srityse padeda pirmiausia suprasti verslo procesus, o tik tada pasirinkti technologijas.",
+    cred_tag: "Mūsų kompetencijos",
+    cred_title: "Technologinės žinios ir reali verslo patirtis.",
+    cred_sub: "Deriname praktines technologines žinias su daugiau nei 20 metų verslo patirtimi.",
+    cred_list: "<li><span class=\"icon\">⚙️</span><span>Procesų automatizavimas ir darbo eigų projektavimas.</span></li><li><span class=\"icon\">🔗</span><span>Programinės įrangos ir verslo sistemų integracijos.</span></li><li><span class=\"icon\">🤖</span><span>Technologijos: n8n, Python, LLM ir kiti automatizavimo įrankiai.</span></li><li><span class=\"icon\">🏭</span><span>Patirtis pramonės, administravimo, finansų ir personalo srityse.</span></li><li><span class=\"icon\">🇪🇺</span><span>Duomenų apsauga ir BDAR reikalavimai.</span></li><li><span class=\"icon\">🌍</span><span>Tarptautinė patirtis Lietuvoje, Italijoje ir kitose rinkose.</span></li><li><span class=\"icon\">🗣️</span><span>Projektus įgyvendiname lietuvių, anglų ir italų kalbomis.</span></li>",
+    founders_tag: "Patirtis, kuria galite pasitikėti",
+    founders_title: "Suprantame verslo procesus, nes patys dirbome šiose srityse.",
+    founders_p1: "Prieš pradėdamos kurti automatizavimo sprendimus, Migle Micheloni ir Kristina Stone daugiau nei du dešimtmečius dirbo verslo srityse, kuriose procesai, informacija ir veiklos efektyvumas yra itin svarbūs.",
+    founders_p2: "Šią patirtį pritaikome kiekviename projekte.",
+    founders_p3: "Viso projekto metu tiesiogiai bendrausite su įmonės įkūrėjomis – nuo pirminės analizės iki sprendimo projektavimo, įgyvendinimo ir palaikymo.",
+    prod_tag: "Mūsų produktai",
+    prod_title: "Paruošti skaitmeniniai sprendimai kasdieniam darbui.",
+    prod_sub: "Be individualių projektų, kuriame atskirus skaitmeninius įrankius, skirtus konkrečioms verslo problemoms spręsti.",
+    prod_new: "Nauja",
+    prod1_tagline: "Planuokite, paskirstykite ir stebėkite užduotis paprasčiau.",
+    prod1_desc: "Sukurkite užduotį per kelias sekundes – balsu arba tekstu. Sistema apdoroja informaciją ir paruošia užduotį, atsakingą asmenį bei terminą.",
+    prod1_feat: "Funkcijos:",
+    prod1_f1: "Užduočių kūrimas balsu arba tekstu.",
+    prod1_f2: "Užduočių paskyrimas el. paštu.",
+    prod1_f3: "Gavėjams nereikia turėti paskyros.",
+    prod1_f4: "El. pašto pranešimai su mygtukais Priimti / Atmesti / Atlikta.",
+    prod1_f5: "Dviejų lygių užduočių delegavimas.",
+    prod1_f6: "Statistika ir filtrai.",
+    prod1_f7: "Automatinis užbaigtų užduočių archyvavimas po 7 dienų.",
+    prod1_f8: "Kvietimai į kalendorių naudojant .ics failus.",
+    prod1_cta: "Atraskite Task Coordinator →",
     faq_tag: "DUK",
-    faq_title: "Tikriausiai turite bent vieną iš šių klausimų.",
-    faq_sub: "Tai klausimai, kuriuos dažniausiai gauname prieš pirmą susitikimą. O jei turite kitų – aptarsime juos konsultacijos metu.",
-    faq1_q: "Ar man reikia techninių žinių?",
-    faq1_a: "Ne. Jūs apibrėžiate problemą, kurią norite išspręsti, o mes pasirūpiname visa technine puse – nuo idėjos iki veikiančio sprendimo.",
-    faq2_q: "Ar reikės keisti naudojamą programinę įrangą?",
-    faq2_a: "Dažniausiai ne. Mūsų tikslas – išnaudoti tai, ką jau naudojate, ir sujungti sistemas į efektyvesnį procesą. Automatizavimą kuriame aplink jūsų verslą, o ne verčiame verslą prisitaikyti prie naujų įrankių.",
-    faq3_q: "Kaip greitai pamatysime rezultatus?",
-    faq3_a: "Pirmąją veikiančią automatizavimo versiją pristatome per 5 darbo dienas nuo projekto pradžios. Jūsų komanda gali ją iš karto testuoti ir teikti grįžtamąjį ryšį. Galutinė, pilnai optimizuota versija dažniausiai pristatoma per 3–4 savaites (nuo sutarties pasirašymo datos), todėl realią naudą pradėsite matyti gerokai anksčiau nei projektui pasibaigus.",
-    faq4_q: "Kam priklauso automatizavimas po projekto?",
-    faq4_a: "Visa nuosavybė priklauso jums. Projekto pabaigoje perduodame visą sukurtą įranki, prieigą ir dokumentaciją, todėl nesate priklausomi nuo mūsų ar trečiųjų šalių. Papildomai parengiame išsamią vaizdo apžvalgą, kad jūsų komanda galėtų užtikrintai naudotis ir administruoti sprendimą savarankiškai.",
-    faq5_q: "Kas nutiks, jei po perdavimo pasikeis mūsų procesas?",
-    faq5_a: "Verslo procesai nuolat evoliucionuoja, todėl sprendimus kuriame galvodami apie ilgalaikį lankstumą. Kadangi visa nuosavybė perduodama jums, automatizavimą galima toliau pritaikyti naujiems poreikiams savarankiškai arba kartu su mumis. Esant poreikiui, siūlome pasirinktinį palaikymo planą, apimantį patobulinimus, naujus automatizavimus ir prisitaikymą prie naujų AI technologijų.",
-    faq6_q: "Ar tai atitinka BDAR?",
-    faq6_a: "Taip. BDAR ir duomenų apsaugos klausimus sprendžiame nuo pat projekto pradžios, o ne po įdiegimo. Įvertiname, kokie duomenys bus tvarkomi, kur jie bus saugomi ir kokios AI paslaugos bus naudojamos. Esant poreikiui, sprendimus diegiame ES infrastruktūroje ir padedame pasirinkti tiekėjus, atitinkančius jūsų organizacijos saugumo ir atitikties reikalavimus.",
-    faq7_q: "Jau bandėme Zapier ir neveikė. Kuo tai skiriasi?",
-    faq7_a: "Standartiniai įrankiai kaip Zapier sukurti vidutiniam atvejui. Kai jūsų darbo eiga yra specifinė — daug išimčių ar sudėtinga logika — generiniai įrankiai subyra. Mes kuriame individualias sistemas, pritaikytas tiksliai prie jūsų proceso, įskaitant ir kraštutinuosius atvejus.",
+    faq_title: "Dažniausiai užduodami klausimai",
+    faq1_q: "Ar reikia techninių žinių?",
+    faq1_a: "Ne. Kuriame praktiškus ir paprastus naudoti sprendimus. Prireikus pateikiame instrukcijas ir apmokome komandą.",
+    faq2_q: "Ar reikės keisti jau naudojamą programinę įrangą?",
+    faq2_a: "Nebūtinai. Pirmiausia įvertiname jūsų naudojamus įrankius ir galimybes juos sujungti.",
+    faq3_q: "Kaip greitai pamatysiu rezultatus?",
+    faq3_a: "Pirmasis prototipas gali būti paruoštas per 5 darbo dienas, priklausomai nuo projekto poreikių. Visas įgyvendinimas paprastai trunka 3–4 savaites.",
+    faq4_q: "Kam priklauso sprendimas po projekto įgyvendinimo?",
+    faq4_a: "Gaunate sutartą sprendimą, prieigas ir dokumentaciją. Nuosavybės ir licencijavimo sąlygos apibrėžiamos projekto sutartyje.",
+    faq5_q: "Kas nutinka, jei pasikeičia mano verslo procesai?",
+    faq5_a: "Sprendimus galima atnaujinti ir plėsti pagal naujus poreikius. Taip pat galime teikti nuolatinę pagalbą.",
+    faq6_q: "Ar sprendimai atitinka BDAR reikalavimus?",
+    faq6_a: "Duomenų apsaugos reikalavimus vertiname projektuodami sprendimą. Atitiktis priklauso nuo konkrečių sistemų, duomenų ir jų tvarkymo būdo.",
+    faq7_q: "Jau bandėme Zapier, bet jis nepadėjo. Kuo jūsų sprendimas kitoks?",
+    faq7_a: "Mes nepradedame nuo įrankio pasirinkimo. Pirmiausia analizuojame jūsų procesą, nustatome problemą ir kuriame sprendimą pagal realius verslo poreikius.",
+    nav_cta: "Rezervuoti konsultaciją",
     cta_tag: "Pradėkite",
     cta_title: "Rezervuokite<br/>strateginę konsultaciją.",
     cta_sub: "Užpildykite poreikių anketą ir rezervuokite laiką. Aptarsime jūsų procesus, identifikuosime didžiausias efektyvumo didinimo galimybes ir pateiksime konkrečias rekomendacijas, ką verta automatizuoti pirmiausia. Be įsipareigojimų – tik praktinės įžvalgos.",
