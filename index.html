@@ -864,6 +864,15 @@
           <li style="margin-top:16px;"><a href="#" onclick="openPrivacy(); return false;" data-i18n="footer_privacy">Privacy Policy</a></li>
         </ul>
       </div>
+      <div>
+        <ul class="footer-links">
+          <li><h4>Task Coordinator</h4></li>
+          <li><a href="https://task.processolution.pro/en/privacy" data-doc="privacy" data-i18n="tc_privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
+          <li><a href="https://task.processolution.pro/en/terms" data-doc="terms" data-i18n="tc_terms" target="_blank" rel="noopener">Terms of Use</a></li>
+          <li><a href="https://task.processolution.pro/en/dpa" data-doc="dpa" data-i18n="tc_dpa" target="_blank" rel="noopener">Data Processing Agreement</a></li>
+          <li><a href="https://task.processolution.pro/en/delete-account" data-doc="delete-account" data-i18n="tc_delete" target="_blank" rel="noopener">Account Deletion</a></li>
+        </ul>
+      </div>
     </div>
     <div class="footer-bottom">
       <p>© 2025 ProcesSolution. <span data-i18n="footer_rights">All rights reserved.</span></p>
@@ -1036,6 +1045,10 @@ const T = {
     footer_nav_label: "Navigation",
     footer_contact_label: "Contact",
     footer_privacy: "Privacy Policy",
+    tc_privacy: "Privacy Policy",
+    tc_terms: "Terms of Use",
+    tc_dpa: "Data Processing Agreement",
+    tc_delete: "Account Deletion",
     footer_rights: "All rights reserved.",
     priv_title: "Privacy Policy",
     priv_date: "Last updated: June 2025",
@@ -1184,6 +1197,10 @@ const T = {
     footer_nav_label: "Navigazione",
     footer_contact_label: "Contatti",
     footer_privacy: "Privacy Policy",
+    tc_privacy: "Informativa sulla privacy",
+    tc_terms: "Condizioni d'uso",
+    tc_dpa: "Accordo sul trattamento dei dati",
+    tc_delete: "Eliminazione dell'account",
     footer_rights: "Tutti i diritti riservati.",
     priv_title: "Privacy Policy",
     priv_date: "Ultimo aggiornamento: giugno 2025",
@@ -1332,6 +1349,10 @@ const T = {
     footer_nav_label: "Navigacija",
     footer_contact_label: "Kontaktai",
     footer_privacy: "Privatumo politika",
+    tc_privacy: "Privatumo politika",
+    tc_terms: "Naudojimosi taisyklės",
+    tc_dpa: "Duomenų tvarkymo sutartis",
+    tc_delete: "Paskyros ištrynimas",
     footer_rights: "Visos teisės saugomos.",
     priv_title: "Privatumo politika",
     priv_date: "Paskutinį kartą atnaujinta: 2025 m. birželis",
@@ -1373,6 +1394,11 @@ function setLang(lang) {
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+
+  // Task Coordinator documents: LT version for LT, English for EN and IT
+  document.querySelectorAll('a[data-doc]').forEach(a => {
+    a.href = 'https://task.processolution.pro/' + (lang === 'lt' ? 'lt' : 'en') + '/' + a.dataset.doc;
   });
 
   // Active button

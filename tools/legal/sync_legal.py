@@ -22,18 +22,20 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 APP = "https://task.processolution.pro"
 
-# slug sul sito -> (percorso nell'app, titolo EN)
+# Indirizzi definitivi dei documenti nell'app (comunicati il 2026-11-18).
+# slug sul sito -> ({lingua: percorso nell'app}, titolo EN)
 REMOTE = {
-    "privacy": ("/privacy", "Privacy Policy"),
-    "terms": ("/legal/terms", "Terms of Use"),
-    "dpa": ("/legal/dpa", "Data Processing Agreement"),
+    "privacy": ({"lt": "/lt/privacy", "en": "/en/privacy"}, "Privacy Policy"),
+    "terms": ({"lt": "/lt/terms", "en": "/en/terms"}, "Terms of Use"),
+    "dpa": ({"lt": "/lt/dpa", "en": "/en/dpa"}, "Data Processing Agreement"),
+    "delete-account": ({"lt": "/delete-account?lang=lt", "en": "/en/delete-account"}, "Account deletion"),
 }
 LOCAL = {
-    "delete-account": "Account and data deletion",
     "support": "Support",
 }
 # link interni dell'app -> pagine del sito
 LINK_MAP = [
+    (r'href="/(lt|en)/(privacy|terms|dpa|delete-account)"', r'href="/\2?lang=\1"'),
     (r'href="/legal/terms(\?lang=\w+)?"', r'href="/terms\1"'),
     (r'href="/legal/dpa(\?lang=\w+)?"', r'href="/dpa\1"'),
     (r'href="/privacy(\?lang=\w+)?"', r'href="/privacy\1"'),
@@ -60,7 +62,7 @@ def render(browser, url):
 
 
 def clean(dom, url):
-    m = re.search(r"<main\b.*?>(.*)</main>", dom, re.S)
+    m = re.search(r"<main\b.*?>(.*)</main>", dom, re.S) or re.search(r"<body\b.*?>(.*)</body>", dom, re.S)
     if not m or "<h1" not in m.group(1):
         sys.exit("Contenuto non trovato in %s: la pagina dell'app è cambiata?" % url)
     s = m.group(1)
@@ -72,7 +74,9 @@ def clean(dom, url):
         keep = re.findall(r'\s(?:href|colspan|rowspan)="[^"]*"', attrs)
         return "<%s%s>" % (name, "".join(keep))
     s = re.sub(r"<(\w+)((?:\s[^>]*)?)>", strip_attrs, s)
-    s = re.sub(r"</?div>", "", s)
+    s = re.sub(r"</?(div|section|header|footer)>", "", s)
+    # niente prima del titolo (link "indietro", selettori di lingua dell'app)
+    s = s[s.index("<h1"):]
     # gli a capo dentro i paragrafi sono righe visibili nell'app (white-space: pre-line)
     s = re.sub(r"<p>(.*?)</p>", lambda p: "<p>" + re.sub(r"\s*\n\s*", "<br />", p.group(1).strip()) + "</p>", s, flags=re.S)
     s = re.sub(r"<table>", '<div class="table-scroll"><table>', s)
@@ -80,6 +84,9 @@ def clean(dom, url):
     s = re.sub(r"<a\b[^>]*>\s*</a>", "", s)
     for pat, rep in LINK_MAP:
         s = re.sub(pat, rep, s)
+    # La pagina dell'app aggiunge in fondo una nota sulle statistiche Lovable del *suo* sito.
+    # Non fa parte del documento firmato e non vale per processolution.pro: la togliamo.
+    s = re.split(r"<h2>(?:Website visitor analytics|Svetainės lankomumo duomenys)</h2>", s)[0]
     return s.strip()
 
 
@@ -94,10 +101,10 @@ def build(slug, title_en, body_en, body_lt):
 
 def main():
     browser = find_browser()
-    for slug, (path, title) in REMOTE.items():
+    for slug, (paths, title) in REMOTE.items():
         bodies = {}
         for lang in ("en", "lt"):
-            url = "%s%s?lang=%s" % (APP, path, lang)
+            url = APP + paths[lang]
             bodies[lang] = clean(render(browser, url), url)
         if bodies["en"] == bodies["lt"]:
             sys.exit("%s: EN e LT identici, la lingua non è stata applicata." % slug)

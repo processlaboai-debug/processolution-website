@@ -774,6 +774,24 @@
         font-size: 0.92rem;
       }
 
+      .footer-legal {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        margin-top: 16px;
+        font-size: 0.88rem;
+      }
+
+      .footer-legal a {
+        color: #8f98b6;
+        text-decoration: none;
+      }
+
+      .footer-legal a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+
       @media (max-width: 920px) {
         .nav-links {
           display: none;
@@ -1273,6 +1291,12 @@
           <span>© 2026 Task Coordinator</span>
           <span>Balsu valdomas užduočių koordinavimas komandoms</span>
         </div>
+        <nav class="shell footer-legal" aria-label="Legal">
+          <a href="https://task.processolution.pro/lt/privacy" data-doc="privacy" target="_blank" rel="noopener">Privatumo politika</a>
+          <a href="https://task.processolution.pro/lt/terms" data-doc="terms" target="_blank" rel="noopener">Naudojimosi taisyklės</a>
+          <a href="https://task.processolution.pro/lt/dpa" data-doc="dpa" target="_blank" rel="noopener">Duomenų tvarkymo sutartis</a>
+          <a href="https://task.processolution.pro/lt/delete-account" data-doc="delete-account" target="_blank" rel="noopener">Paskyros ištrynimas</a>
+        </nav>
       </footer>
     </div>
     <script>
@@ -1542,7 +1566,11 @@
           en: "Start with a simple spoken sentence. Task Coordinator handles the structure, email, deadline and status.",
           it: "Iniziate con una semplice frase a voce. Task Coordinator gestisce struttura, e-mail, scadenza e stato."
         },
-        "Gauti demo": { en: "Get a demo", it: "Richiedi una demo" }
+        "Gauti demo": { en: "Get a demo", it: "Richiedi una demo" },
+        "Privatumo politika": { en: "Privacy Policy", it: "Informativa sulla privacy" },
+        "Naudojimosi taisyklės": { en: "Terms of Use", it: "Condizioni d'uso" },
+        "Duomenų tvarkymo sutartis": { en: "Data Processing Agreement", it: "Accordo sul trattamento dei dati" },
+        "Paskyros ištrynimas": { en: "Account Deletion", it: "Eliminazione dell'account" }
       };
 
       const normalize = (value) => value.replace(/\s+/g, " ").trim();
@@ -1576,6 +1604,11 @@
 
         document.querySelectorAll("[data-lang]").forEach((button) => {
           button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
+        });
+
+        // Documenti legali: versione LT per LT, inglese per EN e IT
+        document.querySelectorAll("a[data-doc]").forEach((link) => {
+          link.href = `https://task.processolution.pro/${lang === "lt" ? "lt" : "en"}/${link.dataset.doc}`;
         });
 
         localStorage.setItem("taskCoordinatorLang", lang);
